@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="두 선택지를 AI 배틀에 올려 최종 승자를 결정하는 선택 도우미 웹게임 PICK FIGHT"
+    >
+
+    <title>PICK FIGHT | 선택장애 콜로세움</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+
+<body>
+
+    <!-- ==================================================
+         PIXEL ASSET SHEET
+         화면에는 보이지 않고 캐릭터/스티커 원본으로 사용
+    =================================================== -->
+
+    <svg
+        width="0"
+        height="0"
+        style="position:absolute"
+        aria-hidden="true"
+    >
+
+        <!-- =========================
+             CHARACTERS
+        ========================== -->
+
+        <!-- PINK BLOB -->
+        <symbol id="sprite-pink" viewBox="0 0 16 16">
+
+            <rect x="5" y="2" width="6" height="1" fill="#393242"/>
+            <rect x="3" y="3" width="10" height="1" fill="#393242"/>
+            <rect x="2" y="4" width="12" height="8" fill="#393242"/>
+            <rect x="3" y="12" width="10" height="1" fill="#393242"/>
+            <rect x="5" y="13" width="2" height="1" fill="#393242"/>
+            <rect x="9" y="13" width="2" height="1" fill="#393242"/>
+
+            <rect x="5" y="3" width="6" height="1" fill="#df8fb0"/>
+            <rect x="4" y="4" width="8" height="8" fill="#df8fb0"/>
+            <rect x="3" y="5" width="1" height="6" fill="#df8fb0"/>
+            <rect x="12" y="5" width="1" height="6" fill="#df8fb0"/>
+
+            <rect x="5" y="7" width="1" height="2" fill="#393242"/>
+            <rect x="10" y="7" width="1" height="2" fill="#393242"/>
+            <rect x="7" y="10" width="2" height="1" fill="#393242"/>
+
+            <rect x="4" y="9" width="1" height="1" fill="#f7c2d5"/>
+            <rect x="11" y="9" width="1" height="1" fill="#f7c2d5"/>
+
+        </symbol>
+
+
+        <!-- CREAM BEAR -->
+        <symbol id="sprite-cream-bear" viewBox="0 0 16 16">
+
+            <rect x="3" y="3" width="3" height="3" fill="#393242"/>
+            <rect x="10" y="3" width="3" height="3" fill="#393242"/>
+
+            <rect x="4" y="4" width="8" height="1" fill="#393242"/>
+            <rect x="3" y="5" width="10" height="7" fill="#393242"/>
+            <rect x="4" y="12" width="8" height="1" fill="#393242"/>
+
+            <rect x="4" y="5" width="8" height="7" fill="#eee3ce"/>
+
+            <rect x="5" y="7" width="1" height="1" fill="#393242"/>
+            <rect x="10" y="7" width="1" height="1" fill="#393242"/>
+
+            <rect x="7" y="8" width="2" height="2" fill="#bb846c"/>
+            <rect x="7" y="10" width="2" height="1" fill="#393242"/>
+
+        </symbol>
+
+
+        <!-- PURPLE CAT -->
+        <symbol id="sprite-purple-cat" viewBox="0 0 16 16">
+
+            <rect x="3" y="2" width="3" height="3" fill="#393242"/>
+            <rect x="10" y="2" width="3" height="3" fill="#393242"/>
+
+            <rect x="4" y="3" width="8" height="1" fill="#393242"/>
+            <rect x="3" y="4" width="10" height="8" fill="#393242"/>
+            <rect x="4" y="12" width="8" height="1" fill="#393242"/>
+
+            <rect x="4" y="4" width="8" height="8" fill="#9f91c8"/>
+
+            <rect x="4" y="3" width="2" height="2" fill="#9f91c8"/>
+            <rect x="10" y="3" width="2" height="2" fill="#9f91c8"/>
+
+            <rect x="5" y="7" width="1" height="2" fill="#393242"/>
+            <rect x="10" y="7" width="1" height="2" fill="#393242"/>
+
+            <rect x="7" y="9" width="2" height="1" fill="#393242"/>
+            <rect x="6" y="10" width="1" height="1" fill="#393242"/>
+            <rect x="9" y="10" width="1" height="1" fill="#393242"/>
+
+        </symbol>
+
+
+        <!-- MINT BUNNY -->
+        <symbol id="sprite-mint-bunny" viewBox="0 0 16 16">
+
+            <rect x="4" y="1" width="3" height="5" fill="#393242"/>
+            <rect x="9" y="1" width="3" height="5" fill="#393242"/>
+
+            <rect x="5" y="2" width="1" height="3" fill="#abd0c3"/>
+            <rect x="10" y="2" width="1" height="3" fill="#abd0c3"/>
+
+            <rect x="4" y="5" width="8" height="1" fill="#393242"/>
+            <rect x="3" y="6" width="10" height="6" fill="#393242"/>
+            <rect x="4" y="12" width="8" height="1" fill="#393242"/>
+
+            <rect x="4" y="6" width="8" height="6" fill="#abd0c3"/>
+
+            <rect x="5" y="8" width="1" height="2" fill="#393242"/>
+            <rect x="10" y="8" width="1" height="2" fill="#393242"/>
+            <rect x="7" y="10" width="2" height="1" fill="#393242"/>
+
+        </symbol>
+
+
+        <!-- ORANGE MONSTER -->
+        <symbol id="sprite-orange" viewBox="0 0 16 16">
+
+            <rect x="3" y="2" width="3" height="2" fill="#393242"/>
+            <rect x="10" y="2" width="3" height="2" fill="#393242"/>
+
+            <rect x="4" y="1" width="1" height="2" fill="#e3c66f"/>
+            <rect x="11" y="1" width="1" height="2" fill="#e3c66f"/>
+
+            <rect x="4" y="4" width="8" height="1" fill="#393242"/>
+            <rect x="3" y="5" width="10" height="7" fill="#393242"/>
+            <rect x="4" y="12" width="8" height="1" fill="#393242"/>
+
+            <rect x="4" y="5" width="8" height="7" fill="#d79d7b"/>
+
+            <rect x="5" y="7" width="1" height="2" fill="#393242"/>
+            <rect x="10" y="7" width="1" height="2" fill="#393242"/>
+            <rect x="7" y="10" width="2" height="1" fill="#393242"/>
+
+        </symbol>
+
+
+        <!-- YELLOW BEE -->
+        <symbol id="sprite-yellow-bee" viewBox="0 0 16 16">
+
+            <rect x="4" y="1" width="2" height="1" fill="#393242"/>
+            <rect x="10" y="1" width="2" height="1" fill="#393242"/>
+
+            <rect x="5" y="2" width="1" height="2" fill="#393242"/>
+            <rect x="10" y="2" width="1" height="2" fill="#393242"/>
+
+            <rect x="4" y="4" width="8" height="1" fill="#393242"/>
+            <rect x="3" y="5" width="10" height="7" fill="#393242"/>
+            <rect x="4" y="12" width="8" height="1" fill="#393242"/>
+
+            <rect x="4" y="5" width="8" height="7" fill="#dcc55c"/>
+
+            <rect x="4" y="9" width="8" height="1" fill="#ae8742"/>
+
+            <rect x="5" y="7" width="1" height="1" fill="#393242"/>
+            <rect x="10" y="7" width="1" height="1" fill="#393242"/>
+            <rect x="7" y="8" width="2" height="1" fill="#393242"/>
+
+        </symbol>
+
+
+        <!-- BLUE ROBOT -->
+        <symbol id="sprite-blue-robot" viewBox="0 0 16 16">
+
+            <rect x="7" y="1" width="2" height="2" fill="#393242"/>
+            <rect x="8" y="0" width="1" height="1" fill="#e1ca65"/>
+
+            <rect x="4" y="3" width="8" height="1" fill="#393242"/>
+            <rect x="3" y="4" width="10" height="8" fill="#393242"/>
+            <rect x="4" y="12" width="8" height="1" fill="#393242"/>
+
+            <rect x="4" y="4" width="8" height="8" fill="#9ebdca"/>
+
+            <rect x="5" y="6" width="6" height="4" fill="#d9e3df"/>
+
+            <rect x="6" y="7" width="1" height="1" fill="#393242"/>
+            <rect x="9" y="7" width="1" height="1" fill="#393242"/>
+            <rect x="7" y="9" width="2" height="1" fill="#393242"/>
+
+        </symbol>
+
+
+        <!-- GREEN MONSTER -->
+        <symbol id="sprite-green" viewBox="0 0 16 16">
+
+            <rect x="4" y="2" width="2" height="2" fill="#393242"/>
+            <rect x="7" y="1" width="2" height="3" fill="#393242"/>
+            <rect x="10" y="2" width="2" height="2" fill="#393242"/>
+
+            <rect x="3" y="4" width="10" height="8" fill="#393242"/>
+            <rect x="4" y="12" width="8" height="1" fill="#393242"/>
+
+            <rect x="4" y="5" width="8" height="7" fill="#b7ca72"/>
+
+            <rect x="5" y="7" width="1" height="2" fill="#393242"/>
+            <rect x="10" y="7" width="1" height="2" fill="#393242"/>
+            <rect x="7" y="10" width="2" height="1" fill="#393242"/>
+
+        </symbol>
+
+
+
+        <!-- =========================
+             PIXEL STICKERS
+        ========================== -->
+
+        <!-- HEART -->
+        <symbol id="sticker-heart" viewBox="0 0 16 16">
+
+            <rect x="3" y="3" width="4" height="2" fill="#393242"/>
+            <rect x="9" y="3" width="4" height="2" fill="#393242"/>
+
+            <rect x="2" y="5" width="12" height="4" fill="#393242"/>
+            <rect x="3" y="9" width="10" height="2" fill="#393242"/>
+            <rect x="5" y="11" width="6" height="2" fill="#393242"/>
+            <rect x="7" y="13" width="2" height="1" fill="#393242"/>
+
+            <rect x="4" y="4" width="3" height="2" fill="#e98fb7"/>
+            <rect x="9" y="4" width="3" height="2" fill="#e98fb7"/>
+
+            <rect x="3" y="6" width="10" height="3" fill="#e98fb7"/>
+            <rect x="4" y="9" width="8" height="2" fill="#e98fb7"/>
+            <rect x="6" y="11" width="4" height="2" fill="#e98fb7"/>
+
+            <rect x="4" y="5" width="2" height="1" fill="#f7cadc"/>
+
+        </symbol>
+
+
+        <!-- BOW -->
+        <symbol id="sticker-bow" viewBox="0 0 16 16">
+
+            <rect x="1" y="4" width="5" height="7" fill="#393242"/>
+            <rect x="10" y="4" width="5" height="7" fill="#393242"/>
+            <rect x="6" y="6" width="4" height="4" fill="#393242"/>
+
+            <rect x="2" y="5" width="4" height="5" fill="#ab98cf"/>
+            <rect x="10" y="5" width="4" height="5" fill="#ab98cf"/>
+
+            <rect x="7" y="7" width="2" height="2" fill="#e4ca6e"/>
+
+            <rect x="3" y="6" width="1" height="2" fill="#d7caec"/>
+            <rect x="12" y="6" width="1" height="2" fill="#d7caec"/>
+
+        </symbol>
+
+
+        <!-- CHERRY -->
+        <symbol id="sticker-cherry" viewBox="0 0 16 16">
+
+            <rect x="7" y="2" width="2" height="5" fill="#52785d"/>
+            <rect x="9" y="2" width="4" height="1" fill="#52785d"/>
+            <rect x="12" y="3" width="2" height="2" fill="#52785d"/>
+
+            <rect x="2" y="7" width="6" height="6" fill="#393242"/>
+            <rect x="8" y="8" width="6" height="6" fill="#393242"/>
+
+            <rect x="3" y="8" width="4" height="4" fill="#d96891"/>
+            <rect x="9" y="9" width="4" height="4" fill="#d96891"/>
+
+            <rect x="4" y="8" width="1" height="1" fill="#f3b7cf"/>
+            <rect x="10" y="9" width="1" height="1" fill="#f3b7cf"/>
+
+        </symbol>
+
+
+        <!-- FLOWER -->
+        <symbol id="sticker-flower" viewBox="0 0 16 16">
+
+            <rect x="6" y="1" width="4" height="4" fill="#393242"/>
+            <rect x="1" y="6" width="4" height="4" fill="#393242"/>
+            <rect x="11" y="6" width="4" height="4" fill="#393242"/>
+            <rect x="6" y="11" width="4" height="4" fill="#393242"/>
+
+            <rect x="4" y="4" width="8" height="8" fill="#393242"/>
+
+            <rect x="7" y="2" width="2" height="3" fill="#f0b4ce"/>
+            <rect x="2" y="7" width="3" height="2" fill="#f0b4ce"/>
+            <rect x="11" y="7" width="3" height="2" fill="#f0b4ce"/>
+            <rect x="7" y="11" width="2" height="3" fill="#f0b4ce"/>
+
+            <rect x="6" y="6" width="4" height="4" fill="#ddc75e"/>
+
+        </symbol>
+
+
+        <!-- GAMEPAD -->
+        <symbol id="sticker-gamepad" viewBox="0 0 16 16">
+
+            <rect x="2" y="5" width="12" height="7" fill="#393242"/>
+            <rect x="3" y="4" width="10" height="1" fill="#393242"/>
+
+            <rect x="3" y="6" width="10" height="5" fill="#9b8bc4"/>
+
+            <rect x="5" y="7" width="1" height="3" fill="#393242"/>
+            <rect x="4" y="8" width="3" height="1" fill="#393242"/>
+
+            <rect x="10" y="7" width="1" height="1" fill="#e58cb1"/>
+            <rect x="11" y="9" width="1" height="1" fill="#dfc85d"/>
+
+            <rect x="4" y="11" width="2" height="2" fill="#393242"/>
+            <rect x="10" y="11" width="2" height="2" fill="#393242"/>
+
+        </symbol>
+
+
+        <!-- STAR -->
+        <symbol id="sticker-star" viewBox="0 0 16 16">
+
+            <rect x="7" y="1" width="2" height="4" fill="#393242"/>
+
+            <rect x="3" y="5" width="10" height="2" fill="#393242"/>
+            <rect x="5" y="7" width="6" height="5" fill="#393242"/>
+
+            <rect x="3" y="9" width="2" height="2" fill="#393242"/>
+            <rect x="11" y="9" width="2" height="2" fill="#393242"/>
+
+            <rect x="6" y="5" width="4" height="6" fill="#e1c85c"/>
+            <rect x="4" y="6" width="8" height="2" fill="#e1c85c"/>
+
+            <rect x="7" y="5" width="1" height="2" fill="#f8e9a5"/>
+
+        </symbol>
+
+
+        <!-- SPARKLE -->
+        <symbol id="sticker-sparkle" viewBox="0 0 16 16">
+
+            <rect x="7" y="1" width="2" height="5" fill="#f7efff"/>
+            <rect x="7" y="10" width="2" height="5" fill="#f7efff"/>
+
+            <rect x="1" y="7" width="5" height="2" fill="#f7efff"/>
+            <rect x="10" y="7" width="5" height="2" fill="#f7efff"/>
+
+            <rect x="6" y="6" width="4" height="4" fill="#bdacd7"/>
+
+        </symbol>
+
+
+        <!-- CANDY -->
+        <symbol id="sticker-candy" viewBox="0 0 16 16">
+
+            <rect x="1" y="5" width="4" height="6" fill="#393242"/>
+            <rect x="11" y="5" width="4" height="6" fill="#393242"/>
+
+            <rect x="4" y="4" width="8" height="8" fill="#393242"/>
+
+            <rect x="2" y="6" width="3" height="4" fill="#dfc85f"/>
+            <rect x="11" y="6" width="3" height="4" fill="#dfc85f"/>
+
+            <rect x="5" y="5" width="6" height="6" fill="#dc87ae"/>
+            <rect x="6" y="5" width="2" height="6" fill="#f0b8d0"/>
+
+        </symbol>
+
+    </svg>
+
+
+
+    <!-- ==================================================
+         HEADER
+    =================================================== -->
+
+    <header class="header">
+
+        <nav class="navbar">
+
+            <a href="#home" class="logo">
+                PICK <span>FIGHT</span>
+            </a>
+
+            <ul class="nav-menu">
+                <li><a href="#home">HOME</a></li>
+                <li><a href="#arena">ARENA</a></li>
+                <li><a href="#battle-log">BATTLE LOG</a></li>
+                <li><a href="#how-to-play">HOW TO PLAY</a></li>
+            </ul>
+
+        </nav>
+
+    </header>
+
+
+
+    <main>
+
+        <!-- ==================================================
+             HOME
+        =================================================== -->
+
+        <section id="home" class="section home-section">
+
+
+            <!-- CHARACTER PARADE -->
+
+            <div class="home-character-parade" aria-hidden="true">
+
+                <svg class="pixel-sprite parade-sprite">
+                    <use href="#sprite-pink"></use>
+                </svg>
+
+                <svg class="pixel-sprite parade-sprite">
+                    <use href="#sprite-cream-bear"></use>
+                </svg>
+
+                <svg class="pixel-sprite parade-sprite">
+                    <use href="#sprite-purple-cat"></use>
+                </svg>
+
+                <svg class="pixel-sprite parade-sprite">
+                    <use href="#sprite-mint-bunny"></use>
+                </svg>
+
+                <svg class="pixel-sprite parade-sprite">
+                    <use href="#sprite-orange"></use>
+                </svg>
+
+                <svg class="pixel-sprite parade-sprite">
+                    <use href="#sprite-yellow-bee"></use>
+                </svg>
+
+                <svg class="pixel-sprite parade-sprite">
+                    <use href="#sprite-blue-robot"></use>
+                </svg>
+
+                <svg class="pixel-sprite parade-sprite">
+                    <use href="#sprite-green"></use>
+                </svg>
+
+            </div>
+
+
+
+            <!-- GAME SCREEN -->
+
+            <div class="arcade-screen">
+
+
+                <!-- PIXEL STICKERS -->
+
+                <div class="pixel-sticker-layer" aria-hidden="true">
+
+                    <svg class="pixel-sticker sticker-heart-px">
+                        <use href="#sticker-heart"></use>
+                    </svg>
+
+                    <svg class="pixel-sticker sticker-bow-px">
+                        <use href="#sticker-bow"></use>
+                    </svg>
+
+                    <svg class="pixel-sticker sticker-cherry-px">
+                        <use href="#sticker-cherry"></use>
+                    </svg>
+
+                    <svg class="pixel-sticker sticker-flower-px">
+                        <use href="#sticker-flower"></use>
+                    </svg>
+
+                    <svg class="pixel-sticker sticker-gamepad-px">
+                        <use href="#sticker-gamepad"></use>
+                    </svg>
+
+                    <svg class="pixel-sticker sticker-star-px">
+                        <use href="#sticker-star"></use>
+                    </svg>
+
+                    <svg class="pixel-sticker sticker-sparkle-a">
+                        <use href="#sticker-sparkle"></use>
+                    </svg>
+
+                    <svg class="pixel-sticker sticker-sparkle-b">
+                        <use href="#sticker-sparkle"></use>
+                    </svg>
+
+                    <svg class="pixel-sticker sticker-candy-px">
+                        <use href="#sticker-candy"></use>
+                    </svg>
+
+                </div>
+
+
+
+                <!-- HUD -->
+
+                <div class="hud-bar">
+
+                    <div class="hud-box">
+                        LIFE ♥ ♥ ♥
+                    </div>
+
+                    <div class="hud-box">
+                        ITEM x1
+                    </div>
+
+                    <div class="hud-box">
+                        SCORE 0001
+                    </div>
+
+                </div>
+
+
+
+                <!-- TITLE -->
+
+                <div class="home-content">
+
+                    <p class="eyebrow">
+                        AI DECISION BATTLE
+                    </p>
+
+                    <h1>
+                        PICK FIGHT
+                    </h1>
+
+                    <p class="hero-korean">
+                        못 고르겠다고?<br>
+                        둘이 싸움 붙여.
+                    </p>
+
+                    <p class="home-description">
+                        마지막까지 살아남는 하나가 오늘의
+                        <strong>PICK ♡</strong>
+                    </p>
+
+
+                    <div class="hero-buttons">
+
+                        <a
+                            href="#arena"
+                            class="main-button pink-button"
+                        >
+                            START
+                        </a>
+
+                        <a
+                            href="#how-to-play"
+                            class="main-button purple-button"
+                        >
+                            HOW TO
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ==================================================
+             ARENA
+        =================================================== -->
+
+        <section id="arena" class="section arena-section">
+
+
+            <!-- ARENA CHARACTERS -->
+
+            <div class="arena-decoration">
+
+                <div class="pixel-mascot mascot-left">
+
+                    <svg class="pixel-sprite mascot-sprite">
+                        <use href="#sprite-pink"></use>
+                    </svg>
+
+                    <div class="speech-bubble">
+                        둘 다 맘에 들어 ♡
+                    </div>
+
+                </div>
+
+
+                <div class="pixel-mascot mascot-right">
+
+                    <svg class="pixel-sprite mascot-sprite">
+                        <use href="#sprite-purple-cat"></use>
+                    </svg>
+
+                    <div class="speech-bubble">
+                        WINNER는 하나뿐!
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="section-title">
+
+                <p>THE ARENA</p>
+
+                <h2>선수 입장</h2>
+
+                <span>
+                    오늘 당신을 괴롭히는 두 선택지를 입력하세요.
+                </span>
+
+            </div>
+
+
+
+            <div class="battle-form">
+
+
+                <!-- PLAYER A -->
+
+                <div class="player-card player-a">
+
+                    <p class="player-label">
+                        PLAYER A
+                    </p>
+
+
+                    <div class="fighter-status">
+
+                        <svg class="pixel-sprite player-sprite">
+                            <use href="#sprite-pink"></use>
+                        </svg>
+
+
+                        <div class="fighter-meta">
+
+                            <p class="fighter-code">
+                                ENTRY 001
+                            </p>
+
+                            <div class="fighter-hearts">
+                                ♥ ♥ ♥
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <h3>
+                        첫 번째 선택지
+                    </h3>
+
+                    <input
+                        type="text"
+                        id="playerA"
+                        maxlength="50"
+                        placeholder="예: 치킨 먹기"
+                    >
+
+                </div>
+
+
+
+                <div class="vs-text">
+                    VS
+                </div>
+
+
+
+                <!-- PLAYER B -->
+
+                <div class="player-card player-b">
+
+                    <p class="player-label">
+                        PLAYER B
+                    </p>
+
+
+                    <div class="fighter-status">
+
+                        <svg class="pixel-sprite player-sprite">
+                            <use href="#sprite-purple-cat"></use>
+                        </svg>
+
+
+                        <div class="fighter-meta">
+
+                            <p class="fighter-code">
+                                ENTRY 002
+                            </p>
+
+                            <div class="fighter-hearts">
+                                ♥ ♥ ♥
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <h3>
+                        두 번째 선택지
+                    </h3>
+
+                    <input
+                        type="text"
+                        id="playerB"
+                        maxlength="50"
+                        placeholder="예: 마라탕 먹기"
+                    >
+
+                </div>
+
+            </div>
+
+
+
+            <!-- CURRENT SITUATION -->
+
+            <div class="situation-box">
+
+                <label for="situation">
+                    현재 상황
+                </label>
+
+                <textarea
+                    id="situation"
+                    maxlength="300"
+                    placeholder="왜 고민하고 있는지 알려주세요. 예: 다이어트 중인데 오늘 스트레스를 많이 받았고 매운 음식이 당겨요."
+                ></textarea>
+
+            </div>
+
+
+
+            <!-- CRITERIA -->
+
+            <div class="criteria-box">
+
+                <h3>
+                    이번 대결에서 가장 중요한 것은?
+                </h3>
+
+
+                <div class="criteria-buttons">
+
+                    <button
+                        type="button"
+                        class="criteria-button"
+                        data-value="돈"
+                    >
+                        💰 돈
+                    </button>
+
+                    <button
+                        type="button"
+                        class="criteria-button"
+                        data-value="시간"
+                    >
+                        ⏱ 시간
+                    </button>
+
+                    <button
+                        type="button"
+                        class="criteria-button"
+                        data-value="만족도"
+                    >
+                        ♥ 만족도
+                    </button>
+
+                    <button
+                        type="button"
+                        class="criteria-button"
+                        data-value="건강"
+                    >
+                        💪 건강
+                    </button>
+
+                    <button
+                        type="button"
+                        class="criteria-button"
+                        data-value="재미"
+                    >
+                        ★ 재미
+                    </button>
+
+                    <button
+                        type="button"
+                        class="criteria-button"
+                        data-value="후회 최소화"
+                    >
+                        🔮 후회 최소화
+                    </button>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- FIGHT -->
+
+            <div class="fight-area">
+
+                <button
+                    type="button"
+                    id="fightButton"
+                    class="fight-button"
+                >
+                    FIGHT!
+                </button>
+
+                <p
+                    id="formMessage"
+                    class="form-message"
+                    aria-live="polite"
+                ></p>
+
+            </div>
+
+
+
+            <!-- RESULT -->
+
+            <div
+                id="battleResult"
+                class="battle-result"
+                aria-live="polite"
+            >
+
+                <p class="result-placeholder">
+                    READY... 두 선수를 기다리는 중!
+                </p>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ==================================================
+             BATTLE LOG
+        =================================================== -->
+
+        <section
+            id="battle-log"
+            class="section log-section"
+        >
+
+            <div class="section-title">
+
+                <p>BATTLE HISTORY</p>
+
+                <h2>BATTLE LOG</h2>
+
+                <span>
+                    지금까지 치른 대결 기록
+                </span>
+
+            </div>
+
+
+            <div
+                id="battleLogList"
+                class="battle-log-list"
+            >
+
+                <div class="empty-log">
+
+                    <p>★</p>
+
+                    <h3>
+                        아직 전투 기록이 없습니다.
+                    </h3>
+
+                    <span>
+                        첫 번째 대결을 시작해보세요.
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ==================================================
+             HOW TO PLAY
+        =================================================== -->
+
+        <section
+            id="how-to-play"
+            class="section guide-section"
+        >
+
+            <div class="section-title">
+
+                <p>GAME GUIDE</p>
+
+                <h2>HOW TO PLAY</h2>
+
+                <span>
+                    PICK FIGHT 플레이 방법
+                </span>
+
+            </div>
+
+
+            <div class="guide-grid">
+
+                <article class="guide-card">
+
+                    <strong>01</strong>
+
+                    <h3>선수 등록</h3>
+
+                    <p>
+                        고민 중인 두 선택지를 PLAYER A와
+                        PLAYER B에 입력합니다.
+                    </p>
+
+                </article>
+
+
+                <article class="guide-card">
+
+                    <strong>02</strong>
+
+                    <h3>상황 입력</h3>
+
+                    <p>
+                        지금 왜 고민하고 있는지
+                        현재 상황을 알려주세요.
+                    </p>
+
+                </article>
+
+
+                <article class="guide-card">
+
+                    <strong>03</strong>
+
+                    <h3>판정 기준</h3>
+
+                    <p>
+                        돈, 시간, 만족도 등 이번 승부에서
+                        중요한 기준을 선택합니다.
+                    </p>
+
+                </article>
+
+
+                <article class="guide-card">
+
+                    <strong>04</strong>
+
+                    <h3>FIGHT!</h3>
+
+                    <p>
+                        AI의 라운드별 판정을 확인하고
+                        마지막 WINNER를 확인합니다.
+                    </p>
+
+                </article>
+
+            </div>
+
+
+
+            <div class="notice-box">
+
+                <h3>
+                    ★ GAME NOTICE
+                </h3>
+
+                <p>
+                    PICK FIGHT의 결과는 사용자가 입력한 정보를
+                    바탕으로 생성되는 참고용 콘텐츠입니다.
+                    중요한 의료·법률·금융 의사결정에는 사용하지 마세요.
+                </p>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+
+    <!-- ==================================================
+         FOOTER
+    =================================================== -->
+
+    <footer class="footer">
+
+        <p>
+            PICK FIGHT
+        </p>
+
+        <span>
+            TWO CHOICES. ONE WINNER.
+        </span>
+
+    </footer>
+
+
+    <script src="js/app.js"></script>
+
+</body>
+
+</html>
