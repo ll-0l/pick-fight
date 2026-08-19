@@ -1816,3 +1816,1000 @@ button {
     }
 
 }
+
+/* ==================================================
+   CUSTOM RULE SYSTEM
+================================================== */
+
+.criteria-guide {
+    margin: 8px 0 22px;
+    font-family: "Galmuri11", sans-serif;
+    font-size: 0.85rem;
+    line-height: 1.7;
+    opacity: 0.72;
+}
+
+
+/* 선택된 기본 RULE */
+
+.criteria-button {
+    transition:
+        transform 0.12s steps(2),
+        box-shadow 0.12s steps(2),
+        background 0.12s steps(2);
+}
+
+.criteria-button:hover {
+    transform: translateY(-2px);
+}
+
+.criteria-button.selected {
+    transform: translateY(-3px);
+    box-shadow:
+        4px 4px 0 var(--ink);
+}
+
+
+/* ==================================================
+   CUSTOM RULE BOX
+================================================== */
+
+.custom-rule-box {
+    margin-top: 26px;
+    padding: 20px;
+    border: 3px solid var(--ink);
+    background: rgba(255, 255, 255, 0.45);
+    box-shadow: 5px 5px 0 var(--ink);
+}
+
+.custom-rule-title {
+    display: flex;
+    align-items: flex-start;
+    gap: 13px;
+    margin-bottom: 16px;
+}
+
+.custom-rule-plus {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+
+    width: 34px;
+    height: 34px;
+
+    border: 3px solid var(--ink);
+
+    font-family: "Press Start 2P", monospace;
+    font-size: 16px;
+
+    background: var(--pink);
+    box-shadow: 3px 3px 0 var(--ink);
+}
+
+.custom-rule-title strong {
+    display: block;
+    margin-bottom: 6px;
+
+    font-family: "Galmuri11", sans-serif;
+    font-size: 1rem;
+}
+
+.custom-rule-title p {
+    margin: 0;
+
+    font-family: "Galmuri11", sans-serif;
+    font-size: 0.8rem;
+    line-height: 1.6;
+
+    opacity: 0.7;
+}
+
+
+.custom-rule-input-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 10px;
+}
+
+
+#customRuleInput {
+    width: 100%;
+    min-width: 0;
+    padding: 13px 14px;
+
+    border: 3px solid var(--ink);
+    outline: none;
+
+    font-family: "Galmuri11", sans-serif;
+    font-size: 0.9rem;
+
+    background: var(--cream);
+}
+
+#customRuleInput:focus {
+    box-shadow:
+        4px 4px 0 var(--lavender);
+}
+
+
+.add-rule-button {
+    padding: 0 20px;
+
+    border: 3px solid var(--ink);
+
+    font-family: "Press Start 2P", monospace;
+    font-size: 0.65rem;
+
+    cursor: pointer;
+
+    background: var(--mint);
+    box-shadow: 4px 4px 0 var(--ink);
+
+    transition:
+        transform 0.1s steps(2),
+        box-shadow 0.1s steps(2);
+}
+
+.add-rule-button:hover {
+    transform: translate(-1px, -1px);
+    box-shadow: 5px 5px 0 var(--ink);
+}
+
+.add-rule-button:active {
+    transform: translate(3px, 3px);
+    box-shadow: 1px 1px 0 var(--ink);
+}
+
+
+/* ==================================================
+   SELECTED RULES
+================================================== */
+
+.selected-rules-box {
+    margin-top: 22px;
+    padding: 18px;
+
+    border: 3px solid var(--ink);
+
+    background: rgba(255, 255, 255, 0.3);
+}
+
+
+.selected-rules-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 14px;
+
+    margin-bottom: 15px;
+}
+
+
+.selected-rules-label {
+    display: block;
+    margin-bottom: 7px;
+
+    font-family: "Press Start 2P", monospace;
+    font-size: 0.58rem;
+
+    letter-spacing: 0.04em;
+}
+
+
+#ruleStatusText {
+    font-family: "Galmuri11", sans-serif;
+    font-size: 0.9rem;
+}
+
+
+.rule-count {
+    flex-shrink: 0;
+
+    padding: 8px 10px;
+
+    border: 2px solid var(--ink);
+
+    font-family: "Press Start 2P", monospace;
+    font-size: 0.55rem;
+
+    background: var(--cream);
+}
+
+
+.rule-count-complete {
+    background: var(--pink);
+}
+
+
+.selected-rules-list {
+    display: grid;
+    gap: 9px;
+}
+
+
+.empty-rule-message {
+    margin: 3px 0;
+
+    font-family: "Galmuri11", sans-serif;
+    font-size: 0.85rem;
+
+    opacity: 0.6;
+}
+
+
+.selected-rule-item {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 12px;
+
+    padding: 11px 12px;
+
+    border: 2px solid var(--ink);
+
+    background: var(--cream);
+}
+
+
+.selected-rule-number {
+    font-family: "Press Start 2P", monospace;
+    font-size: 0.55rem;
+
+    opacity: 0.6;
+}
+
+
+.selected-rule-name {
+    min-width: 0;
+
+    font-family: "Galmuri11", sans-serif;
+    font-size: 0.9rem;
+
+    overflow-wrap: anywhere;
+}
+
+
+.remove-rule-button {
+    display: grid;
+    place-items: center;
+
+    width: 30px;
+    height: 30px;
+
+    padding: 0;
+
+    border: 2px solid var(--ink);
+
+    font-family: "Press Start 2P", monospace;
+    font-size: 0.8rem;
+
+    cursor: pointer;
+
+    background: var(--pink);
+    box-shadow: 2px 2px 0 var(--ink);
+}
+
+.remove-rule-button:active {
+    transform: translate(2px, 2px);
+    box-shadow: none;
+}
+
+
+/* ==================================================
+   FORM MESSAGE
+================================================== */
+
+.form-message {
+    min-height: 24px;
+    margin-top: 14px;
+
+    font-family: "Galmuri11", sans-serif;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.form-message.message-error {
+    font-weight: 700;
+}
+
+.form-message.message-success {
+    font-weight: 700;
+}
+
+
+/* ==================================================
+   RULE READY TEST SCREEN
+================================================== */
+
+.rule-ready-screen {
+    width: 100%;
+    padding: 28px 20px;
+
+    text-align: center;
+
+    border: 3px solid var(--ink);
+
+    background: var(--cream);
+
+    box-shadow: 6px 6px 0 var(--ink);
+}
+
+
+.rule-ready-kicker {
+    margin: 0 0 12px;
+
+    font-family: "Press Start 2P", monospace;
+    font-size: 0.6rem;
+
+    opacity: 0.65;
+}
+
+
+.rule-ready-screen h3 {
+    margin: 0 0 24px;
+
+    font-family: "Press Start 2P", monospace;
+    font-size: clamp(0.8rem, 2vw, 1rem);
+    line-height: 1.7;
+}
+
+
+.rule-ready-versus {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 16px;
+
+    margin: 20px 0 26px;
+}
+
+
+.rule-ready-versus strong {
+    padding: 12px;
+
+    border: 2px solid var(--ink);
+
+    font-family: "Galmuri11", sans-serif;
+
+    background: var(--pink);
+}
+
+
+.rule-ready-versus strong:last-child {
+    background: var(--lavender);
+}
+
+
+.rule-ready-versus span {
+    font-family: "Press Start 2P", monospace;
+    font-size: 0.75rem;
+}
+
+
+.rule-ready-list {
+    display: grid;
+    gap: 9px;
+
+    max-width: 520px;
+    margin: 0 auto;
+}
+
+
+.rule-ready-list > div {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 12px;
+    align-items: center;
+
+    padding: 11px 13px;
+
+    border: 2px solid var(--ink);
+
+    text-align: left;
+
+    background: rgba(255, 255, 255, 0.55);
+}
+
+
+.rule-ready-list span {
+    font-family: "Press Start 2P", monospace;
+    font-size: 0.5rem;
+}
+
+
+.rule-ready-list strong {
+    font-family: "Galmuri11", sans-serif;
+    font-size: 0.9rem;
+}
+
+
+.rule-ready-message {
+    margin: 22px 0 0;
+
+    font-family: "Galmuri11", sans-serif;
+    font-size: 0.85rem;
+}
+
+
+/* ==================================================
+   RULE RESPONSIVE
+================================================== */
+
+@media (max-width: 650px) {
+
+    .custom-rule-input-row {
+        grid-template-columns: 1fr;
+    }
+
+    .add-rule-button {
+        min-height: 46px;
+    }
+
+    .selected-rules-header {
+        flex-direction: column;
+    }
+
+    .rule-ready-versus {
+        grid-template-columns: 1fr;
+    }
+
+    .rule-ready-versus span {
+        padding: 2px 0;
+    }
+
+    .rule-ready-list > div {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+/* =========================================================
+   BATTLE LOG CAROUSEL
+   한 번에 경기 카드 1장
+   ◀  CARD  ▶
+        2 / 5
+   ========================================================= */
+
+.battle-log-carousel {
+    width: min(920px, 94%);
+
+    margin:
+        38px auto 0;
+
+    display: grid;
+
+    grid-template-columns:
+        72px minmax(0, 1fr) 72px;
+
+    align-items: center;
+
+    gap: 20px;
+}
+
+
+/* 가운데 카드 영역 */
+
+.battle-log-viewport {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+}
+
+
+/* JS가 이 안에 현재 카드 1개만 표시 */
+
+.battle-log-list {
+    width: 100%;
+
+    min-height: 300px;
+
+    display: flex;
+
+    align-items: stretch;
+    justify-content: center;
+}
+
+
+/* 기록 없을 때 */
+
+.battle-log-list .empty-log {
+    width: 100%;
+
+    min-height: 280px;
+
+    margin: 0;
+
+    padding: 34px 28px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    border:
+        4px solid #393242;
+
+    background:
+        #fff7e5;
+
+    box-shadow:
+        7px 7px 0 #393242;
+
+    text-align: center;
+}
+
+
+.battle-log-list .empty-log > p {
+    margin:
+        0 0 18px;
+
+    color:
+        #e58bad;
+
+    font-size:
+        2rem;
+}
+
+
+.battle-log-list .empty-log h3 {
+    margin:
+        0 0 10px;
+
+    font-family:
+        "Galmuri11",
+        sans-serif;
+
+    font-size:
+        1.15rem;
+}
+
+
+.battle-log-list .empty-log span {
+    color:
+        #6b6372;
+
+    font-family:
+        "Galmuri11",
+        sans-serif;
+
+    font-size:
+        .95rem;
+}
+
+
+/* =========================================================
+   실제 경기 카드
+   기존 JS의 .log-card와
+   앞으로 쓸 .battle-log-card 모두 대응
+   ========================================================= */
+
+.battle-log-list .log-card,
+.battle-log-list .battle-log-card {
+    width: 100%;
+
+    min-height: 300px;
+
+    margin: 0;
+
+    padding: 28px 30px;
+
+    border:
+        4px solid #393242;
+
+    background:
+        #fff7e5;
+
+    box-shadow:
+        7px 7px 0 #393242;
+
+    font-family:
+        "Galmuri11",
+        sans-serif;
+}
+
+
+/* 카드 위쪽 */
+
+.battle-log-list .log-card-header,
+.battle-log-card-header {
+    display: flex;
+
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 18px;
+
+    padding-bottom: 15px;
+
+    border-bottom:
+        3px solid #393242;
+}
+
+
+.battle-log-list .log-card-header strong {
+    color:
+        #66588d;
+
+    font-family:
+        "Galmuri11",
+        sans-serif;
+
+    font-size:
+        1.25rem;
+
+    font-weight: 700;
+}
+
+
+.battle-log-list .log-card-header span {
+    color:
+        #777080;
+
+    font-family:
+        "Galmuri11",
+        sans-serif;
+
+    font-size:
+        .9rem;
+}
+
+
+/* 카드 내용 */
+
+.battle-log-list .log-card-body {
+    padding-top:
+        22px;
+}
+
+
+.battle-log-list .log-card-body p {
+    margin:
+        0 0 15px;
+
+    color:
+        #393242;
+
+    font-family:
+        "Galmuri11",
+        sans-serif;
+
+    font-size:
+        1.05rem;
+
+    line-height:
+        1.6;
+}
+
+
+.battle-log-list .log-card-body strong {
+    color:
+        #a84b70;
+}
+
+
+/* =========================================================
+   새 Battle Log 카드 구조용
+   ========================================================= */
+
+.battle-log-versus {
+    display: grid;
+
+    grid-template-columns:
+        1fr auto 1fr;
+
+    align-items: center;
+
+    gap: 18px;
+
+    margin:
+        22px 0;
+
+    text-align: center;
+}
+
+
+.battle-log-versus strong {
+    font-family:
+        "Galmuri11",
+        sans-serif;
+
+    font-size:
+        1.5rem;
+}
+
+
+.battle-log-versus span {
+    color:
+        #e579a3;
+
+    font-family:
+        "Press Start 2P",
+        cursive;
+
+    font-size:
+        .7rem;
+}
+
+
+/* 승자 부분 */
+
+.battle-log-winner {
+    margin:
+        18px 0;
+
+    padding:
+        18px;
+
+    border:
+        3px solid #6787b4;
+
+    background:
+        #dce9fa;
+
+    text-align: center;
+}
+
+
+.battle-log-winner span {
+    display: block;
+
+    margin-bottom:
+        7px;
+
+    color:
+        #456a99;
+
+    font-family:
+        "Press Start 2P",
+        cursive;
+
+    font-size:
+        .42rem;
+}
+
+
+.battle-log-winner strong {
+    color:
+        #393242;
+
+    font-family:
+        "Galmuri11",
+        sans-serif;
+
+    font-size:
+        1.6rem;
+}
+
+
+/* RULE 정보 */
+
+.battle-log-detail {
+    margin: 0;
+}
+
+
+.battle-log-detail > div {
+    display: grid;
+
+    grid-template-columns:
+        150px 1fr;
+
+    gap: 14px;
+
+    padding:
+        12px 0;
+
+    border-top:
+        2px solid rgba(57, 50, 66, .18);
+}
+
+
+.battle-log-detail dt {
+    color:
+        #67588e;
+
+    font-family:
+        "Press Start 2P",
+        cursive;
+
+    font-size:
+        .4rem;
+
+    line-height:
+        1.8;
+}
+
+
+.battle-log-detail dd {
+    margin: 0;
+
+    font-family:
+        "Galmuri11",
+        sans-serif;
+
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   카드 양옆 버튼
+   ========================================================= */
+
+.battle-log-nav {
+    width:
+        66px;
+
+    height:
+        76px;
+
+    padding: 0;
+
+    border:
+        4px solid #393242;
+
+    background:
+        #c8bee4;
+
+    color:
+        #393242;
+
+    box-shadow:
+        5px 5px 0 #393242;
+
+    font-family:
+        "Press Start 2P",
+        cursive;
+
+    font-size:
+        1rem;
+
+    cursor:
+        pointer;
+
+    transition:
+        transform .12s ease,
+        background .12s ease,
+        box-shadow .12s ease;
+}
+
+
+.battle-log-nav:hover:not(:disabled) {
+    background:
+        #f1bfd2;
+
+    transform:
+        translateY(-2px);
+}
+
+
+.battle-log-nav:active:not(:disabled) {
+    transform:
+        translate(3px, 3px);
+
+    box-shadow:
+        2px 2px 0 #393242;
+}
+
+
+.battle-log-nav:disabled {
+    opacity:
+        .28;
+
+    filter:
+        grayscale(1);
+
+    cursor:
+        not-allowed;
+}
+
+
+/* =========================================================
+   아래 2 / 5
+   ========================================================= */
+
+.battle-log-pagination {
+    margin-top:
+        24px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 10px;
+
+    color:
+        #67588e;
+
+    font-family:
+        "Press Start 2P",
+        cursive;
+
+    font-size:
+        .62rem;
+
+    line-height:
+        1.7;
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+    .battle-log-carousel {
+        width: 100%;
+
+        grid-template-columns:
+            46px minmax(0, 1fr) 46px;
+
+        gap:
+            8px;
+    }
+
+
+    .battle-log-nav {
+        width:
+            44px;
+
+        height:
+            60px;
+
+        border-width:
+            3px;
+
+        box-shadow:
+            3px 3px 0 #393242;
+
+        font-size:
+            .65rem;
+    }
+
+
+    .battle-log-list .log-card,
+    .battle-log-list .battle-log-card,
+    .battle-log-list .empty-log {
+        min-height:
+            300px;
+
+        padding:
+            22px 18px;
+    }
+
+
+    .battle-log-list .log-card-header {
+        flex-direction:
+            column;
+
+        gap:
+            6px;
+    }
+
+
+    .battle-log-versus {
+        gap:
+            7px;
+    }
+
+
+    .battle-log-versus strong {
+        font-size:
+            1.1rem;
+    }
+
+
+    .battle-log-detail > div {
+        grid-template-columns:
+            1fr;
+
+        gap:
+            5px;
+    }
+}
