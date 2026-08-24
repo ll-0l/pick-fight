@@ -5575,6 +5575,36 @@ id="pfDeathChoiceButton"
     /* =========================================================
     FINAL COPY
     ========================================================= */
+    function getKoreanSubjectParticle(word) {
+        const text =
+            String(word || "").trim();
+
+        if (!text) {
+            return "가";
+        }
+
+        const lastChar =
+            text.slice(-1);
+
+        const lastCode =
+            lastChar.charCodeAt(0);
+
+        if (
+            lastCode >= 0xAC00
+            && lastCode <= 0xD7A3
+        ) {
+            const hasBatchim =
+                (lastCode - 0xAC00) % 28 !== 0;
+
+            return hasBatchim
+                ? "이"
+                : "가";
+        }
+
+        return "가";
+    }
+
+
     function buildRoundFinalText(
         state,
         round
@@ -5596,23 +5626,10 @@ id="pfDeathChoiceButton"
                 ? state.playerA
                 : state.playerB;
 
-        const lastChar =
-            winnerName.trim().slice(-1);
-
-        const lastCode =
-            lastChar
-                ? lastChar.charCodeAt(0)
-                : 0;
-
-        const hasBatchim =
-            lastCode >= 0xAC00
-            && lastCode <= 0xD7A3
-            && (lastCode - 0xAC00) % 28 !== 0;
-
         const subjectParticle =
-            hasBatchim
-                ? "이"
-                : "가";
+            getKoreanSubjectParticle(
+                winnerName
+            );
 
         return (
             `${winnerName}${subjectParticle} 한 끗 앞서 `
@@ -5870,7 +5887,7 @@ ${state.deathMatchPlayed
                 `기본전으로도 모자라 마지막 결판까지 붙여봤다!<br>
 결국 끝까지 살아남은 오늘의 선택은 ${escapeHTML(winnerName)}.`
                 :
-                `${escapeHTML(winnerName)}가 끝까지 더 강한 설득력을 보여줬다!`
+                `${escapeHTML(winnerName)}${getKoreanSubjectParticle(winnerName)} 끝까지 더 강한 설득력을 보여줬다!`
             }
 <br>
 남은 HP ${winnerHp},
@@ -8199,9 +8216,9 @@ white-space: normal;
             ? state.playerA
             : state.playerB;
         if (state.deathMatchPlayed) {
-            return `기본 라운드로도 모자라 SUDDEN DEATH까지 진행한 끝에 ${winnerName}가 마지막까지 더 강한 설득력을 보여줬다. 오늘의 PICK은 ${winnerName}!`;
+            return `기본 라운드로도 모자라 SUDDEN DEATH까지 진행한 끝에 ${winnerName}${getKoreanSubjectParticle(winnerName)} 마지막까지 더 강한 설득력을 보여줬다. 오늘의 PICK은 ${winnerName}!`;
         }
-        return `모든 라운드를 종합한 결과 ${winnerName}가 끝까지 더 강한 설득력을 보여줬다. 오늘의 PICK은 ${winnerName}!`;
+        return `모든 라운드를 종합한 결과 ${winnerName}${getKoreanSubjectParticle(winnerName)} 끝까지 더 강한 설득력을 보여줬다. 오늘의 PICK은 ${winnerName}!`;
     }
     function addBattleLog(state, decision) {
         if (!battleLogList) return;
