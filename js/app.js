@@ -5007,11 +5007,14 @@ ${escapeHTML(description)}
 <div
 class="pf-effect pf-ai-retry-effect"
 style="
+top:50% !important;
 width:min(420px,calc(100% - 40px));
 min-width:0;
+max-height:calc(100% - 16px);
 box-sizing:border-box;
-padding:24px 24px 22px;
+padding:18px 22px 17px;
 white-space:normal;
+overflow:hidden;
 "
 >
 <div
@@ -5030,7 +5033,7 @@ AI JUDGE<br>BUSY
 <span
 style="
 display:block;
-margin-top:14px;
+margin-top:10px;
 font-family:'Galmuri11',sans-serif;
 font-size:clamp(.96rem,2vw,1.08rem);
 font-weight:700;
@@ -5056,8 +5059,8 @@ display:block;
 width:fit-content;
 min-width:180px;
 max-width:100%;
-margin:18px auto 0;
-padding:13px 18px 12px;
+margin:12px auto 0;
+padding:11px 18px 10px;
 border:3px solid #fff1a9;
 background:#f5c9dc;
 color:#3c3150;
