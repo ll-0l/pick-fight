@@ -1,5 +1,6 @@
 import json
 import os
+import time
 from http.server import BaseHTTPRequestHandler
 from typing import Literal
 
@@ -13,6 +14,9 @@ from pydantic import BaseModel, Field
 # =========================================================
 
 MODEL_NAME = "gemini-3.6-flash"
+
+MAX_RATE_LIMIT_RETRIES = 2
+RATE_LIMIT_RETRY_DELAYS = (1.5, 3.0)
 
 
 # =========================================================
@@ -171,6 +175,79 @@ def decide_winner(
     return "DRAW"
 
 
+def is_rate_limit_error(error: Exception) -> bool:
+    status_code = getattr(
+        error,
+        "status_code",
+        None,
+    )
+
+    code = getattr(
+        error,
+        "code",
+        None,
+    )
+
+    message = str(error).upper()
+
+    return (
+        status_code == 429
+        or code == 429
+        or "429" in message
+        or "RESOURCE_EXHAUSTED" in message
+        or "TOO MANY REQUESTS" in message
+    )
+
+
+def generate_with_rate_limit_retry(
+    client: genai.Client,
+    prompt: str,
+):
+    attempt = 0
+
+    while True:
+        try:
+            return client.models.generate_content(
+                model=MODEL_NAME,
+
+                contents=prompt,
+
+                config=types.GenerateContentConfig(
+                    response_mime_type="application/json",
+                    response_schema=GeminiJudgeResult,
+                ),
+            )
+
+        except Exception as error:
+            if not is_rate_limit_error(error):
+                raise
+
+            if attempt >= MAX_RATE_LIMIT_RETRIES:
+                raise RuntimeError(
+                    "AI 심판이 지금 너무 바빠요. "
+                    "잠시 후 다시 판정해주세요."
+                ) from error
+
+            delay = RATE_LIMIT_RETRY_DELAYS[
+                min(
+                    attempt,
+                    len(RATE_LIMIT_RETRY_DELAYS) - 1,
+                )
+            ]
+
+            print(
+                "[PICK FIGHT RATE LIMIT]",
+                f"Gemini 429 detected. retry={attempt + 1}/{MAX_RATE_LIMIT_RETRIES}",
+                f"wait={delay}s",
+            )
+
+            time.sleep(
+                delay
+            )
+
+            attempt += 1
+
+
 def judge_battle(
     player_a: str,
     player_b: str,
@@ -191,21 +268,13 @@ def judge_battle(
         api_key=api_key
     )
 
-    response = client.models.generate_content(
-        model=MODEL_NAME,
-
-        contents=build_prompt(
+    response = generate_with_rate_limit_retry(
+        client=client,
+        prompt=build_prompt(
             player_a=player_a,
             player_b=player_b,
             situation=situation,
             criterion=criterion,
-        ),
-
-        config=types.GenerateContentConfig(
-
-            response_mime_type="application/json",
-
-            response_schema=GeminiJudgeResult,
         ),
     )
 
@@ -428,6 +497,35 @@ class handler(BaseHTTPRequestHandler):
                 {
                     "ok": True,
                     **result.model_dump(),
+                },
+            )
+
+        except RuntimeError as error:
+            print(
+                "[PICK FIGHT API ERROR]",
+                repr(error),
+            )
+
+            message = str(error)
+
+            if (
+                "AI 심판이 지금 너무 바빠요"
+                in message
+            ):
+                self.send_json(
+                    429,
+                    {
+                        "ok": False,
+                        "error": message,
+                    },
+                )
+                return
+
+            self.send_json(
+                500,
+                {
+                    "ok": False,
+                    "error": "AI 판정 중 오류가 발생했습니다.",
                 },
             )
 
