@@ -5595,8 +5595,27 @@ id="pfDeathChoiceButton"
             round.winner === "A"
                 ? state.playerA
                 : state.playerB;
+
+        const lastChar =
+            winnerName.trim().slice(-1);
+
+        const lastCode =
+            lastChar
+                ? lastChar.charCodeAt(0)
+                : 0;
+
+        const hasBatchim =
+            lastCode >= 0xAC00
+            && lastCode <= 0xD7A3
+            && (lastCode - 0xAC00) % 28 !== 0;
+
+        const subjectParticle =
+            hasBatchim
+                ? "이"
+                : "가";
+
         return (
-            `${winnerName}가 한 끗 앞서 `
+            `${winnerName}${subjectParticle} 한 끗 앞서 `
             +
             `이 판의 분위기를 가져갔다. `
             +
