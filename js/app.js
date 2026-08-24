@@ -5107,10 +5107,8 @@ cursor:pointer;
             }
         );
     }
-
-
     /* =========================================================
-      ATTACK
+    ATTACK
     ========================================================= */
     async function playAttack(
         state,
@@ -9821,23 +9819,15 @@ ${filtered.map((log, index) => `
         max-width: 100% !important;
         min-width: 0 !important;
         grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
-        gap: 10px !important;
-        padding: 0 4px 6px !important;
+        gap: 14px !important;
+        padding: 0 2px 6px !important;
         box-sizing: border-box !important;
     }
 
     .pf-hud-card {
         min-width: 0 !important;
-        padding: 6px !important;
+        padding: 5px !important;
         box-shadow: none !important;
-    }
-
-    .pf-hud-card:first-child {
-        border-right-width: 3px !important;
-    }
-
-    .pf-hud-card:last-child {
-        border-left-width: 3px !important;
     }
 
     .pf-hud-top {
@@ -9848,8 +9838,8 @@ ${filtered.map((log, index) => `
 
     .pf-hud-top strong {
         min-width: 0 !important;
-        max-width: 58% !important;
-        font-size: .88rem !important;
+        max-width: 52% !important;
+        font-size: .82rem !important;
         line-height: 1.2 !important;
         overflow: hidden !important;
         text-overflow: ellipsis !important;
@@ -9858,28 +9848,9 @@ ${filtered.map((log, index) => `
 
     .pf-hp-label {
         flex-shrink: 0 !important;
-        font-size: .48rem !important;
+        font-size: .43rem !important;
         line-height: 1.35 !important;
         white-space: nowrap !important;
-    }
-
-    .pf-hp-bar {
-        width: 100% !important;
-        max-width: 100% !important;
-        min-width: 0 !important;
-        height: 16px !important;
-        padding: 2px !important;
-        border-width: 2px !important;
-        box-sizing: border-box !important;
-        overflow: hidden !important;
-    }
-
-    .pf-hp-fill {
-        width: 100%;
-        max-width: 100% !important;
-        min-width: 0 !important;
-        height: 100% !important;
-        box-sizing: border-box !important;
     }
 
     /* FIGHTERS */
@@ -10164,20 +10135,21 @@ ${filtered.map((log, index) => `
     }
 
     .pf-hud {
-        gap: 5px !important;
-        padding-inline: 1px !important;
+        gap: 10px !important;
+        padding-inline: 0 !important;
     }
 
     .pf-hud-card {
-        padding: 5px !important;
+        padding: 4px !important;
     }
 
     .pf-hud-top strong {
-        font-size: .82rem !important;
+        max-width: 50% !important;
+        font-size: .76rem !important;
     }
 
     .pf-hp-label {
-        font-size: .43rem !important;
+        font-size: .39rem !important;
     }
 
     .pf-character-shell,
