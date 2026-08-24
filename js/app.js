@@ -5107,11 +5107,9 @@ cursor:pointer;
             }
         );
     }
-
-
     /* =========================================================
-    ATTACK
-    ========================================================= */
+      ATTACK
+      ========================================================= */
     async function playAttack(
         state,
         result
@@ -9672,6 +9670,514 @@ ${filtered.map((log, index) => `
         document.head.appendChild(style);
     }
 
+
+    /* =========================================================
+    FINAL MOBILE RESPONSIVE FIX
+    Responsive-only overrides.
+    Desktop design / character sprites / fonts / colors / game logic unchanged.
+    ========================================================= */
+    function installFinalMobileResponsiveFixStyles() {
+        document.getElementById("pickFightFinalMobileResponsiveFixStyles")?.remove();
+
+        const style = document.createElement("style");
+        style.id = "pickFightFinalMobileResponsiveFixStyles";
+        style.textContent = `
+@media (max-width: 760px) {
+
+    /* SCENE / STAGE
+       Keep the original pixel frame and palette, only prevent horizontal clipping. */
+    .pf-scene {
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        overflow: hidden !important;
+    }
+
+    .pf-stage {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        min-height: 0 !important;
+        padding: 8px 8px 18px !important;
+        box-sizing: border-box !important;
+        overflow: hidden !important;
+    }
+
+    .pf-scene-topbar {
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        gap: 6px !important;
+        flex-wrap: wrap !important;
+    }
+
+    .pf-scene-status,
+    .pf-entry-skip {
+        max-width: 100% !important;
+    }
+
+    /* ENTRY */
+    .pf-entry-screen,
+    .pf-entry-screen.side-b {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        grid-template-columns: minmax(0, 1fr) !important;
+        gap: 20px !important;
+        padding: 22px 4px !important;
+        box-sizing: border-box !important;
+    }
+
+    .pf-entry-card,
+    .pf-entry-visual {
+        min-width: 0 !important;
+        max-width: 100% !important;
+    }
+
+    .pf-entry-card {
+        padding: 18px !important;
+    }
+
+    .pf-entry-card h3 {
+        overflow-wrap: anywhere !important;
+    }
+
+    .pf-entry-grid {
+        grid-template-columns: minmax(0, 1fr) !important;
+    }
+
+    /* VS */
+    .pf-vs-screen {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) !important;
+        gap: 6px !important;
+        padding-inline: 2px !important;
+        box-sizing: border-box !important;
+    }
+
+    .pf-vs-character {
+        width: min(100px, 26vw) !important;
+        height: min(100px, 26vw) !important;
+        max-width: 100% !important;
+    }
+
+    .pf-vs-character .pf-character-sprite {
+        width: min(68px, 18vw) !important;
+        height: min(68px, 18vw) !important;
+    }
+
+    .pf-vs-name {
+        font-size: .98rem !important;
+        overflow-wrap: anywhere !important;
+    }
+
+    .pf-vs-mark {
+        font-size: 1.18rem !important;
+    }
+
+    /* BATTLE ARENA */
+    .pf-arena {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        padding: 8px !important;
+        box-sizing: border-box !important;
+        overflow: hidden !important;
+    }
+
+    .pf-round-header {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        padding: 12px 8px 13px !important;
+        box-sizing: border-box !important;
+    }
+
+    .pf-rule-focus {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        padding-inline: 8px !important;
+        box-sizing: border-box !important;
+    }
+
+    .pf-rule-focus strong {
+        font-size: clamp(1.65rem, 8vw, 2.2rem) !important;
+        overflow-wrap: anywhere !important;
+    }
+
+    .pf-round-chip {
+        max-width: calc(100% - 12px) !important;
+        white-space: normal !important;
+    }
+
+    /* HP HUD stays A/B side-by-side, but shrinks to the viewport. */
+    .pf-hud {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+        gap: 8px !important;
+        padding: 0 4px 6px !important;
+        box-sizing: border-box !important;
+    }
+
+    .pf-hud-card {
+        min-width: 0 !important;
+        padding: 6px !important;
+        box-shadow: 3px 3px 0 #30283d !important;
+    }
+
+    .pf-hud-top {
+        min-width: 0 !important;
+        gap: 4px !important;
+        margin-bottom: 5px !important;
+    }
+
+    .pf-hud-top strong {
+        min-width: 0 !important;
+        max-width: 58% !important;
+        font-size: .88rem !important;
+        line-height: 1.2 !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        white-space: nowrap !important;
+    }
+
+    .pf-hp-label {
+        flex-shrink: 0 !important;
+        font-size: .48rem !important;
+        line-height: 1.35 !important;
+        white-space: nowrap !important;
+    }
+
+    .pf-hp-bar {
+        width: 100% !important;
+        max-width: 100% !important;
+        height: 16px !important;
+        box-sizing: border-box !important;
+    }
+
+    /* FIGHTERS */
+    .pf-fighters {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+        min-height: 158px !important;
+        padding: 8px 4px 14px !important;
+        box-sizing: border-box !important;
+        overflow: hidden !important;
+    }
+
+    .pf-fighter {
+        min-width: 0 !important;
+        min-height: 136px !important;
+    }
+
+    .pf-character-shell,
+    .pf-character-sprite {
+        width: 82px !important;
+        height: 82px !important;
+        max-width: 24vw !important;
+        max-height: 24vw !important;
+    }
+
+    .pf-character-shadow {
+        width: min(96px, 27vw) !important;
+    }
+
+    .pf-win-tag {
+        min-width: 0 !important;
+        max-width: 92% !important;
+        padding: 6px 8px !important;
+        font-size: .42rem !important;
+        white-space: normal !important;
+    }
+
+    /* EFFECT / AI LOADING / AI BUSY
+       Same visual design, constrained to the mobile arena width. */
+    .pf-effect,
+    .pf-ai-retry-effect {
+        width: calc(100% - 20px) !important;
+        max-width: 460px !important;
+        min-width: 0 !important;
+        left: 50% !important;
+        box-sizing: border-box !important;
+        padding-left: 12px !important;
+        padding-right: 12px !important;
+        overflow: visible !important;
+    }
+
+    .pf-effect {
+        font-size: clamp(.72rem, 3.5vw, 1rem) !important;
+        overflow-wrap: anywhere !important;
+        word-break: keep-all !important;
+    }
+
+    .pf-effect span {
+        max-width: 100% !important;
+        font-size: .94rem !important;
+        overflow-wrap: anywhere !important;
+    }
+
+    .pf-ai-retry-effect > div {
+        max-width: 100% !important;
+        font-size: clamp(.76rem, 3.6vw, 1rem) !important;
+        white-space: nowrap !important;
+    }
+
+    #pfAIRetryButton {
+        min-width: 0 !important;
+        width: min(190px, 100%) !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    /* ROUND SUMMARY / SCORE */
+    .pf-round-summary {
+        width: calc(100% - 8px) !important;
+        max-width: calc(100% - 8px) !important;
+        margin: 0 auto !important;
+        padding: 9px 8px !important;
+        box-sizing: border-box !important;
+        font-size: .92rem !important;
+    }
+
+    .pf-score-row,
+    .pf-score-panel {
+        width: calc(100% - 8px) !important;
+        max-width: calc(100% - 8px) !important;
+        min-width: 0 !important;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+        gap: 48px !important;
+        margin: 7px auto 0 !important;
+        padding: 10px 0 14px !important;
+        box-sizing: border-box !important;
+    }
+
+    .pf-score-side {
+        min-width: 0 !important;
+    }
+
+    .pf-score-side span {
+        font-size: .82rem !important;
+        overflow-wrap: anywhere !important;
+    }
+
+    .pf-score-side strong {
+        font-size: clamp(1.18rem, 6vw, 1.55rem) !important;
+    }
+
+    .pf-score-mid {
+        min-width: 64px !important;
+        max-width: 72px !important;
+        padding-inline: 6px !important;
+        font-size: .36rem !important;
+        white-space: normal !important;
+    }
+
+    /* JUDGE RESULT */
+    .pf-judge-panel {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        padding: 10px 4px !important;
+        box-sizing: border-box !important;
+    }
+
+    .pf-judge-grid {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        grid-template-columns: minmax(0, 1fr) !important;
+        gap: 9px !important;
+    }
+
+    .pf-judge-card,
+    .pf-judge-card.winner,
+    .pf-judge-card.loser,
+    .pf-judge-card.draw {
+        width: 100% !important;
+        min-width: 0 !important;
+        min-height: 0 !important;
+        padding: 13px !important;
+        box-sizing: border-box !important;
+    }
+
+    .pf-judge-head {
+        min-width: 0 !important;
+        gap: 6px !important;
+        flex-wrap: wrap !important;
+    }
+
+    .pf-judge-head strong,
+    .pf-judge-flavor,
+    .pf-judge-card p {
+        overflow-wrap: anywhere !important;
+    }
+
+    .pf-judge-badge {
+        max-width: 100% !important;
+    }
+
+    /* ACTIONS */
+    .pf-action-row {
+        width: 100% !important;
+        max-width: 100% !important;
+        gap: 10px !important;
+    }
+
+    .pf-action-btn,
+    .pf-action-row-single .pf-action-btn,
+    .pf-death-go-button {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        box-sizing: border-box !important;
+    }
+
+    .pf-round-choice-box,
+    .pf-round-choice-box.pf-round-choice-draw {
+        width: calc(100% - 8px) !important;
+        max-width: calc(100% - 8px) !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        box-sizing: border-box !important;
+    }
+
+    /* FINAL RESULT: keep the two fighters facing each other on mobile. */
+    .pf-final-wrap,
+    .pf-final-stage,
+    .pf-final-summary {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        box-sizing: border-box !important;
+    }
+
+    .pf-final-grid {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+        gap: 4px !important;
+        min-height: 200px !important;
+    }
+
+    .pf-final-fighter {
+        min-width: 0 !important;
+        min-height: 180px !important;
+        padding-top: 54px !important;
+    }
+
+    .pf-final-character,
+    .pf-final-character .pf-character-sprite {
+        width: 96px !important;
+        height: 96px !important;
+        max-width: 27vw !important;
+        max-height: 27vw !important;
+    }
+
+    .pf-final-shadow {
+        width: min(110px, 30vw) !important;
+    }
+
+    .pf-halo {
+        width: 140px !important;
+        height: 140px !important;
+        max-width: 38vw !important;
+        max-height: 38vw !important;
+    }
+
+    .pf-final-side-tag {
+        max-width: 92% !important;
+        white-space: normal !important;
+        text-align: center !important;
+    }
+
+    .pf-final-side-tag.winner {
+        transform: translateX(-115%) !important;
+    }
+
+    .pf-final-summary {
+        padding: 13px !important;
+    }
+
+    .pf-final-judgement,
+    .pf-final-pick,
+    .pf-final-round-item {
+        min-width: 0 !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    /* BATTLE LOG */
+    .pf-log-carousel,
+    .battle-log-carousel {
+        max-width: 100% !important;
+        min-width: 0 !important;
+    }
+
+    .pf-log-card,
+    .battle-log-list .log-card,
+    .battle-log-list .battle-log-card,
+    .battle-log-list .empty-log {
+        min-width: 0 !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        overflow-wrap: anywhere !important;
+    }
+}
+
+@media (max-width: 420px) {
+    .pf-stage {
+        padding-inline: 5px !important;
+    }
+
+    .pf-arena {
+        padding: 6px !important;
+    }
+
+    .pf-hud {
+        gap: 5px !important;
+        padding-inline: 1px !important;
+    }
+
+    .pf-hud-card {
+        padding: 5px !important;
+    }
+
+    .pf-hud-top strong {
+        font-size: .82rem !important;
+    }
+
+    .pf-hp-label {
+        font-size: .43rem !important;
+    }
+
+    .pf-character-shell,
+    .pf-character-sprite {
+        width: 76px !important;
+        height: 76px !important;
+    }
+
+    .pf-score-row,
+    .pf-score-panel {
+        gap: 42px !important;
+    }
+
+    .pf-effect,
+    .pf-ai-retry-effect {
+        width: calc(100% - 14px) !important;
+    }
+}
+`;
+        document.head.appendChild(style);
+    }
+
     /* =========================================================
     INIT
     ========================================================= */
@@ -9681,6 +10187,7 @@ ${filtered.map((log, index) => `
     installV5FinalDesignStyles();
     installV8FinalDesignStyles();
     installV9FinalMicroPolishStyles();
+    installFinalMobileResponsiveFixStyles();
     renderCharacterSelectors();
     bindEvents();
     renderPlayerStatus(
