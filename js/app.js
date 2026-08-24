@@ -5107,9 +5107,11 @@ cursor:pointer;
             }
         );
     }
+
+
     /* =========================================================
       ATTACK
-      ========================================================= */
+    ========================================================= */
     async function playAttack(
         state,
         result
@@ -9819,7 +9821,7 @@ ${filtered.map((log, index) => `
         max-width: 100% !important;
         min-width: 0 !important;
         grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
-        gap: 8px !important;
+        gap: 10px !important;
         padding: 0 4px 6px !important;
         box-sizing: border-box !important;
     }
@@ -9827,7 +9829,15 @@ ${filtered.map((log, index) => `
     .pf-hud-card {
         min-width: 0 !important;
         padding: 6px !important;
-        box-shadow: 3px 3px 0 #30283d !important;
+        box-shadow: none !important;
+    }
+
+    .pf-hud-card:first-child {
+        border-right-width: 3px !important;
+    }
+
+    .pf-hud-card:last-child {
+        border-left-width: 3px !important;
     }
 
     .pf-hud-top {
@@ -9856,7 +9866,19 @@ ${filtered.map((log, index) => `
     .pf-hp-bar {
         width: 100% !important;
         max-width: 100% !important;
+        min-width: 0 !important;
         height: 16px !important;
+        padding: 2px !important;
+        border-width: 2px !important;
+        box-sizing: border-box !important;
+        overflow: hidden !important;
+    }
+
+    .pf-hp-fill {
+        width: 100%;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        height: 100% !important;
         box-sizing: border-box !important;
     }
 
