@@ -1,12 +1,12 @@
-/* PICK FIGHT FINAL v10 - restore battle attack motion/effects only */
+/* PICK FIGHT FINAL v11 - real Gemini API judge integration */
 document.addEventListener("DOMContentLoaded", () => {
     /* PICK FIGHT UI FIX v5 - final battle UI + game-style battle log card */
     /* =========================================================
     PICK FIGHT
-    COMPLETE MOCK BATTLE FLOW
+    REAL AI BATTLE FLOW
     IMPORTANT
-    - 현재 AI 판정은 MOCK 데이터
-    - 실제 AI API 연결 전 UI / UX 완성 단계
+    - 라운드 판정은 /api/battle Gemini API 사용
+    - 기존 UI / UX / HP / 공격 애니메이션 로직 유지
     ========================================================= */
     /* =========================================================
     DOM
@@ -4126,93 +4126,182 @@ ${deathMatchRule ? "" : "disabled"}
                 `'${rule}' 기준에서 아주 작은 차이가 승부를 갈랐다.`
         };
     }
-    function createMockRoundResult(
+    async function createAIRoundResult(
         state,
         rule,
-        roundLabel,
-        seedKey
+        roundLabel
     ) {
-        const seedA =
-            hashString(
-                `${state.playerA}|${rule}|${state.situation}|${roundLabel}|${seedKey}|A`
+        const controller =
+            new AbortController();
+
+        const timeoutId =
+            setTimeout(
+                () => {
+                    controller.abort();
+                },
+                25000
             );
-        const seedB =
-            hashString(
-                `${state.playerB}|${rule}|${state.situation}|${roundLabel}|${seedKey}|B`
-            );
-        let scoreA =
-            58 + (seedA % 38);
-        let scoreB =
-            58 + (seedB % 38);
-        /*
-        드물게 실제 DRAW 허용
-        */
-        if (scoreA === scoreB) {
-            if (
-                (seedA + seedB) % 5 !== 0
-            ) {
-                if (seedA % 2 === 0) {
-                    scoreA += 2;
-                } else {
-                    scoreB += 2;
-                }
+
+        try {
+            const response =
+                await fetch(
+                    "/api/battle",
+                    {
+                        method:
+                            "POST",
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+                        body:
+                            JSON.stringify({
+                                playerA:
+                                    state.playerA,
+                                playerB:
+                                    state.playerB,
+                                situation:
+                                    state.situation,
+                                criterion:
+                                    rule
+                            }),
+                        signal:
+                            controller.signal
+                    }
+                );
+
+            let data = null;
+
+            try {
+                data =
+                    await response.json();
+            } catch {
+                throw new Error(
+                    "AI 서버 응답을 읽을 수 없어요."
+                );
             }
-        }
-        const winner =
-            scoreA > scoreB
-                ? "A"
-                :
-                scoreB > scoreA
-                    ? "B"
-                    : "DRAW";
-        const gap =
-            Math.abs(
-                scoreA - scoreB
+
+            if (!response.ok) {
+                throw new Error(
+                    data?.error
+                    ||
+                    `AI 판정 요청 실패 (${response.status})`
+                );
+            }
+
+            const scoreA =
+                Number(data.scoreA);
+
+            const scoreB =
+                Number(data.scoreB);
+
+            if (
+                !Number.isFinite(scoreA)
+                ||
+                !Number.isFinite(scoreB)
+                ||
+                scoreA < 0
+                ||
+                scoreA > 100
+                ||
+                scoreB < 0
+                ||
+                scoreB > 100
+            ) {
+                throw new Error(
+                    "AI 점수 형식이 올바르지 않아요."
+                );
+            }
+
+            const normalizedScoreA =
+                Math.round(scoreA);
+
+            const normalizedScoreB =
+                Math.round(scoreB);
+
+            const winner =
+                normalizedScoreA > normalizedScoreB
+                    ? "A"
+                    :
+                    normalizedScoreB > normalizedScoreA
+                        ? "B"
+                        : "DRAW";
+
+            const gap =
+                Math.abs(
+                    normalizedScoreA
+                    -
+                    normalizedScoreB
+                );
+
+            return {
+                roundLabel,
+                rule,
+                scoreA:
+                    normalizedScoreA,
+                scoreB:
+                    normalizedScoreB,
+                winner,
+                gap,
+                damageInfo:
+                    getDamageInfo(gap),
+                summary:
+                    normalizeText(data.summary)
+                    ||
+                    `✨ ${rule} 배틀, AI 심판 판정 완료!`,
+                headlineA:
+                    normalizeText(data.headlineA)
+                    ||
+                    (
+                        winner === "A"
+                            ? "✨ 이번 판의 승자!"
+                            :
+                            winner === "B"
+                                ? "💥 이번 판은 아쉽다!"
+                                : "✨ 막상막하!"
+                    ),
+                headlineB:
+                    normalizeText(data.headlineB)
+                    ||
+                    (
+                        winner === "B"
+                            ? "✨ 이번 판의 승자!"
+                            :
+                            winner === "A"
+                                ? "💥 이번 판은 아쉽다!"
+                                : "✨ 막상막하!"
+                    ),
+                reasonA:
+                    normalizeText(data.reasonA)
+                    ||
+                    "AI 심판이 PLAYER A를 이번 기준으로 평가했습니다.",
+                reasonB:
+                    normalizeText(data.reasonB)
+                    ||
+                    "AI 심판이 PLAYER B를 이번 기준으로 평가했습니다.",
+                finalLine:
+                    normalizeText(data.finalLine)
+                    ||
+                    `${rule} 기준의 AI 판정이 완료되었습니다.`
+            };
+
+        } catch (error) {
+            if (
+                error?.name
+                ===
+                "AbortError"
+            ) {
+                throw new Error(
+                    "AI 판정 시간이 너무 오래 걸렸어요. 잠시 후 다시 시도해주세요."
+                );
+            }
+
+            throw error;
+
+        } finally {
+            clearTimeout(
+                timeoutId
             );
-        const copy =
-            getJudgeCopy(rule);
-        return {
-            roundLabel,
-            rule,
-            scoreA,
-            scoreB,
-            winner,
-            gap,
-            damageInfo:
-                getDamageInfo(gap),
-            summary:
-                copy.summary,
-            headlineA:
-                winner === "A"
-                    ? copy.winTitle
-                    :
-                    winner === "B"
-                        ? copy.loseTitle
-                        : copy.drawTitle,
-            headlineB:
-                winner === "B"
-                    ? copy.winTitle
-                    :
-                    winner === "A"
-                        ? copy.loseTitle
-                        : copy.drawTitle,
-            reasonA:
-                winner === "A"
-                    ? copy.winReason
-                    :
-                    winner === "B"
-                        ? copy.loseReason
-                        : copy.drawReason,
-            reasonB:
-                winner === "B"
-                    ? copy.winReason
-                    :
-                    winner === "A"
-                        ? copy.loseReason
-                        : copy.drawReason,
-            finalLine:
-                copy.finalLine
-        };
+        }
     }
     /* =========================================================
     SPRITE HELPERS
@@ -5227,7 +5316,7 @@ ${escapeHTML(
         state,
         rule,
         label,
-        seedKey
+        _seedKey
     ) {
         renderRoundArena(
             state,
@@ -5241,13 +5330,37 @@ ${escapeHTML(
         );
         await sleep(900);
         clearEffect();
-        const result =
-            createMockRoundResult(
-                state,
-                rule,
-                label,
-                seedKey
+        let result;
+
+        try {
+            result =
+                await createAIRoundResult(
+                    state,
+                    rule,
+                    label
+                );
+        } catch (error) {
+            clearEffect();
+
+            showEffect(
+                "AI ERROR",
+                error?.message
+                ||
+                "AI 판정 중 오류가 발생했습니다."
             );
+
+            showMessage(
+                error?.message
+                ||
+                "AI 판정 중 오류가 발생했습니다.",
+                "error"
+            );
+
+            battleRunning =
+                false;
+
+            throw error;
+        }
         await playAttack(
             state,
             result
