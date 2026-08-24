@@ -8580,20 +8580,27 @@ disabled
                 const roundCode = round.roundLabel === "SUDDEN DEATH"
                     ? "SD"
                     : String(index + 1).padStart(2, "0");
-                const normalizedWinner =
+                const rawWinner =
                     String(round.winner || "")
-                        .trim()
-                        .toUpperCase();
+                        .trim();
+
+                const normalizedWinner =
+                    rawWinner.toUpperCase();
+
+                const isDraw =
+                    normalizedWinner === "DRAW"
+                    ||
+                    rawWinner === "무승부";
 
                 const winnerName =
                     normalizedWinner === "A"
                         ? log.playerA
                         : normalizedWinner === "B"
                             ? log.playerB
-                            : "DRAW";
+                            : rawWinner;
 
                 const resultLabel =
-                    normalizedWinner === "DRAW"
+                    isDraw
                         ? "DRAW"
                         : `${winnerName} WIN`;
                 return `
