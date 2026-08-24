@@ -5008,36 +5008,35 @@ ${escapeHTML(description)}
 class="pf-effect pf-ai-retry-effect"
 style="
 top:50% !important;
-width:min(420px,calc(100% - 40px));
+width:min(460px,calc(100% - 32px));
 min-width:0;
-max-height:calc(100% - 16px);
 box-sizing:border-box;
-padding:18px 22px 17px;
+padding:13px 20px 14px;
 white-space:normal;
-overflow:hidden;
 "
 >
 <div
 style="
 font-family:'Press Start 2P',cursive;
-font-size:clamp(1rem,2.4vw,1.35rem);
-line-height:1.55;
-letter-spacing:.03em;
+font-size:clamp(.9rem,2vw,1.12rem);
+line-height:1.35;
+letter-spacing:.02em;
 color:#fff1a9;
 text-align:center;
+white-space:nowrap;
 "
 >
-AI JUDGE<br>BUSY
+AI JUDGE BUSY
 </div>
 
 <span
 style="
 display:block;
-margin-top:10px;
+margin-top:8px;
 font-family:'Galmuri11',sans-serif;
-font-size:clamp(.96rem,2vw,1.08rem);
+font-size:clamp(.92rem,1.8vw,1.02rem);
 font-weight:700;
-line-height:1.65;
+line-height:1.45;
 color:#fff9f0;
 text-align:center;
 word-break:keep-all;
@@ -5057,18 +5056,18 @@ id="pfAIRetryButton"
 style="
 display:block;
 width:fit-content;
-min-width:180px;
+min-width:176px;
 max-width:100%;
-margin:12px auto 0;
-padding:11px 18px 10px;
+margin:10px auto 0;
+padding:9px 16px 8px;
 border:3px solid #fff1a9;
 background:#f5c9dc;
 color:#3c3150;
 box-shadow:4px 4px 0 #171321;
 font-family:'Galmuri11',sans-serif;
-font-size:1rem;
+font-size:.98rem;
 font-weight:800;
-line-height:1.25;
+line-height:1.2;
 letter-spacing:0;
 white-space:nowrap;
 cursor:pointer;
