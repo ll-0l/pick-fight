@@ -5107,8 +5107,10 @@ cursor:pointer;
             }
         );
     }
+
+
     /* =========================================================
-    ATTACK
+        ATTACK
     ========================================================= */
     async function playAttack(
         state,
@@ -9815,31 +9817,44 @@ ${filtered.map((log, index) => `
 
     /* HP HUD stays A/B side-by-side, but shrinks to the viewport. */
     .pf-hud {
-        width: 100% !important;
-        max-width: 100% !important;
+        width: calc(100% - 24px) !important;
+        max-width: calc(100% - 24px) !important;
         min-width: 0 !important;
+        margin: 0 auto 6px !important;
+        padding: 0 !important;
         grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
-        gap: 14px !important;
-        padding: 0 2px 6px !important;
+        gap: 12px !important;
         box-sizing: border-box !important;
+        overflow: visible !important;
     }
 
     .pf-hud-card {
+        width: 100% !important;
+        max-width: 100% !important;
         min-width: 0 !important;
-        padding: 5px !important;
+        padding: 4px !important;
+        box-sizing: border-box !important;
         box-shadow: none !important;
+        overflow: visible !important;
     }
 
-    .pf-hud-top {
+    .pf-hud-top,
+    .pf-hud-card.right .pf-hud-top {
+        width: 100% !important;
         min-width: 0 !important;
-        gap: 4px !important;
+        display: grid !important;
+        grid-template-columns: minmax(0, 1fr) auto !important;
+        align-items: center !important;
+        gap: 5px !important;
         margin-bottom: 5px !important;
+        box-sizing: border-box !important;
+        text-align: left !important;
     }
 
     .pf-hud-top strong {
         min-width: 0 !important;
-        max-width: 52% !important;
-        font-size: .82rem !important;
+        max-width: none !important;
+        font-size: .78rem !important;
         line-height: 1.2 !important;
         overflow: hidden !important;
         text-overflow: ellipsis !important;
@@ -9847,10 +9862,22 @@ ${filtered.map((log, index) => `
     }
 
     .pf-hp-label {
-        flex-shrink: 0 !important;
-        font-size: .43rem !important;
+        min-width: max-content !important;
+        justify-self: end !important;
+        font-size: .39rem !important;
         line-height: 1.35 !important;
         white-space: nowrap !important;
+    }
+
+    .pf-hp-bar {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        box-sizing: border-box !important;
+    }
+
+    .pf-hp-fill {
+        max-width: 100% !important;
     }
 
     /* FIGHTERS */
@@ -10135,21 +10162,22 @@ ${filtered.map((log, index) => `
     }
 
     .pf-hud {
+        width: calc(100% - 18px) !important;
+        max-width: calc(100% - 18px) !important;
         gap: 10px !important;
-        padding-inline: 0 !important;
     }
 
     .pf-hud-card {
-        padding: 4px !important;
+        padding: 3px !important;
     }
 
     .pf-hud-top strong {
-        max-width: 50% !important;
-        font-size: .76rem !important;
+        max-width: none !important;
+        font-size: .72rem !important;
     }
 
     .pf-hp-label {
-        font-size: .39rem !important;
+        font-size: .36rem !important;
     }
 
     .pf-character-shell,
