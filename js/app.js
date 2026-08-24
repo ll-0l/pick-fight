@@ -8410,14 +8410,22 @@ disabled
                 const roundCode = round.roundLabel === "SUDDEN DEATH"
                     ? "SD"
                     : String(index + 1).padStart(2, "0");
-                const winnerName = round.winner === "A"
-                    ? log.playerA
-                    : round.winner === "B"
-                        ? log.playerB
-                        : "DRAW";
-                const resultLabel = round.winner === "DRAW"
-                    ? "DRAW"
-                    : `${winnerName} WIN`;
+                const normalizedWinner =
+                    String(round.winner || "")
+                        .trim()
+                        .toUpperCase();
+
+                const winnerName =
+                    normalizedWinner === "A"
+                        ? log.playerA
+                        : normalizedWinner === "B"
+                            ? log.playerB
+                            : "DRAW";
+
+                const resultLabel =
+                    normalizedWinner === "DRAW"
+                        ? "DRAW"
+                        : `${winnerName} WIN`;
                 return `
 <div class="pf-log-judgement-round">
 <div class="pf-log-round-top">
