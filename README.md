@@ -512,6 +512,34 @@ BATTLE LOG
 
 ---
 
+## Screenshots
+
+### HOME
+
+![PICK FIGHT HOME](./images/01_home.png)
+
+### PLAYER & CHARACTER SELECT
+
+![PLAYER AND CHARACTER SELECT](./images/02_player_character_select.png)
+
+### RULE SETUP
+
+![RULE SETUP](./images/03_add_rules.png)
+
+### ENTRY
+
+![ENTRY](./images/04_entry.png)
+
+### AI JUDGE
+
+![AI JUDGING](./images/06_ai_judging.png)
+
+### DEPLOYMENT
+
+![VERCEL PRODUCTION READY](./images/13_vercel_production_ready.png)
+
+---
+
 ## 25. 프로젝트 특징
 
 PICK FIGHT는 단순한 AI 추천 서비스가 아니라 AI 의사결정 과정을 게임 UI와 결합했다는 점을 핵심으로 합니다.
