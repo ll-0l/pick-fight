@@ -5324,12 +5324,16 @@ ${escapeHTML(
             rule
         );
         await sleep(250);
+
+        /*
+        AI 응답이 실제로 도착할 때까지
+        가운데 판정중 창을 유지한다.
+        */
         showEffect(
-            "ANALYZING...",
-            "AI 심판이 이번 RULE을 분석하는 중!"
+            "AI JUDGE...",
+            "판정 중입니다! 잠시만 기다려주세요."
         );
-        await sleep(900);
-        clearEffect();
+
         let result;
 
         try {
@@ -5339,6 +5343,13 @@ ${escapeHTML(
                     rule,
                     label
                 );
+
+            /*
+            응답을 받은 뒤에만 로딩창을 닫고
+            공격 모션으로 넘어간다.
+            */
+            clearEffect();
+
         } catch (error) {
             clearEffect();
 
