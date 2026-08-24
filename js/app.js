@@ -4181,11 +4181,17 @@ ${deathMatchRule ? "" : "disabled"}
             }
 
             if (!response.ok) {
-                throw new Error(
-                    data?.error
-                    ||
-                    `AI 판정 요청 실패 (${response.status})`
-                );
+                const requestError =
+                    new Error(
+                        data?.error
+                        ||
+                        `AI 판정 요청 실패 (${response.status})`
+                    );
+
+                requestError.status =
+                    response.status;
+
+                throw requestError;
             }
 
             const scoreA =
@@ -4960,6 +4966,105 @@ ${escapeHTML(description)}
             area.innerHTML = "";
         }
     }
+    function isAIBusyError(error) {
+        const status =
+            Number(error?.status || 0);
+
+        const message =
+            String(
+                error?.message || ""
+            );
+
+        return (
+            status === 429
+            ||
+            message.includes(
+                "AI 심판이 지금 너무 바빠요"
+            )
+            ||
+            message.includes(
+                "429"
+            )
+        );
+    }
+
+    function waitForAIRetry(
+        message
+    ) {
+        return new Promise(
+            (resolve) => {
+                const area =
+                    document.getElementById(
+                        "pfEffectArea"
+                    );
+
+                if (!area) {
+                    resolve();
+                    return;
+                }
+
+                area.innerHTML = `
+<div class="pf-effect pf-ai-retry-effect">
+AI JUDGE BUSY
+<span>
+${escapeHTML(
+                    message
+                    ||
+                    "AI 심판이 잠깐 바빠요! 잠시 후 다시 판정해주세요."
+                )}
+</span>
+<button
+type="button"
+id="pfAIRetryButton"
+style="
+margin-top:16px;
+padding:12px 18px;
+border:3px solid #fff1a9;
+background:#f5c9dc;
+color:#3c3150;
+box-shadow:4px 4px 0 #171321;
+font-family:'Press Start 2P',cursive;
+font-size:.68rem;
+line-height:1.5;
+cursor:pointer;
+"
+>
+↻ 다시 판정하기
+</button>
+</div>
+`;
+
+                const button =
+                    document.getElementById(
+                        "pfAIRetryButton"
+                    );
+
+                if (!button) {
+                    resolve();
+                    return;
+                }
+
+                button.addEventListener(
+                    "click",
+                    () => {
+                        button.disabled =
+                            true;
+
+                        button.textContent =
+                            "RETRYING...";
+
+                        resolve();
+                    },
+                    {
+                        once:
+                            true
+                    }
+                );
+            }
+        );
+    }
+
+
     /* =========================================================
     ATTACK
     ========================================================= */
@@ -5325,52 +5430,73 @@ ${escapeHTML(
         );
         await sleep(250);
 
-        /*
-        AI 응답이 실제로 도착할 때까지
-        가운데 판정중 창을 유지한다.
-        */
-        showEffect(
-            "AI JUDGE...",
-            "판정 중입니다! 잠시만 기다려주세요."
-        );
-
         let result;
 
-        try {
-            result =
-                await createAIRoundResult(
-                    state,
-                    rule,
-                    label
+        while (!result) {
+            /*
+            AI 응답이 실제로 도착할 때까지
+            가운데 판정중 창을 유지한다.
+            */
+            showEffect(
+                "AI JUDGE...",
+                "판정 중입니다! 잠시만 기다려주세요."
+            );
+
+            try {
+                result =
+                    await createAIRoundResult(
+                        state,
+                        rule,
+                        label
+                    );
+
+                /*
+                응답을 받은 뒤에만 로딩창을 닫고
+                기존 공격 모션으로 넘어간다.
+                */
+                clearEffect();
+
+            } catch (error) {
+                clearEffect();
+
+                /*
+                429 최종 실패일 때는
+                현재 PLAYER / HP / RULE / ROUND를 그대로 유지하고
+                사용자가 같은 라운드만 다시 요청할 수 있게 한다.
+                */
+                if (
+                    isAIBusyError(
+                        error
+                    )
+                ) {
+                    await waitForAIRetry(
+                        error?.message
+                        ||
+                        "AI 심판이 잠깐 바빠요! 잠시 후 다시 판정해주세요."
+                    );
+
+                    continue;
+                }
+
+                showEffect(
+                    "AI ERROR",
+                    error?.message
+                    ||
+                    "AI 판정 중 오류가 발생했습니다."
                 );
 
-            /*
-            응답을 받은 뒤에만 로딩창을 닫고
-            공격 모션으로 넘어간다.
-            */
-            clearEffect();
+                showMessage(
+                    error?.message
+                    ||
+                    "AI 판정 중 오류가 발생했습니다.",
+                    "error"
+                );
 
-        } catch (error) {
-            clearEffect();
+                battleRunning =
+                    false;
 
-            showEffect(
-                "AI ERROR",
-                error?.message
-                ||
-                "AI 판정 중 오류가 발생했습니다."
-            );
-
-            showMessage(
-                error?.message
-                ||
-                "AI 판정 중 오류가 발생했습니다.",
-                "error"
-            );
-
-            battleRunning =
-                false;
-
-            throw error;
+                throw error;
+            }
         }
         await playAttack(
             state,
