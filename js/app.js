@@ -5004,28 +5004,70 @@ ${escapeHTML(description)}
                 }
 
                 area.innerHTML = `
-<div class="pf-effect pf-ai-retry-effect">
-AI JUDGE BUSY
-<span>
+<div
+class="pf-effect pf-ai-retry-effect"
+style="
+width:min(420px,calc(100% - 40px));
+min-width:0;
+box-sizing:border-box;
+padding:24px 24px 22px;
+white-space:normal;
+"
+>
+<div
+style="
+font-family:'Press Start 2P',cursive;
+font-size:clamp(1rem,2.4vw,1.35rem);
+line-height:1.55;
+letter-spacing:.03em;
+color:#fff1a9;
+text-align:center;
+"
+>
+AI JUDGE<br>BUSY
+</div>
+
+<span
+style="
+display:block;
+margin-top:14px;
+font-family:'Galmuri11',sans-serif;
+font-size:clamp(.96rem,2vw,1.08rem);
+font-weight:700;
+line-height:1.65;
+color:#fff9f0;
+text-align:center;
+word-break:keep-all;
+overflow-wrap:anywhere;
+"
+>
 ${escapeHTML(
                     message
                     ||
                     "AI 심판이 잠깐 바빠요! 잠시 후 다시 판정해주세요."
                 )}
 </span>
+
 <button
 type="button"
 id="pfAIRetryButton"
 style="
-margin-top:16px;
-padding:12px 18px;
+display:block;
+width:fit-content;
+min-width:180px;
+max-width:100%;
+margin:18px auto 0;
+padding:13px 18px 12px;
 border:3px solid #fff1a9;
 background:#f5c9dc;
 color:#3c3150;
 box-shadow:4px 4px 0 #171321;
-font-family:'Press Start 2P',cursive;
-font-size:.68rem;
-line-height:1.5;
+font-family:'Galmuri11',sans-serif;
+font-size:1rem;
+font-weight:800;
+line-height:1.25;
+letter-spacing:0;
+white-space:nowrap;
 cursor:pointer;
 "
 >
