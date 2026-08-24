@@ -473,7 +473,7 @@ Preview Deployment에서 실제 AI 기능을 먼저 테스트한 뒤 `main`으�
 **Production URL**
 
 ```text
-여기에_Vercel_Production_URL_입력
+https://pick-fight-klx255g2h-ll-0l.vercel.app/#arena
 ```
 
 ---
