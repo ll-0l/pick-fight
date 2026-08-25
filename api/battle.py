@@ -15,8 +15,8 @@ from pydantic import BaseModel, Field
 
 MODEL_NAME = "gemini-3.6-flash"
 
-MAX_RATE_LIMIT_RETRIES = 2
-RATE_LIMIT_RETRY_DELAYS = (1.5, 3.0)
+MAX_TRANSIENT_RETRIES = 2
+TRANSIENT_RETRY_DELAYS = (1.5, 3.0)
 
 
 # =========================================================
@@ -175,31 +175,74 @@ def decide_winner(
     return "DRAW"
 
 
-def is_rate_limit_error(error: Exception) -> bool:
+def get_error_status_code(error: Exception):
     status_code = getattr(
         error,
         "status_code",
         None,
     )
 
-    code = getattr(
-        error,
-        "code",
-        None,
-    )
+    if status_code is None:
+        status_code = getattr(
+            error,
+            "code",
+            None,
+        )
 
+    try:
+        return int(status_code)
+    except (TypeError, ValueError):
+        return None
+
+
+def is_transient_ai_error(error: Exception) -> bool:
+    """
+    Gemini의 일시적인 오류만 재시도 대상으로 판단한다.
+
+    - 429 RESOURCE_EXHAUSTED / Too Many Requests
+    - 503 UNAVAILABLE / Service Unavailable
+
+    잘못된 요청, 인증 실패 같은 영구 오류는 재시도하지 않는다.
+    """
+
+    status_code = get_error_status_code(error)
     message = str(error).upper()
 
     return (
-        status_code == 429
-        or code == 429
+        status_code in (429, 503)
         or "429" in message
+        or "503" in message
         or "RESOURCE_EXHAUSTED" in message
         or "TOO MANY REQUESTS" in message
+        or "SERVICE UNAVAILABLE" in message
+        or "UNAVAILABLE" in message
     )
 
 
-def generate_with_rate_limit_retry(
+def get_transient_error_label(error: Exception) -> str:
+    status_code = get_error_status_code(error)
+    message = str(error).upper()
+
+    if (
+        status_code == 429
+        or "429" in message
+        or "RESOURCE_EXHAUSTED" in message
+        or "TOO MANY REQUESTS" in message
+    ):
+        return "429 RATE LIMIT"
+
+    if (
+        status_code == 503
+        or "503" in message
+        or "SERVICE UNAVAILABLE" in message
+        or "UNAVAILABLE" in message
+    ):
+        return "503 UNAVAILABLE"
+
+    return "TEMPORARY ERROR"
+
+
+def generate_with_transient_retry(
     client: genai.Client,
     prompt: str,
 ):
@@ -209,9 +252,7 @@ def generate_with_rate_limit_retry(
         try:
             return client.models.generate_content(
                 model=MODEL_NAME,
-
                 contents=prompt,
-
                 config=types.GenerateContentConfig(
                     response_mime_type="application/json",
                     response_schema=GeminiJudgeResult,
@@ -219,32 +260,32 @@ def generate_with_rate_limit_retry(
             )
 
         except Exception as error:
-            if not is_rate_limit_error(error):
+            if not is_transient_ai_error(error):
                 raise
 
-            if attempt >= MAX_RATE_LIMIT_RETRIES:
+            if attempt >= MAX_TRANSIENT_RETRIES:
                 raise RuntimeError(
                     "AI 심판이 지금 너무 바빠요. "
                     "잠시 후 다시 판정해주세요."
                 ) from error
 
-            delay = RATE_LIMIT_RETRY_DELAYS[
+            delay = TRANSIENT_RETRY_DELAYS[
                 min(
                     attempt,
-                    len(RATE_LIMIT_RETRY_DELAYS) - 1,
+                    len(TRANSIENT_RETRY_DELAYS) - 1,
                 )
             ]
 
+            error_label = get_transient_error_label(error)
+
             print(
-                "[PICK FIGHT RATE LIMIT]",
-                f"Gemini 429 detected. retry={attempt + 1}/{MAX_RATE_LIMIT_RETRIES}",
+                "[PICK FIGHT TEMPORARY AI ERROR]",
+                f"{error_label} detected.",
+                f"retry={attempt + 1}/{MAX_TRANSIENT_RETRIES}",
                 f"wait={delay}s",
             )
 
-            time.sleep(
-                delay
-            )
-
+            time.sleep(delay)
             attempt += 1
 
 
@@ -268,7 +309,7 @@ def judge_battle(
         api_key=api_key
     )
 
-    response = generate_with_rate_limit_retry(
+    response = generate_with_transient_retry(
         client=client,
         prompt=build_prompt(
             player_a=player_a,
