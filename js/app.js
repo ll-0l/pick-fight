@@ -188,17 +188,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
         nav.innerHTML = `
 <button type="button" class="pf-mobile-nav-item pf-mobile-nav-side" data-target="how-to-play" aria-label="HOW TO PLAY로 이동">
-    <span class="pf-mobile-nav-icon pf-mobile-nav-help-icon" aria-hidden="true">?</span>
+    <span class="pf-mobile-nav-icon pf-pixel-help-icon" aria-hidden="true"></span>
     <span class="pf-mobile-nav-label">HOW TO</span>
 </button>
 
 <button type="button" class="pf-mobile-nav-item pf-mobile-nav-main" data-target="home" aria-label="BATTLE 시작 화면으로 이동">
-    <span class="pf-mobile-nav-icon pf-mobile-nav-battle-icon" aria-hidden="true">⚔</span>
+    <span class="pf-mobile-nav-icon pf-pixel-swords-icon" aria-hidden="true">
+        <i class="sword sword-a"></i>
+        <i class="sword sword-b"></i>
+    </span>
     <span class="pf-mobile-nav-label">BATTLE</span>
 </button>
 
 <button type="button" class="pf-mobile-nav-item pf-mobile-nav-side" data-target="battle-log" aria-label="BATTLE LOG로 이동">
-    <span class="pf-mobile-nav-icon pf-mobile-nav-log-icon" aria-hidden="true"></span>
+    <span class="pf-mobile-nav-icon pf-pixel-log-icon" aria-hidden="true"></span>
     <span class="pf-mobile-nav-label">LOG</span>
 </button>
 `;
@@ -5687,6 +5690,7 @@ ${escapeHTML(
                         ||
                         "AI 심판이 잠깐 바빠요! 잠시 후 다시 판정해주세요."
                     );
+
                     continue;
                 }
 
@@ -5696,7 +5700,6 @@ ${escapeHTML(
                     ||
                     "AI 판정 중 오류가 발생했습니다."
                 );
-
                 showMessage(
                     error?.message
                     ||
@@ -11059,8 +11062,8 @@ ${filtered.map((log, index) => `
 
 
     /* =========================================================
-       MOBILE APP-LIKE BOTTOM NAV v34
-       Full-width beige dock / bold pixel icons / solid pink battle key.
+       MOBILE PIXEL DOCK v35
+       Same app flow, stronger 8-bit visual language only.
        ========================================================= */
 
     @media (max-width: 760px) {
@@ -11069,7 +11072,7 @@ ${filtered.map((log, index) => `
         }
 
         body {
-            padding-bottom: 96px !important;
+            padding-bottom: 94px !important;
         }
 
         body.pf-mobile-battle-focus {
@@ -11077,7 +11080,7 @@ ${filtered.map((log, index) => `
         }
 
         #home {
-            min-height: calc(100svh - 96px) !important;
+            min-height: calc(100svh - 94px) !important;
             box-sizing: border-box !important;
             padding-top: 16px !important;
             padding-bottom: 12px !important;
@@ -11094,15 +11097,17 @@ ${filtered.map((log, index) => `
             bottom: 0;
             z-index: 9999;
             width: 100%;
-            min-height: 88px;
+            min-height: 84px;
             display: grid;
-            grid-template-columns: minmax(0, 1fr) 96px minmax(0, 1fr);
-            align-items: center;
-            gap: 8px;
-            padding: 7px 14px calc(8px + env(safe-area-inset-bottom));
-            background: #f6efdf;
-            border-top: 4px solid #342b40;
-            box-shadow: 0 -3px 0 rgba(52, 43, 64, .12);
+            grid-template-columns: 1fr 112px 1fr;
+            align-items: end;
+            gap: 0;
+            padding: 7px 8px calc(8px + env(safe-area-inset-bottom));
+            background: #f7efdc;
+            border-top: 4px solid #30283d;
+            box-shadow:
+                inset 0 4px 0 #fff9eb,
+                0 -3px 0 rgba(48, 40, 61, .10);
             box-sizing: border-box;
         }
 
@@ -11112,136 +11117,163 @@ ${filtered.map((log, index) => `
 
         .pf-mobile-nav-item {
             appearance: none;
-            min-width: 0;
-            margin: 0;
-            padding: 0;
             border: 0;
             background: transparent;
             box-shadow: none;
+            min-width: 0;
+            min-height: 60px;
+            padding: 2px 4px 0;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             gap: 5px;
-            color: #494155;
+            color: #493f5b;
             cursor: pointer;
             -webkit-tap-highlight-color: transparent;
-            box-sizing: border-box;
         }
 
         .pf-mobile-nav-item:active {
-            transform: translateY(2px);
-        }
-
-        .pf-mobile-nav-side {
-            min-height: 64px;
-        }
-
-        .pf-mobile-nav-icon {
-            display: grid;
-            place-items: center;
-            width: 30px;
-            height: 30px;
-            min-height: 30px;
-            color: #4b4356;
-            font-family: "Press Start 2P", cursive;
-            font-size: 1.12rem;
-            line-height: 1;
-            font-weight: 900;
-            box-sizing: border-box;
+            transform: translate(2px, 2px);
         }
 
         .pf-mobile-nav-label {
             display: block;
-            max-width: 100%;
-            color: #51485d;
-            font-family: "Galmuri11", "Galmuri", sans-serif;
-            font-size: .78rem;
-            line-height: 1;
+            color: #493f5b;
+            font-family: "Press Start 2P", cursive !important;
+            font-size: .52rem;
             font-weight: 900;
-            letter-spacing: -.02em;
+            line-height: 1.05;
+            text-shadow: 1px 1px 0 #fff8e8;
             white-space: nowrap;
-            text-shadow: .6px 0 0 currentColor;
         }
 
-        /* HOW TO: large, plain, high-contrast pixel question mark. */
-        .pf-mobile-nav-help-icon {
-            font-size: 1.2rem;
-            color: #5f5470;
-            transform: translateY(1px);
-        }
-
-        /* LOG: CSS-drawn document icon so it stays visible on every device/font. */
-        .pf-mobile-nav-log-icon {
+        .pf-mobile-nav-side .pf-mobile-nav-icon {
             position: relative;
-            width: 24px;
-            height: 28px;
-            border: 3px solid #5a5165;
-            background: transparent;
+            display: block;
+            width: 34px;
+            height: 30px;
+            color: #594c70;
         }
 
-        .pf-mobile-nav-log-icon::before,
-        .pf-mobile-nav-log-icon::after {
-            content: "";
+        /* HOW TO — chunky pixel speech bubble */
+        .pf-pixel-help-icon {
+            background:
+                linear-gradient(#594c70,#594c70) 7px 3px/20px 4px no-repeat,
+                linear-gradient(#594c70,#594c70) 3px 7px/4px 15px no-repeat,
+                linear-gradient(#594c70,#594c70) 27px 7px/4px 15px no-repeat,
+                linear-gradient(#594c70,#594c70) 7px 22px/16px 4px no-repeat,
+                linear-gradient(#594c70,#594c70) 10px 26px/4px 4px no-repeat;
+        }
+
+        .pf-pixel-help-icon::before {
+            content: "?";
             position: absolute;
-            left: 4px;
-            right: 4px;
-            height: 3px;
-            background: #5a5165;
+            left: 50%;
+            top: 7px;
+            transform: translateX(-50%);
+            color: #594c70;
+            font-family: "Press Start 2P", cursive;
+            font-size: .76rem;
+            line-height: 1;
         }
 
-        .pf-mobile-nav-log-icon::before {
-            top: 6px;
-            box-shadow: 0 6px 0 #5a5165, 0 12px 0 #5a5165;
+        /* LOG — thick pixel notebook */
+        .pf-pixel-log-icon {
+            background:
+                linear-gradient(#594c70,#594c70) 5px 2px/24px 4px no-repeat,
+                linear-gradient(#594c70,#594c70) 5px 26px/24px 4px no-repeat,
+                linear-gradient(#594c70,#594c70) 3px 5px/4px 23px no-repeat,
+                linear-gradient(#594c70,#594c70) 27px 5px/4px 23px no-repeat,
+                linear-gradient(#594c70,#594c70) 10px 9px/13px 3px no-repeat,
+                linear-gradient(#594c70,#594c70) 10px 15px/13px 3px no-repeat,
+                linear-gradient(#594c70,#594c70) 10px 21px/9px 3px no-repeat;
         }
 
-        .pf-mobile-nav-log-icon::after {
-            display: none;
-        }
-
-        /* BATTLE: one solid pixel button; icon and label live INSIDE the same box. */
+        /* BATTLE — mini START-style pixel button */
         .pf-mobile-nav-main {
-            width: 92px;
-            height: 70px;
-            min-height: 70px;
-            margin: 0 auto;
-            padding: 7px 6px 6px;
-            gap: 5px;
-            background: #e8a5be;
-            border: 4px solid #342b40;
-            box-shadow: 4px 4px 0 #342b40;
-            color: #713a55;
-        }
-
-        .pf-mobile-nav-main:active {
-            transform: translate(3px, 3px);
-            box-shadow: 1px 1px 0 #342b40;
+            position: relative;
+            min-height: 76px;
+            margin-top: -9px;
+            padding: 0;
+            gap: 0;
         }
 
         .pf-mobile-nav-main .pf-mobile-nav-icon {
-            width: auto;
-            height: auto;
-            min-height: 0;
-            border: 0;
-            background: transparent;
-            color: #713a55;
-            font-size: 1.28rem;
-            text-shadow: 1px 0 0 #713a55;
+            position: relative;
+            display: block;
+            width: 98px;
+            height: 60px;
+            box-sizing: border-box;
+            background: #e7a9c2;
+            border: 4px solid #30283d;
+            box-shadow:
+                inset 0 7px 0 #f4c6d7,
+                inset 0 -8px 0 #c96f95,
+                4px 4px 0 #30283d;
         }
 
         .pf-mobile-nav-main .pf-mobile-nav-label {
-            color: #713a55;
-            font-family: "Press Start 2P", cursive;
-            font-size: .52rem;
-            font-weight: 900;
-            text-shadow: 1px 0 0 #713a55;
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 8px;
+            z-index: 4;
+            color: #fff8e8;
+            font-size: .50rem;
+            text-shadow: 2px 2px 0 #934663;
+            pointer-events: none;
+        }
+
+        /* Crossed swords built from pixel blocks */
+        .pf-pixel-swords-icon .sword {
+            position: absolute;
+            left: 50%;
+            top: 5px;
+            width: 4px;
+            height: 30px;
+            background: #654d6a;
+            transform-origin: 50% 78%;
+        }
+
+        .pf-pixel-swords-icon .sword::before {
+            content: "";
+            position: absolute;
+            left: -4px;
+            top: -5px;
+            width: 12px;
+            height: 6px;
+            background: #fff2c9;
+            border: 2px solid #654d6a;
+            box-sizing: border-box;
+        }
+
+        .pf-pixel-swords-icon .sword::after {
+            content: "";
+            position: absolute;
+            left: -5px;
+            bottom: -4px;
+            width: 14px;
+            height: 4px;
+            background: #654d6a;
+            box-shadow:
+                4px 4px 0 #654d6a,
+                -2px 0 0 #654d6a;
+        }
+
+        .pf-pixel-swords-icon .sword-a {
+            transform: translateX(-50%) rotate(42deg);
+        }
+
+        .pf-pixel-swords-icon .sword-b {
+            transform: translateX(-50%) rotate(-42deg);
         }
 
         #home,
         #battle-log,
         #how-to-play {
             scroll-margin-top: 10px;
-            scroll-margin-bottom: 96px;
+            scroll-margin-bottom: 94px;
         }
     }
 
