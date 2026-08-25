@@ -188,20 +188,61 @@ document.addEventListener("DOMContentLoaded", () => {
 
         nav.innerHTML = `
 <button type="button" class="pf-mobile-nav-item pf-mobile-nav-side" data-target="how-to-play" aria-label="HOW TO PLAY로 이동">
-    <span class="pf-mobile-nav-icon pf-pixel-help-icon" aria-hidden="true"></span>
+    <span class="pf-mobile-nav-icon" aria-hidden="true">
+        <svg class="pf-mobile-pixel-svg" viewBox="0 0 16 16" shape-rendering="crispEdges">
+            <rect x="2" y="2" width="12" height="3"></rect>
+            <rect x="1" y="5" width="3" height="7"></rect>
+            <rect x="12" y="5" width="3" height="7"></rect>
+            <rect x="4" y="11" width="8" height="3"></rect>
+            <rect x="5" y="13" width="3" height="2"></rect>
+            <rect x="7" y="5" width="3" height="2"></rect>
+            <rect x="9" y="7" width="2" height="3"></rect>
+            <rect x="7" y="10" width="2" height="2"></rect>
+        </svg>
+    </span>
     <span class="pf-mobile-nav-label">HOW TO</span>
 </button>
 
 <button type="button" class="pf-mobile-nav-item pf-mobile-nav-main" data-target="home" aria-label="BATTLE 시작 화면으로 이동">
-    <span class="pf-mobile-nav-icon pf-pixel-swords-icon" aria-hidden="true">
-        <i class="sword sword-a"></i>
-        <i class="sword sword-b"></i>
+    <span class="pf-mobile-nav-icon" aria-hidden="true">
+        <svg class="pf-mobile-pixel-svg pf-mobile-battle-svg" viewBox="0 0 16 16" shape-rendering="crispEdges">
+            <!-- left sword -->
+            <rect x="3" y="1" width="2" height="2"></rect>
+            <rect x="4" y="3" width="2" height="2"></rect>
+            <rect x="5" y="5" width="2" height="2"></rect>
+            <rect x="6" y="7" width="2" height="2"></rect>
+            <rect x="5" y="9" width="4" height="2"></rect>
+            <rect x="8" y="11" width="2" height="3"></rect>
+            <rect x="9" y="13" width="2" height="2"></rect>
+
+            <!-- right sword -->
+            <rect x="11" y="1" width="2" height="2"></rect>
+            <rect x="10" y="3" width="2" height="2"></rect>
+            <rect x="9" y="5" width="2" height="2"></rect>
+            <rect x="8" y="7" width="2" height="2"></rect>
+            <rect x="7" y="9" width="4" height="2"></rect>
+            <rect x="6" y="11" width="2" height="3"></rect>
+            <rect x="5" y="13" width="2" height="2"></rect>
+        </svg>
     </span>
     <span class="pf-mobile-nav-label">BATTLE</span>
 </button>
 
 <button type="button" class="pf-mobile-nav-item pf-mobile-nav-side" data-target="battle-log" aria-label="BATTLE LOG로 이동">
-    <span class="pf-mobile-nav-icon pf-pixel-log-icon" aria-hidden="true"></span>
+    <span class="pf-mobile-nav-icon" aria-hidden="true">
+        <svg class="pf-mobile-pixel-svg" viewBox="0 0 16 16" shape-rendering="crispEdges">
+            <rect x="3" y="1" width="10" height="2"></rect>
+            <rect x="2" y="3" width="2" height="11"></rect>
+            <rect x="12" y="3" width="2" height="11"></rect>
+            <rect x="4" y="13" width="8" height="2"></rect>
+            <rect x="5" y="5" width="2" height="2"></rect>
+            <rect x="8" y="5" width="3" height="2"></rect>
+            <rect x="5" y="8" width="2" height="2"></rect>
+            <rect x="8" y="8" width="3" height="2"></rect>
+            <rect x="5" y="11" width="2" height="1"></rect>
+            <rect x="8" y="11" width="3" height="1"></rect>
+        </svg>
+    </span>
     <span class="pf-mobile-nav-label">LOG</span>
 </button>
 `;
@@ -5657,7 +5698,6 @@ ${escapeHTML(
                 "AI JUDGE...",
                 "판정 중입니다! 잠시만 기다려주세요."
             );
-
             try {
                 result =
                     await createAIRoundResult(
@@ -5700,6 +5740,7 @@ ${escapeHTML(
                     ||
                     "AI 판정 중 오류가 발생했습니다."
                 );
+
                 showMessage(
                     error?.message
                     ||
@@ -11062,8 +11103,9 @@ ${filtered.map((log, index) => `
 
 
     /* =========================================================
-       MOBILE PIXEL DOCK v35
-       Same app flow, stronger 8-bit visual language only.
+       MOBILE PIXEL DOCK v36
+       v35 dock/button layout preserved.
+       Icons rebuilt as crisp 16x16 SVG pixel art.
        ========================================================= */
 
     @media (max-width: 760px) {
@@ -11090,6 +11132,7 @@ ${filtered.map((log, index) => `
             display: none !important;
         }
 
+        /* v35 dock shape preserved */
         .pf-mobile-bottom-nav {
             position: fixed;
             left: 0;
@@ -11141,56 +11184,32 @@ ${filtered.map((log, index) => `
             display: block;
             color: #493f5b;
             font-family: "Press Start 2P", cursive !important;
-            font-size: .52rem;
+            font-size: .54rem;
             font-weight: 900;
             line-height: 1.05;
             text-shadow: 1px 1px 0 #fff8e8;
             white-space: nowrap;
         }
 
+        /* Crisp pixel SVGs. No system emoji/font icons. */
         .pf-mobile-nav-side .pf-mobile-nav-icon {
-            position: relative;
-            display: block;
+            display: grid;
+            place-items: center;
             width: 34px;
-            height: 30px;
-            color: #594c70;
+            height: 32px;
         }
 
-        /* HOW TO — chunky pixel speech bubble */
-        .pf-pixel-help-icon {
-            background:
-                linear-gradient(#594c70,#594c70) 7px 3px/20px 4px no-repeat,
-                linear-gradient(#594c70,#594c70) 3px 7px/4px 15px no-repeat,
-                linear-gradient(#594c70,#594c70) 27px 7px/4px 15px no-repeat,
-                linear-gradient(#594c70,#594c70) 7px 22px/16px 4px no-repeat,
-                linear-gradient(#594c70,#594c70) 10px 26px/4px 4px no-repeat;
+        .pf-mobile-pixel-svg {
+            width: 32px;
+            height: 32px;
+            display: block;
+            overflow: visible;
+            fill: #594c70;
+            image-rendering: pixelated;
+            filter: drop-shadow(1px 1px 0 #fff8e8);
         }
 
-        .pf-pixel-help-icon::before {
-            content: "?";
-            position: absolute;
-            left: 50%;
-            top: 7px;
-            transform: translateX(-50%);
-            color: #594c70;
-            font-family: "Press Start 2P", cursive;
-            font-size: .76rem;
-            line-height: 1;
-        }
-
-        /* LOG — thick pixel notebook */
-        .pf-pixel-log-icon {
-            background:
-                linear-gradient(#594c70,#594c70) 5px 2px/24px 4px no-repeat,
-                linear-gradient(#594c70,#594c70) 5px 26px/24px 4px no-repeat,
-                linear-gradient(#594c70,#594c70) 3px 5px/4px 23px no-repeat,
-                linear-gradient(#594c70,#594c70) 27px 5px/4px 23px no-repeat,
-                linear-gradient(#594c70,#594c70) 10px 9px/13px 3px no-repeat,
-                linear-gradient(#594c70,#594c70) 10px 15px/13px 3px no-repeat,
-                linear-gradient(#594c70,#594c70) 10px 21px/9px 3px no-repeat;
-        }
-
-        /* BATTLE — mini START-style pixel button */
+        /* BATTLE — exact v35 mini START-style button feel */
         .pf-mobile-nav-main {
             position: relative;
             min-height: 76px;
@@ -11201,9 +11220,11 @@ ${filtered.map((log, index) => `
 
         .pf-mobile-nav-main .pf-mobile-nav-icon {
             position: relative;
-            display: block;
+            display: grid;
+            place-items: start center;
             width: 98px;
             height: 60px;
+            padding-top: 5px;
             box-sizing: border-box;
             background: #e7a9c2;
             border: 4px solid #30283d;
@@ -11213,6 +11234,13 @@ ${filtered.map((log, index) => `
                 4px 4px 0 #30283d;
         }
 
+        .pf-mobile-nav-main .pf-mobile-pixel-svg {
+            width: 33px;
+            height: 33px;
+            fill: #654d6a;
+            filter: none;
+        }
+
         .pf-mobile-nav-main .pf-mobile-nav-label {
             position: absolute;
             left: 0;
@@ -11220,53 +11248,9 @@ ${filtered.map((log, index) => `
             bottom: 8px;
             z-index: 4;
             color: #fff8e8;
-            font-size: .50rem;
+            font-size: .51rem;
             text-shadow: 2px 2px 0 #934663;
             pointer-events: none;
-        }
-
-        /* Crossed swords built from pixel blocks */
-        .pf-pixel-swords-icon .sword {
-            position: absolute;
-            left: 50%;
-            top: 5px;
-            width: 4px;
-            height: 30px;
-            background: #654d6a;
-            transform-origin: 50% 78%;
-        }
-
-        .pf-pixel-swords-icon .sword::before {
-            content: "";
-            position: absolute;
-            left: -4px;
-            top: -5px;
-            width: 12px;
-            height: 6px;
-            background: #fff2c9;
-            border: 2px solid #654d6a;
-            box-sizing: border-box;
-        }
-
-        .pf-pixel-swords-icon .sword::after {
-            content: "";
-            position: absolute;
-            left: -5px;
-            bottom: -4px;
-            width: 14px;
-            height: 4px;
-            background: #654d6a;
-            box-shadow:
-                4px 4px 0 #654d6a,
-                -2px 0 0 #654d6a;
-        }
-
-        .pf-pixel-swords-icon .sword-a {
-            transform: translateX(-50%) rotate(42deg);
-        }
-
-        .pf-pixel-swords-icon .sword-b {
-            transform: translateX(-50%) rotate(-42deg);
         }
 
         #home,
