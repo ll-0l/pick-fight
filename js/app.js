@@ -11531,6 +11531,43 @@ ${filtered.map((log, index) => `
     .pf-ai-retry-effect {
         width: calc(100% - 14px) !important;
     }
+
+    /* v44: AI card must fit INSIDE the inner battle frame, not the viewport */
+    body.pf-mobile-battle-focus .pf-effect,
+    body.pf-mobile-battle-focus .pf-ai-retry-effect {
+        width: calc(100% - 70px) !important;
+        max-width: 282px !important;
+        min-width: 0 !important;
+        left: 50% !important;
+        right: auto !important;
+        padding: 11px 10px 12px !important;
+        transform: translate(-50%, -50%) !important;
+        box-sizing: border-box !important;
+        overflow: visible !important;
+    }
+
+    body.pf-mobile-battle-focus .pf-ai-retry-effect > div {
+        font-size: .68rem !important;
+        line-height: 1.3 !important;
+        letter-spacing: 0 !important;
+        white-space: nowrap !important;
+    }
+
+    body.pf-mobile-battle-focus .pf-ai-retry-effect span {
+        padding-inline: 2px !important;
+        font-size: .84rem !important;
+        line-height: 1.38 !important;
+        word-break: keep-all !important;
+    }
+
+    body.pf-mobile-battle-focus #pfAIRetryButton {
+        width: min(180px, 100%) !important;
+        max-width: 100% !important;
+        min-height: 44px !important;
+        margin: 9px auto 0 !important;
+        padding: 8px 7px !important;
+        font-size: .88rem !important;
+    }
 }
 `;
         document.head.appendChild(style);
