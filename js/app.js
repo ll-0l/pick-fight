@@ -189,10 +189,10 @@ document.addEventListener("DOMContentLoaded", () => {
         nav.innerHTML = `
 <button type="button" class="pf-mobile-nav-item pf-mobile-nav-side" data-target="how-to-play" aria-label="HOW TO PLAY로 이동">
     <span class="pf-mobile-nav-icon" aria-hidden="true">
-        <svg class="pf-nav-outline-svg" viewBox="0 0 24 24">
-            <path d="M3 5h7c1.2 0 2 .8 2 2v12c0-1.2-.8-2-2-2H3V5z"></path>
-            <path d="M21 5h-7c-1.2 0-2 .8-2 2v12c0-1.2.8-2 2-2h7V5z"></path>
-            <path d="M7 8h2M7 11h2M15 8h2M15 11h2"></path>
+        <svg class="pf-nav-clean-svg" viewBox="0 0 24 24">
+            <path d="M3.5 5.5h6.2c1.4 0 2.3.8 2.3 2.2v11.1c0-1.4-.9-2.2-2.3-2.2H3.5V5.5z"></path>
+            <path d="M20.5 5.5h-6.2c-1.4 0-2.3.8-2.3 2.2v11.1c0-1.4.9-2.2 2.3-2.2h6.2V5.5z"></path>
+            <path d="M6.5 9h2.5M15 9h2.5"></path>
         </svg>
     </span>
     <span class="pf-mobile-nav-label">HOW TO</span>
@@ -200,13 +200,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
 <button type="button" class="pf-mobile-nav-item pf-mobile-nav-main" data-target="home" aria-label="BATTLE 시작 화면으로 이동">
     <span class="pf-mobile-nav-icon" aria-hidden="true">
-        <svg class="pf-nav-outline-svg pf-nav-battle-svg" viewBox="0 0 24 24">
-            <path d="M5 4l14 14"></path>
-            <path d="M19 4L5 18"></path>
-            <path d="M4 3h4v4"></path>
-            <path d="M20 3h-4v4"></path>
-            <path d="M4 17h4v4"></path>
-            <path d="M20 17h-4v4"></path>
+        <svg class="pf-nav-clean-svg pf-nav-battle-svg" viewBox="0 0 24 24">
+            <path d="M6 4l12 12"></path>
+            <path d="M18 4L6 16"></path>
+            <path d="M4.5 2.5l4 1-3 3-1-4z"></path>
+            <path d="M19.5 2.5l-4 1 3 3 1-4z"></path>
+            <path d="M5 15l4 4"></path>
+            <path d="M19 15l-4 4"></path>
+            <path d="M3.5 18.5l2 2"></path>
+            <path d="M20.5 18.5l-2 2"></path>
         </svg>
     </span>
     <span class="pf-mobile-nav-label">BATTLE</span>
@@ -214,9 +216,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
 <button type="button" class="pf-mobile-nav-item pf-mobile-nav-side" data-target="battle-log" aria-label="BATTLE LOG로 이동">
     <span class="pf-mobile-nav-icon" aria-hidden="true">
-        <svg class="pf-nav-outline-svg" viewBox="0 0 24 24">
-            <rect x="5" y="3" width="14" height="18"></rect>
-            <path d="M8 7h8M8 11h8M8 15h6"></path>
+        <svg class="pf-nav-clean-svg" viewBox="0 0 24 24">
+            <path d="M6 3.5h8.5l3.5 3.5v13.5H6V3.5z"></path>
+            <path d="M14.5 3.5V7H18"></path>
+            <path d="M9 10h6M9 13.5h6M9 17h4.5"></path>
         </svg>
     </span>
     <span class="pf-mobile-nav-label">LOG</span>
@@ -11079,12 +11082,12 @@ ${filtered.map((log, index) => `
 
 
     /* =========================================================
-       MOBILE PIXEL DOCK v38
-       Final nav polish:
-       - v37 dock/button layout preserved
-       - outlined icons with more breathing room
-       - BATTLE icon + label use one dark-purple system
-       - BATTLE label fully inside the pink button
+       MOBILE PIXEL DOCK v39
+       Final icon cleanup:
+       - lighter hollow icons
+       - less visually crowded
+       - BATTLE icon + text both white
+       - BATTLE text moved upward inside button
        ========================================================= */
 
     @media (max-width: 760px) {
@@ -11168,29 +11171,27 @@ ${filtered.map((log, index) => `
             white-space: nowrap;
         }
 
-        /* Side icons: outlined, hollow, slightly smaller */
         .pf-mobile-nav-side .pf-mobile-nav-icon {
             display: grid;
             place-items: center;
             width: 34px;
-            height: 32px;
+            height: 31px;
         }
 
-        .pf-nav-outline-svg {
-            width: 27px;
-            height: 27px;
+        /* Cleaner retro-outline icon language */
+        .pf-nav-clean-svg {
+            width: 26px;
+            height: 26px;
             display: block;
             fill: none;
             stroke: #594c70;
-            stroke-width: 2.2;
+            stroke-width: 2;
             stroke-linecap: square;
             stroke-linejoin: miter;
             vector-effect: non-scaling-stroke;
-            shape-rendering: crispEdges;
         }
 
-        /* BATTLE keeps the v37 mini START-button feel,
-           but icon/text now live cleanly inside one button. */
+        /* BATTLE button stays as the mini START-style button */
         .pf-mobile-nav-main {
             position: relative;
             min-height: 76px;
@@ -11201,10 +11202,8 @@ ${filtered.map((log, index) => `
 
         .pf-mobile-nav-main .pf-mobile-nav-icon {
             position: relative;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-start;
+            display: grid;
+            place-items: start center;
             width: 98px;
             height: 60px;
             padding-top: 5px;
@@ -11217,22 +11216,25 @@ ${filtered.map((log, index) => `
                 4px 4px 0 #30283d;
         }
 
-        .pf-mobile-nav-main .pf-nav-outline-svg {
-            width: 25px;
-            height: 25px;
-            stroke: #5c435f;
-            stroke-width: 2.4;
+        .pf-mobile-nav-main .pf-nav-clean-svg {
+            width: 24px;
+            height: 24px;
+            stroke: #fff8e8;
+            stroke-width: 2.2;
         }
 
+        /* Keep BATTLE fully inside the pink button */
         .pf-mobile-nav-main .pf-mobile-nav-label {
             position: absolute;
             left: 0;
             right: 0;
-            bottom: 11px;
+            top: 44px;
+            bottom: auto;
             z-index: 4;
-            color: #5c435f;
+            color: #fff8e8;
             font-size: .50rem;
-            text-shadow: none;
+            line-height: 1;
+            text-shadow: 1px 1px 0 rgba(92, 67, 95, .55);
             pointer-events: none;
         }
 
