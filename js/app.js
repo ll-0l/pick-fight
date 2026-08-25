@@ -178,6 +178,88 @@ document.addEventListener("DOMContentLoaded", () => {
         );
     }
 
+    function initializeMobileBottomNav() {
+        if (document.getElementById("pfMobileBottomNav")) return;
+
+        const nav = document.createElement("nav");
+        nav.id = "pfMobileBottomNav";
+        nav.className = "pf-mobile-bottom-nav";
+        nav.setAttribute("aria-label", "모바일 빠른 이동");
+
+        nav.innerHTML = `
+<button type="button" class="pf-mobile-nav-item" data-target="how-to-play" aria-label="HOW TO PLAY로 이동">
+    <span class="pf-mobile-nav-icon pf-mobile-nav-help-icon" aria-hidden="true">?</span>
+    <span class="pf-mobile-nav-label">HOW TO</span>
+</button>
+
+<button type="button" class="pf-mobile-nav-item pf-mobile-nav-main" data-target="home" aria-label="BATTLE 시작 화면으로 이동">
+    <span class="pf-mobile-nav-icon pf-mobile-nav-battle-icon" aria-hidden="true">⚔</span>
+    <span class="pf-mobile-nav-label">BATTLE</span>
+</button>
+
+<button type="button" class="pf-mobile-nav-item" data-target="battle-log" aria-label="BATTLE LOG로 이동">
+    <span class="pf-mobile-nav-icon" aria-hidden="true">▤</span>
+    <span class="pf-mobile-nav-label">LOG</span>
+</button>
+`;
+
+        nav.addEventListener("click", event => {
+            const button = event.target.closest("[data-target]");
+            if (!button) return;
+
+            const target = document.getElementById(button.dataset.target);
+            if (!target) return;
+
+            target.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+        });
+
+        document.body.appendChild(nav);
+    }
+
+    function removeMobileHomeHowToButton() {
+        const home = document.getElementById("home");
+        if (!home) return;
+
+        const buttons = Array.from(
+            home.querySelectorAll("a, button")
+        );
+
+        buttons.forEach(button => {
+            const text = String(button.textContent || "")
+                .replace(/\s+/g, " ")
+                .trim()
+                .toUpperCase();
+
+            const href = String(
+                button.getAttribute("href") || ""
+            ).toLowerCase();
+
+            const target =
+                String(button.dataset?.target || "")
+                    .toLowerCase();
+
+            const isHowTo =
+                text.includes("HOW TO")
+                ||
+                href.includes("how-to")
+                ||
+                href.includes("how_to")
+                ||
+                target.includes("how-to")
+                ||
+                target.includes("how_to");
+
+            if (isHowTo) {
+                button.classList.add(
+                    "pf-mobile-home-howto-hidden"
+                );
+            }
+        });
+    }
+
     function scrollBattleResultIntoView(behavior = "smooth") {
         if (!battleResult) return;
 
@@ -5560,6 +5642,7 @@ ${escapeHTML(
             rule
         );
         await sleep(250);
+
         let result;
 
         while (!result) {
@@ -5571,8 +5654,7 @@ ${escapeHTML(
                 "AI JUDGE...",
                 "판정 중입니다! 잠시만 기다려주세요."
             );
-
-            try {
+             try {
                 result =
                     await createAIRoundResult(
                         state,
@@ -6039,6 +6121,9 @@ id="pfExitGameButton"
                 "pfStage"
             );
         if (!stage) return;
+
+        setMobileBattleFocus(false);
+
         deathMatchRuleMode =
             false;
         removeDeathMatchControls();
@@ -10694,7 +10779,438 @@ ${filtered.map((log, index) => `
         padding: 10px !important;
     }
 
+
+    /* =========================================================
+       MOBILE FINAL POLISH v28
+       SCORE / ACTION BUTTON / BATTLE LOG CARD only
+       Existing colors, fonts, characters and battle logic unchanged.
+       ========================================================= */
+
+    /* SCORE
+       Earlier desktop polish made SCORE absolute.
+       On mobile restore a normal 3-column row:
+       PLAYER A | SCORE | PLAYER B */
+    .pf-score-row,
+    .pf-score-panel {
+        position: relative !important;
+        display: grid !important;
+        grid-template-columns: minmax(0, 1fr) 58px minmax(0, 1fr) !important;
+        align-items: center !important;
+        gap: 7px !important;
+        width: calc(100% - 18px) !important;
+        max-width: calc(100% - 18px) !important;
+        margin: 5px auto 0 !important;
+        padding: 7px 3px 8px !important;
+        overflow: visible !important;
+    }
+
+    .pf-score-row > .pf-score-side:first-child,
+    .pf-score-panel > .pf-score-side:first-child {
+        grid-column: 1 !important;
+    }
+
+    .pf-score-row > .pf-score-side:last-child,
+    .pf-score-panel > .pf-score-side:last-child {
+        grid-column: 3 !important;
+    }
+
+    .pf-score-mid {
+        position: static !important;
+        grid-column: 2 !important;
+        grid-row: 1 !important;
+        align-self: center !important;
+        justify-self: center !important;
+        transform: none !important;
+        min-width: 58px !important;
+        max-width: 58px !important;
+        margin: 0 !important;
+        padding: 6px 3px !important;
+        font-size: .31rem !important;
+        line-height: 1.3 !important;
+        text-align: center !important;
+        white-space: nowrap !important;
+    }
+
+    .pf-score-mid::before,
+    .pf-score-mid::after {
+        display: none !important;
+        content: none !important;
+    }
+
+    .pf-score-side span {
+        font-size: .75rem !important;
+        line-height: 1.15 !important;
+    }
+
+    .pf-score-side strong {
+        font-size: clamp(1.35rem, 7vw, 1.7rem) !important;
+        line-height: 1 !important;
+    }
+
+    /* ACTION BUTTONS
+       Keep the same button design but reduce mobile height and wrapping. */
+    .pf-action-row,
+    .pf-action-row-single {
+        gap: 7px !important;
+        margin-top: 8px !important;
+    }
+
+    .pf-action-btn,
+    .pf-action-row-single .pf-action-btn {
+        min-height: 50px !important;
+        padding: 10px 8px !important;
+        font-size: .88rem !important;
+        line-height: 1.28 !important;
+        box-shadow: 4px 4px 0 #30283d !important;
+        word-break: keep-all !important;
+    }
+
+    .pf-action-row:not(.pf-action-row-single) {
+        display: grid !important;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+        align-items: stretch !important;
+    }
+
+    .pf-action-row:not(.pf-action-row-single) .pf-action-btn {
+        width: 100% !important;
+    }
+
+    /* Long "LAST JUDGEMENT" button */
+    .pf-action-row-single .pf-action-btn {
+        width: 100% !important;
+        min-width: 0 !important;
+        max-width: 100% !important;
+        font-size: .84rem !important;
+        padding-inline: 7px !important;
+    }
+
+    /* BATTLE LOG CARD
+       Card takes the full mobile width; navigation moves below it. */
+    .pf-log-renderer {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+    }
+
+    .pf-log-carousel {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        display: grid !important;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+        gap: 8px !important;
+        align-items: stretch !important;
+        box-sizing: border-box !important;
+    }
+
+    .pf-log-card-slot {
+        grid-column: 1 / -1 !important;
+        grid-row: 1 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        box-sizing: border-box !important;
+    }
+
+    #pfBattleLogPrev {
+        grid-column: 1 !important;
+        grid-row: 2 !important;
+    }
+
+    #pfBattleLogNext {
+        grid-column: 2 !important;
+        grid-row: 2 !important;
+    }
+
+    .pf-log-nav {
+        position: static !important;
+        width: 100% !important;
+        min-width: 0 !important;
+        max-width: 100% !important;
+        height: 42px !important;
+        min-height: 42px !important;
+        transform: none !important;
+        box-sizing: border-box !important;
+    }
+
+    .pf-log-pagination {
+        margin-top: 6px !important;
+    }
+
+    .pf-log-card,
+    .pf-log-card.pf-log-game-card {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        min-height: 0 !important;
+        padding: 14px 13px 15px !important;
+        box-sizing: border-box !important;
+        box-shadow: 4px 4px 0 #393242 !important;
+    }
+
+    .pf-log-card-header {
+        display: grid !important;
+        grid-template-columns: minmax(0, 1fr) !important;
+        gap: 4px !important;
+        padding-bottom: 8px !important;
+    }
+
+    .pf-log-versus {
+        width: 100% !important;
+        display: grid !important;
+        grid-template-columns: 30px minmax(0, 1fr) 30px !important;
+        align-items: center !important;
+        gap: 6px !important;
+    }
+
+    .pf-log-mini-character {
+        width: 30px !important;
+        height: 30px !important;
+    }
+
+    .pf-log-versus strong {
+        min-width: 0 !important;
+        display: flex !important;
+        justify-content: center !important;
+        flex-wrap: wrap !important;
+        gap: 4px 6px !important;
+        font-size: 1rem !important;
+        line-height: 1.2 !important;
+        text-align: center !important;
+    }
+
+    .pf-log-card-header > span {
+        font-size: .76rem !important;
+        line-height: 1.2 !important;
+    }
+
+    .pf-log-card-body {
+        padding-top: 9px !important;
+    }
+
+    /* PICK / RULE lines no longer reserve a huge fixed label column */
+    .pf-log-stat-lines {
+        gap: 3px !important;
+        margin-bottom: 10px !important;
+        padding: 7px 8px !important;
+        border-left-width: 4px !important;
+    }
+
+    .pf-log-stat-lines .pf-log-line {
+        display: grid !important;
+        grid-template-columns: 82px 12px minmax(0, 1fr) !important;
+        gap: 3px !important;
+        align-items: start !important;
+        font-size: .86rem !important;
+        line-height: 1.35 !important;
+        overflow-wrap: anywhere !important;
+    }
+
+    .pf-log-judgement-title {
+        margin: 0 0 5px !important;
+        padding-bottom: 5px !important;
+        font-size: .45rem !important;
+    }
+
+    .pf-log-judgement-round {
+        padding: 8px 0 !important;
+    }
+
+    .pf-log-round-top {
+        display: grid !important;
+        grid-template-columns: 26px minmax(0, 1fr) !important;
+        gap: 4px !important;
+        align-items: start !important;
+    }
+
+    .pf-log-round-top strong {
+        font-size: .9rem !important;
+        line-height: 1.25 !important;
+    }
+
+    .pf-log-round-win {
+        grid-column: 2 !important;
+        justify-self: start !important;
+        margin-top: 1px !important;
+        font-size: .8rem !important;
+        line-height: 1.2 !important;
+    }
+
+    .pf-log-judgement-round p {
+        margin: 5px 0 0 30px !important;
+        font-size: .82rem !important;
+        line-height: 1.42 !important;
+    }
+
+    .pf-log-conclusion {
+        margin-top: 7px !important;
+        padding: 9px !important;
+    }
+
+    .pf-log-conclusion strong {
+        font-size: 1rem !important;
+    }
+
+    .pf-log-conclusion p {
+        margin-top: 4px !important;
+        font-size: .82rem !important;
+        line-height: 1.4 !important;
+    }
+
+
+    /* =========================================================
+       MOBILE APP-LIKE BOTTOM NAV v30
+       HOW TO / BATTLE / LOG
+       Desktop header and desktop HOME buttons unchanged.
+       Mobile HOME keeps GAME START; its duplicate HOW TO button is hidden.
+       ========================================================= */
+
+    @media (max-width: 760px) {
+        /* Mobile navigation replaces the desktop-style top header. */
+        .header {
+            display: none !important;
+        }
+
+        body {
+            padding-bottom: 92px !important;
+        }
+
+        body.pf-mobile-battle-focus {
+            padding-bottom: 18px !important;
+        }
+
+        /* Hide only the duplicate HOW TO control inside HOME on mobile. */
+        #home .pf-mobile-home-howto-hidden {
+            display: none !important;
+        }
+
+        .pf-mobile-bottom-nav {
+            position: fixed;
+            left: 50%;
+            bottom: max(10px, env(safe-area-inset-bottom));
+            z-index: 9999;
+            width: min(calc(100% - 24px), 430px);
+            min-height: 68px;
+            transform: translateX(-50%);
+            display: grid;
+            grid-template-columns: 1fr 1.12fr 1fr;
+            align-items: end;
+            gap: 6px;
+            padding: 7px 8px 8px;
+            border: 3px solid #30283d;
+            background: rgba(255, 248, 232, .97);
+            box-shadow: 5px 5px 0 #30283d;
+            box-sizing: border-box;
+            backdrop-filter: blur(8px);
+        }
+
+        body.pf-mobile-battle-focus .pf-mobile-bottom-nav {
+            display: none !important;
+        }
+
+        .pf-mobile-nav-item {
+            appearance: none;
+            border: 0;
+            background: transparent;
+            color: #625481;
+            min-width: 0;
+            min-height: 50px;
+            padding: 6px 4px 5px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 3px;
+            font-family: "Press Start 2P", cursive;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .pf-mobile-nav-item:active {
+            transform: translate(2px, 2px);
+        }
+
+        .pf-mobile-nav-icon {
+            display: grid;
+            place-items: center;
+            min-height: 24px;
+            font-family: "Galmuri11", "Galmuri", sans-serif;
+            font-size: 1.36rem;
+            line-height: 1;
+            font-weight: 900;
+        }
+
+        .pf-mobile-nav-label {
+            display: block;
+            max-width: 100%;
+            font-size: .42rem;
+            line-height: 1.15;
+            white-space: nowrap;
+        }
+
+        /* BATTLE is the center anchor and returns to the existing HOME/START screen. */
+        .pf-mobile-nav-main {
+            position: relative;
+            min-height: 60px;
+            margin-top: -16px;
+            padding: 5px 6px 7px;
+            border: 3px solid #30283d;
+            background: #f6d0dc;
+            color: #944967;
+            box-shadow: 3px 3px 0 #30283d;
+        }
+
+        .pf-mobile-nav-main:active {
+            transform: translate(2px, 2px);
+            box-shadow: 1px 1px 0 #30283d;
+        }
+
+        .pf-mobile-nav-battle-icon {
+            width: 31px;
+            height: 31px;
+            min-height: 31px;
+            border: 2px solid #944967;
+            background: #fff7e5;
+            font-size: 1.06rem;
+        }
+
+        .pf-mobile-nav-help-icon {
+            font-family: "Press Start 2P", cursive;
+            font-size: .78rem;
+        }
+
+        #home,
+        #battle-log,
+        #how-to-play {
+            scroll-margin-top: 10px;
+            scroll-margin-bottom: 92px;
+        }
+    }
+
 @media (max-width: 420px) {
+
+    .pf-score-row,
+    .pf-score-panel {
+        grid-template-columns: minmax(0, 1fr) 54px minmax(0, 1fr) !important;
+        gap: 5px !important;
+    }
+
+    .pf-score-mid {
+        min-width: 54px !important;
+        max-width: 54px !important;
+        font-size: .29rem !important;
+    }
+
+    .pf-action-btn,
+    .pf-action-row-single .pf-action-btn {
+        font-size: .82rem !important;
+    }
+
+    .pf-log-card,
+    .pf-log-card.pf-log-game-card {
+        padding: 12px 10px 13px !important;
+    }
+
 
     .pf-score-row,
     .pf-score-panel {
@@ -10778,6 +11294,8 @@ ${filtered.map((log, index) => `
     installV8FinalDesignStyles();
     installV9FinalMicroPolishStyles();
     installFinalMobileResponsiveFixStyles();
+    initializeMobileBottomNav();
+    removeMobileHomeHowToButton();
     renderCharacterSelectors();
     bindEvents();
     renderPlayerStatus(
@@ -10789,4 +11307,4 @@ ${filtered.map((log, index) => `
     updateSituationStatus();
     renderSelectedRules();
     updateFightButtonState();
-});
+});           
