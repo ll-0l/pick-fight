@@ -11059,8 +11059,8 @@ ${filtered.map((log, index) => `
 
 
     /* =========================================================
-       MOBILE APP-LIKE BOTTOM NAV v32
-       Clean beige mobile nav with pink accent.
+       MOBILE APP-LIKE BOTTOM NAV v33
+       Full-width pixel dock, sharper icons, square center action.
        ========================================================= */
 
     @media (max-width: 760px) {
@@ -11069,7 +11069,7 @@ ${filtered.map((log, index) => `
         }
 
         body {
-            padding-bottom: 92px !important;
+            padding-bottom: 98px !important;
         }
 
         body.pf-mobile-battle-focus {
@@ -11077,10 +11077,10 @@ ${filtered.map((log, index) => `
         }
 
         #home {
-            min-height: calc(100svh - 92px) !important;
+            min-height: calc(100svh - 98px) !important;
             box-sizing: border-box !important;
-            padding-top: 18px !important;
-            padding-bottom: 18px !important;
+            padding-top: 16px !important;
+            padding-bottom: 12px !important;
         }
 
         #home .pf-mobile-home-howto-hidden {
@@ -11089,21 +11089,20 @@ ${filtered.map((log, index) => `
 
         .pf-mobile-bottom-nav {
             position: fixed;
-            left: 50%;
+            left: 0;
+            right: 0;
             bottom: 0;
             z-index: 9999;
-            width: min(calc(100% - 16px), 420px);
-            transform: translateX(-50%);
+            width: 100%;
             display: grid;
-            grid-template-columns: 1fr 1.12fr 1fr;
+            grid-template-columns: 1fr auto 1fr;
             align-items: end;
-            gap: 4px;
-            padding: 8px 14px calc(10px + env(safe-area-inset-bottom));
-            background: rgba(247, 241, 223, 0.97);
+            gap: 0;
+            padding: 8px 10px calc(8px + env(safe-area-inset-bottom));
+            background: #f5eedf;
             border-top: 4px solid #30283d;
-            box-shadow: 0 -4px 0 rgba(48, 40, 61, 0.14);
+            box-shadow: 0 -4px 0 rgba(48, 40, 61, 0.10);
             box-sizing: border-box;
-            backdrop-filter: blur(2px);
         }
 
         body.pf-mobile-battle-focus .pf-mobile-bottom-nav {
@@ -11113,87 +11112,90 @@ ${filtered.map((log, index) => `
         .pf-mobile-nav-item {
             appearance: none;
             min-width: 0;
-            min-height: 56px;
-            padding: 0 4px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 4px;
             border: none;
             background: transparent;
             box-shadow: none;
             font-family: "Press Start 2P", cursive;
             cursor: pointer;
             -webkit-tap-highlight-color: transparent;
-            color: #6b6278;
-            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #514967;
         }
 
         .pf-mobile-nav-item:active {
             transform: translateY(1px);
         }
 
-        .pf-mobile-nav-icon {
+        .pf-mobile-nav-side {
+            min-height: 54px;
+            gap: 5px;
+            padding: 2px 0 0;
+            color: #5d5670;
+        }
+
+        .pf-mobile-nav-side .pf-mobile-nav-icon {
             display: grid;
             place-items: center;
             width: 24px;
             height: 24px;
-            min-height: 24px;
-            border: none;
-            background: transparent;
-            font-family: "Press Start 2P", cursive;
-            font-size: 1rem;
+            font-size: 1.08rem;
             line-height: 1;
+            color: #5a526a;
             font-weight: 900;
-            box-sizing: border-box;
         }
 
         .pf-mobile-nav-label {
             display: block;
-            max-width: 100%;
             font-size: .46rem;
-            line-height: 1.1;
+            line-height: 1.05;
             white-space: nowrap;
             letter-spacing: 0;
         }
 
-        .pf-mobile-nav-side {
-            color: #736984;
-        }
-
-        .pf-mobile-nav-side .pf-mobile-nav-icon {
-            color: #7a6f8e;
-        }
-
         .pf-mobile-nav-main {
             position: relative;
-            min-height: 70px;
+            min-height: 78px;
+            gap: 6px;
+            padding: 0 12px;
             margin-top: -18px;
-            color: #a04f72;
-            gap: 5px;
+            color: #944f71;
         }
 
         .pf-mobile-nav-main .pf-mobile-nav-icon {
-            width: 54px;
-            height: 54px;
-            min-height: 54px;
-            border-radius: 999px;
-            background: #f3c6d6;
-            color: #8d4566;
-            border: 3px solid #30283d;
-            box-shadow: 0 4px 0 #30283d;
-            font-size: 1.12rem;
+            display: grid;
+            place-items: center;
+            width: 72px;
+            height: 56px;
+            background: linear-gradient(180deg, #efbfd2 0%, #e5a9c2 48%, #d98faf 100%);
+            border: 4px solid #30283d;
+            box-shadow: 4px 4px 0 #30283d;
+            color: #7c3f5d;
+            font-size: 1.18rem;
+            line-height: 1;
+            font-weight: 900;
         }
 
         .pf-mobile-nav-main .pf-mobile-nav-label {
-            color: #8d4566;
             font-size: .48rem;
+            color: #944f71;
         }
 
         .pf-mobile-nav-help-icon,
+        .pf-mobile-nav-log-icon,
+        .pf-mobile-nav-battle-icon {
+            font-family: "Press Start 2P", cursive;
+        }
+
+        .pf-mobile-nav-help-icon {
+            transform: translateY(1px);
+        }
+
         .pf-mobile-nav-log-icon {
-            font-size: 1.02rem;
+            font-size: 1rem !important;
+            letter-spacing: -0.02em;
         }
 
         .pf-mobile-nav-battle-icon {
@@ -11204,7 +11206,7 @@ ${filtered.map((log, index) => `
         #battle-log,
         #how-to-play {
             scroll-margin-top: 10px;
-            scroll-margin-bottom: 92px;
+            scroll-margin-bottom: 98px;
         }
     }
 
