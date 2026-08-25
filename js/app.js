@@ -5722,6 +5722,7 @@ ${escapeHTML(
                     ||
                     "AI 판정 중 오류가 발생했습니다."
                 );
+
                 showMessage(
                     error?.message
                     ||
@@ -5807,7 +5808,6 @@ id="pfForcedDeathChoiceButton"
                     );
             });
         }
-
         box.innerHTML = `
 <h3>
 ${close
@@ -5877,6 +5877,7 @@ id="pfDeathChoiceButton"
     ENTER DEATH MATCH RULE MODE
     ========================================================= */
     function enterDeathMatchRuleMode(forcedDraw = false) {
+        setMobileBattleFocus(false);
         deathMatchRuleMode =
             true;
         deathMatchRule =
@@ -11317,6 +11318,124 @@ ${filtered.map((log, index) => `
             padding: 11px 10px !important;
             box-sizing: border-box !important;
             text-align: center !important;
+            white-space: normal !important;
+        }
+    }
+
+
+    /* =========================================================
+       MOBILE TRUE BATTLE-ONLY VIEW v42
+       During active ENTRY / countdown / judging / round result:
+       battleResult becomes the viewport. No form/footer/log peeking.
+       ========================================================= */
+
+    @media (max-width: 760px) {
+        body.pf-mobile-battle-focus {
+            overflow: hidden !important;
+        }
+
+        body.pf-mobile-battle-focus #battleResult {
+            position: fixed !important;
+            inset: 0 !important;
+            z-index: 9998 !important;
+            width: 100% !important;
+            height: 100svh !important;
+            max-width: none !important;
+            margin: 0 !important;
+            padding: 12px 10px 24px !important;
+            overflow-x: hidden !important;
+            overflow-y: auto !important;
+            box-sizing: border-box !important;
+
+            background-color: #d7e5df !important;
+            background-image:
+                radial-gradient(rgba(255,255,255,.55) 1px, transparent 1px) !important;
+            background-size: 8px 8px !important;
+        }
+
+        body.pf-mobile-battle-focus #battleResult > .pf-scene {
+            width: min(100%, 390px) !important;
+            max-width: 390px !important;
+            min-height: calc(100svh - 36px) !important;
+            margin: 0 auto !important;
+            box-sizing: border-box !important;
+        }
+
+        /* Single action rows: force exactly one centered full-width button.
+           :has catches every generator, not just waitForButtons(). */
+        .pf-action-row:has(> .pf-action-btn:only-child),
+        .pf-action-row-single {
+            display: grid !important;
+            grid-template-columns: minmax(0, 1fr) !important;
+            width: calc(100% - 18px) !important;
+            max-width: calc(100% - 18px) !important;
+            margin: 10px auto 0 !important;
+            gap: 0 !important;
+        }
+
+        .pf-action-row:has(> .pf-action-btn:only-child) > .pf-action-btn,
+        .pf-action-row-single > .pf-action-btn {
+            width: 100% !important;
+            max-width: 100% !important;
+            min-width: 0 !important;
+            margin: 0 !important;
+            justify-self: stretch !important;
+            text-align: center !important;
+            box-sizing: border-box !important;
+        }
+    }
+
+
+    /* =========================================================
+       MOBILE AI JUDGE FIT v43
+       Keep loading / busy cards fully inside the battle frame.
+       ========================================================= */
+    @media (max-width: 760px) {
+        body.pf-mobile-battle-focus .pf-effect,
+        body.pf-mobile-battle-focus .pf-ai-retry-effect {
+            left: 50% !important;
+            right: auto !important;
+            width: calc(100% - 34px) !important;
+            max-width: 330px !important;
+            min-width: 0 !important;
+            transform: translate(-50%, -50%) !important;
+            padding: 12px 12px 13px !important;
+            border-width: 3px !important;
+            box-shadow: 4px 4px 0 #191522 !important;
+            box-sizing: border-box !important;
+            overflow: hidden !important;
+        }
+
+        body.pf-mobile-battle-focus .pf-ai-retry-effect > div {
+            width: 100% !important;
+            max-width: 100% !important;
+            font-size: clamp(.72rem, 3.4vw, .9rem) !important;
+            line-height: 1.35 !important;
+            white-space: nowrap !important;
+            box-sizing: border-box !important;
+        }
+
+        body.pf-mobile-battle-focus .pf-effect span,
+        body.pf-mobile-battle-focus .pf-ai-retry-effect span {
+            width: 100% !important;
+            max-width: 100% !important;
+            margin-top: 7px !important;
+            font-size: clamp(.82rem, 3.7vw, .96rem) !important;
+            line-height: 1.42 !important;
+            white-space: normal !important;
+            word-break: keep-all !important;
+            overflow-wrap: anywhere !important;
+            box-sizing: border-box !important;
+        }
+
+        body.pf-mobile-battle-focus #pfAIRetryButton {
+            display: block !important;
+            width: min(190px, calc(100% - 8px)) !important;
+            max-width: calc(100% - 8px) !important;
+            min-width: 0 !important;
+            margin: 10px auto 0 !important;
+            padding: 10px 8px !important;
+            box-sizing: border-box !important;
             white-space: normal !important;
         }
     }
