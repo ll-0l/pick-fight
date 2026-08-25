@@ -39,6 +39,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const VS_DURATION = 1800;
     const COUNT_DURATION = 800;
     const FIGHT_DURATION = 1000;
+
+    /* =========================================================
+    BONUS: BATTLE LOG LOCAL STORAGE
+    ========================================================= */
+    const BATTLE_LOG_STORAGE_KEY = "pickFightBattleLogs";
+    const MAX_STORED_BATTLE_LOGS = 50;
     /* =========================================================
     GLOBAL STATE
     ========================================================= */
@@ -157,6 +163,64 @@ document.addEventListener("DOMContentLoaded", () => {
             "message-success",
             "message-info"
         );
+    }
+
+    /* =========================================================
+    BONUS: BATTLE LOG PERSISTENCE
+    새로고침 후에도 Battle Log가 유지되도록 localStorage 사용
+    ========================================================= */
+    function saveBattleLogsToStorage() {
+        try {
+            const safeLogs = battleLogs
+                .slice(0, MAX_STORED_BATTLE_LOGS);
+
+            localStorage.setItem(
+                BATTLE_LOG_STORAGE_KEY,
+                JSON.stringify(safeLogs)
+            );
+        } catch (error) {
+            console.warn(
+                "[PICK FIGHT] Battle Log 저장 실패:",
+                error
+            );
+        }
+    }
+
+    function loadBattleLogsFromStorage() {
+        try {
+            const saved = localStorage.getItem(
+                BATTLE_LOG_STORAGE_KEY
+            );
+
+            if (!saved) {
+                battleLogs = [];
+                return;
+            }
+
+            const parsed = JSON.parse(saved);
+
+            if (!Array.isArray(parsed)) {
+                battleLogs = [];
+                return;
+            }
+
+            battleLogs = parsed
+                .filter(log =>
+                    log
+                    && typeof log === "object"
+                    && typeof log.playerA === "string"
+                    && typeof log.playerB === "string"
+                    && typeof log.winner === "string"
+                    && Array.isArray(log.rounds)
+                )
+                .slice(0, MAX_STORED_BATTLE_LOGS);
+        } catch (error) {
+            console.warn(
+                "[PICK FIGHT] Battle Log 불러오기 실패:",
+                error
+            );
+            battleLogs = [];
+        }
     }
     /* =========================================================
     STYLE
@@ -5082,7 +5146,6 @@ cursor:pointer;
                     document.getElementById(
                         "pfAIRetryButton"
                     );
-
                 if (!button) {
                     resolve();
                     return;
@@ -8444,6 +8507,13 @@ white-space: normal;
             conclusion: buildFinalConclusion(state, decision),
             timestamp
         });
+
+        battleLogs = battleLogs.slice(
+            0,
+            MAX_STORED_BATTLE_LOGS
+        );
+        saveBattleLogsToStorage();
+
         battleLogSearchTerm = "";
         battleLogCursor = 0;
         const search = document.getElementById("pfBattleLogSearch");
@@ -10205,6 +10275,7 @@ ${filtered.map((log, index) => `
     ========================================================= */
     installStyles();
     installFinalPixelStyles();
+    loadBattleLogsFromStorage();
     initializeBattleLogUI();
     installV5FinalDesignStyles();
     installV8FinalDesignStyles();
