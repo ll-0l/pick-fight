@@ -5808,6 +5808,7 @@ id="pfForcedDeathChoiceButton"
                     );
             });
         }
+
         box.innerHTML = `
 <h3>
 ${close
@@ -5953,8 +5954,7 @@ id="pfDeathChoiceButton"
     function getKoreanSubjectParticle(word) {
         const text =
             String(word || "").trim();
-
-        if (!text) {
+                    if (!text) {
             return "가";
         }
 
@@ -11437,6 +11437,143 @@ ${filtered.map((log, index) => `
             padding: 10px 8px !important;
             box-sizing: border-box !important;
             white-space: normal !important;
+        }
+    }
+
+
+    /* =========================================================
+       MOBILE AI OVERLAY NO-CLIP v45
+       Root fix: escape arena overflow by using viewport-fixed overlay.
+       ========================================================= */
+    @media (max-width: 760px) {
+        body.pf-mobile-battle-focus .pf-effect,
+        body.pf-mobile-battle-focus .pf-ai-retry-effect {
+            position: fixed !important;
+            left: 50vw !important;
+            top: 43svh !important;
+            right: auto !important;
+            bottom: auto !important;
+            width: min(270px, calc(100vw - 64px)) !important;
+            max-width: 270px !important;
+            min-width: 0 !important;
+            margin: 0 !important;
+            padding: 12px 12px 13px !important;
+            transform: translate(-50%, -50%) !important;
+            border: 3px solid #fff1a9 !important;
+            background: rgba(51,42,75,.98) !important;
+            box-shadow: 4px 4px 0 #191522 !important;
+            box-sizing: border-box !important;
+            overflow: visible !important;
+            z-index: 10020 !important;
+        }
+
+        body.pf-mobile-battle-focus .pf-ai-retry-effect > div {
+            width: 100% !important;
+            margin: 0 !important;
+            font-size: .72rem !important;
+            line-height: 1.28 !important;
+            letter-spacing: 0 !important;
+            white-space: nowrap !important;
+            text-align: center !important;
+        }
+
+        body.pf-mobile-battle-focus .pf-effect span,
+        body.pf-mobile-battle-focus .pf-ai-retry-effect span {
+            display: block !important;
+            width: 100% !important;
+            margin: 8px 0 0 !important;
+            padding: 0 !important;
+            font-size: .84rem !important;
+            line-height: 1.4 !important;
+            white-space: normal !important;
+            word-break: keep-all !important;
+            overflow-wrap: break-word !important;
+            text-align: center !important;
+            box-sizing: border-box !important;
+        }
+
+        body.pf-mobile-battle-focus #pfAIRetryButton {
+            display: block !important;
+            width: 176px !important;
+            max-width: 100% !important;
+            min-width: 0 !important;
+            min-height: 44px !important;
+            margin: 10px auto 0 !important;
+            padding: 8px 8px !important;
+            box-sizing: border-box !important;
+            white-space: normal !important;
+            font-size: .86rem !important;
+        }
+    }
+
+
+    /* =========================================================
+       DESKTOP AI JUDGE FIT v46
+       Desktop only:
+       - keep the original battle scene width
+       - constrain AI JUDGE / BUSY inside the arena
+       - allow message wrapping instead of horizontal clipping
+       ========================================================= */
+    @media (min-width: 761px) {
+        /* Do not shrink the existing desktop battle layout. */
+        #battleResult,
+        .battle-result {
+            width: 100% !important;
+            max-width: none !important;
+            box-sizing: border-box !important;
+        }
+
+        #battleResult > .pf-scene,
+        .battle-result > .pf-scene {
+            width: 100% !important;
+            max-width: none !important;
+            box-sizing: border-box !important;
+        }
+
+        /* AI overlay stays centered INSIDE the desktop arena. */
+        .pf-effect,
+        .pf-ai-retry-effect {
+            left: 50% !important;
+            right: auto !important;
+            width: min(520px, calc(100% - 120px)) !important;
+            max-width: 520px !important;
+            min-width: 320px !important;
+            padding: 15px 18px 16px !important;
+            transform: translate(-50%, -50%) !important;
+            box-sizing: border-box !important;
+            overflow: visible !important;
+        }
+
+        .pf-ai-retry-effect > div {
+            width: 100% !important;
+            max-width: 100% !important;
+            font-size: clamp(.85rem, 1.2vw, 1.05rem) !important;
+            line-height: 1.35 !important;
+            white-space: normal !important;
+            word-break: keep-all !important;
+            overflow-wrap: break-word !important;
+            text-align: center !important;
+            box-sizing: border-box !important;
+        }
+
+        .pf-effect span,
+        .pf-ai-retry-effect span {
+            width: 100% !important;
+            max-width: 100% !important;
+            margin-top: 8px !important;
+            white-space: normal !important;
+            word-break: keep-all !important;
+            overflow-wrap: break-word !important;
+            text-align: center !important;
+            box-sizing: border-box !important;
+        }
+
+        #pfAIRetryButton {
+            width: min(220px, 100%) !important;
+            max-width: 100% !important;
+            min-width: 0 !important;
+            margin: 10px auto 0 !important;
+            box-sizing: border-box !important;
         }
     }
 
