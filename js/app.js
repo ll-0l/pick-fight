@@ -198,7 +198,7 @@ document.addEventListener("DOMContentLoaded", () => {
 </button>
 
 <button type="button" class="pf-mobile-nav-item pf-mobile-nav-side" data-target="battle-log" aria-label="BATTLE LOG로 이동">
-    <span class="pf-mobile-nav-icon pf-mobile-nav-log-icon" aria-hidden="true">≡</span>
+    <span class="pf-mobile-nav-icon pf-mobile-nav-log-icon" aria-hidden="true"></span>
     <span class="pf-mobile-nav-label">LOG</span>
 </button>
 `;
@@ -5668,6 +5668,7 @@ ${escapeHTML(
                 기존 공격 모션으로 넘어간다.
                 */
                 clearEffect();
+
             } catch (error) {
                 clearEffect();
 
@@ -5686,7 +5687,6 @@ ${escapeHTML(
                         ||
                         "AI 심판이 잠깐 바빠요! 잠시 후 다시 판정해주세요."
                     );
-
                     continue;
                 }
 
@@ -11059,8 +11059,8 @@ ${filtered.map((log, index) => `
 
 
     /* =========================================================
-       MOBILE APP-LIKE BOTTOM NAV v33
-       Full-width pixel dock, sharper icons, square center action.
+       MOBILE APP-LIKE BOTTOM NAV v34
+       Full-width beige dock / bold pixel icons / solid pink battle key.
        ========================================================= */
 
     @media (max-width: 760px) {
@@ -11069,7 +11069,7 @@ ${filtered.map((log, index) => `
         }
 
         body {
-            padding-bottom: 98px !important;
+            padding-bottom: 96px !important;
         }
 
         body.pf-mobile-battle-focus {
@@ -11077,7 +11077,7 @@ ${filtered.map((log, index) => `
         }
 
         #home {
-            min-height: calc(100svh - 98px) !important;
+            min-height: calc(100svh - 96px) !important;
             box-sizing: border-box !important;
             padding-top: 16px !important;
             padding-bottom: 12px !important;
@@ -11094,14 +11094,15 @@ ${filtered.map((log, index) => `
             bottom: 0;
             z-index: 9999;
             width: 100%;
+            min-height: 88px;
             display: grid;
-            grid-template-columns: 1fr auto 1fr;
-            align-items: end;
-            gap: 0;
-            padding: 8px 10px calc(8px + env(safe-area-inset-bottom));
-            background: #f5eedf;
-            border-top: 4px solid #30283d;
-            box-shadow: 0 -4px 0 rgba(48, 40, 61, 0.10);
+            grid-template-columns: minmax(0, 1fr) 96px minmax(0, 1fr);
+            align-items: center;
+            gap: 8px;
+            padding: 7px 14px calc(8px + env(safe-area-inset-bottom));
+            background: #f6efdf;
+            border-top: 4px solid #342b40;
+            box-shadow: 0 -3px 0 rgba(52, 43, 64, .12);
             box-sizing: border-box;
         }
 
@@ -11112,101 +11113,135 @@ ${filtered.map((log, index) => `
         .pf-mobile-nav-item {
             appearance: none;
             min-width: 0;
-            border: none;
+            margin: 0;
+            padding: 0;
+            border: 0;
             background: transparent;
             box-shadow: none;
-            font-family: "Press Start 2P", cursive;
-            cursor: pointer;
-            -webkit-tap-highlight-color: transparent;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            color: #514967;
+            gap: 5px;
+            color: #494155;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+            box-sizing: border-box;
         }
 
         .pf-mobile-nav-item:active {
-            transform: translateY(1px);
+            transform: translateY(2px);
         }
 
         .pf-mobile-nav-side {
-            min-height: 54px;
-            gap: 5px;
-            padding: 2px 0 0;
-            color: #5d5670;
+            min-height: 64px;
         }
 
-        .pf-mobile-nav-side .pf-mobile-nav-icon {
+        .pf-mobile-nav-icon {
             display: grid;
             place-items: center;
-            width: 24px;
-            height: 24px;
-            font-size: 1.08rem;
+            width: 30px;
+            height: 30px;
+            min-height: 30px;
+            color: #4b4356;
+            font-family: "Press Start 2P", cursive;
+            font-size: 1.12rem;
             line-height: 1;
-            color: #5a526a;
             font-weight: 900;
+            box-sizing: border-box;
         }
 
         .pf-mobile-nav-label {
             display: block;
-            font-size: .46rem;
-            line-height: 1.05;
+            max-width: 100%;
+            color: #51485d;
+            font-family: "Galmuri11", "Galmuri", sans-serif;
+            font-size: .78rem;
+            line-height: 1;
+            font-weight: 900;
+            letter-spacing: -.02em;
             white-space: nowrap;
-            letter-spacing: 0;
+            text-shadow: .6px 0 0 currentColor;
         }
 
-        .pf-mobile-nav-main {
+        /* HOW TO: large, plain, high-contrast pixel question mark. */
+        .pf-mobile-nav-help-icon {
+            font-size: 1.2rem;
+            color: #5f5470;
+            transform: translateY(1px);
+        }
+
+        /* LOG: CSS-drawn document icon so it stays visible on every device/font. */
+        .pf-mobile-nav-log-icon {
             position: relative;
-            min-height: 78px;
-            gap: 6px;
-            padding: 0 12px;
-            margin-top: -18px;
-            color: #944f71;
+            width: 24px;
+            height: 28px;
+            border: 3px solid #5a5165;
+            background: transparent;
+        }
+
+        .pf-mobile-nav-log-icon::before,
+        .pf-mobile-nav-log-icon::after {
+            content: "";
+            position: absolute;
+            left: 4px;
+            right: 4px;
+            height: 3px;
+            background: #5a5165;
+        }
+
+        .pf-mobile-nav-log-icon::before {
+            top: 6px;
+            box-shadow: 0 6px 0 #5a5165, 0 12px 0 #5a5165;
+        }
+
+        .pf-mobile-nav-log-icon::after {
+            display: none;
+        }
+
+        /* BATTLE: one solid pixel button; icon and label live INSIDE the same box. */
+        .pf-mobile-nav-main {
+            width: 92px;
+            height: 70px;
+            min-height: 70px;
+            margin: 0 auto;
+            padding: 7px 6px 6px;
+            gap: 5px;
+            background: #e8a5be;
+            border: 4px solid #342b40;
+            box-shadow: 4px 4px 0 #342b40;
+            color: #713a55;
+        }
+
+        .pf-mobile-nav-main:active {
+            transform: translate(3px, 3px);
+            box-shadow: 1px 1px 0 #342b40;
         }
 
         .pf-mobile-nav-main .pf-mobile-nav-icon {
-            display: grid;
-            place-items: center;
-            width: 72px;
-            height: 56px;
-            background: linear-gradient(180deg, #efbfd2 0%, #e5a9c2 48%, #d98faf 100%);
-            border: 4px solid #30283d;
-            box-shadow: 4px 4px 0 #30283d;
-            color: #7c3f5d;
-            font-size: 1.18rem;
-            line-height: 1;
-            font-weight: 900;
+            width: auto;
+            height: auto;
+            min-height: 0;
+            border: 0;
+            background: transparent;
+            color: #713a55;
+            font-size: 1.28rem;
+            text-shadow: 1px 0 0 #713a55;
         }
 
         .pf-mobile-nav-main .pf-mobile-nav-label {
-            font-size: .48rem;
-            color: #944f71;
-        }
-
-        .pf-mobile-nav-help-icon,
-        .pf-mobile-nav-log-icon,
-        .pf-mobile-nav-battle-icon {
+            color: #713a55;
             font-family: "Press Start 2P", cursive;
-        }
-
-        .pf-mobile-nav-help-icon {
-            transform: translateY(1px);
-        }
-
-        .pf-mobile-nav-log-icon {
-            font-size: 1rem !important;
-            letter-spacing: -0.02em;
-        }
-
-        .pf-mobile-nav-battle-icon {
-            transform: translateY(1px);
+            font-size: .52rem;
+            font-weight: 900;
+            text-shadow: 1px 0 0 #713a55;
         }
 
         #home,
         #battle-log,
         #how-to-play {
             scroll-margin-top: 10px;
-            scroll-margin-bottom: 98px;
+            scroll-margin-bottom: 96px;
         }
     }
 
