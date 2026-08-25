@@ -189,11 +189,10 @@ document.addEventListener("DOMContentLoaded", () => {
         nav.innerHTML = `
 <button type="button" class="pf-mobile-nav-item pf-mobile-nav-side" data-target="how-to-play" aria-label="HOW TO PLAY로 이동">
     <span class="pf-mobile-nav-icon" aria-hidden="true">
-        <svg class="pf-nav-icon-svg" viewBox="0 0 24 24">
-            <path d="M3 4h7c1.3 0 2 .7 2 2v14c0-1.3-.7-2-2-2H3V4z"></path>
-            <path d="M21 4h-7c-1.3 0-2 .7-2 2v14c0-1.3.7-2 2-2h7V4z"></path>
-            <rect x="6" y="7" width="3" height="3"></rect>
-            <rect x="7" y="11" width="2" height="2"></rect>
+        <svg class="pf-nav-outline-svg" viewBox="0 0 24 24">
+            <path d="M3 5h7c1.2 0 2 .8 2 2v12c0-1.2-.8-2-2-2H3V5z"></path>
+            <path d="M21 5h-7c-1.2 0-2 .8-2 2v12c0-1.2.8-2 2-2h7V5z"></path>
+            <path d="M7 8h2M7 11h2M15 8h2M15 11h2"></path>
         </svg>
     </span>
     <span class="pf-mobile-nav-label">HOW TO</span>
@@ -201,19 +200,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
 <button type="button" class="pf-mobile-nav-item pf-mobile-nav-main" data-target="home" aria-label="BATTLE 시작 화면으로 이동">
     <span class="pf-mobile-nav-icon" aria-hidden="true">
-        <svg class="pf-nav-icon-svg pf-nav-battle-svg" viewBox="0 0 24 24">
-            <path d="M5 3h3v3h2v2h2v3h-2V9H8V7H6V5H5V3z"></path>
-            <rect x="10" y="10" width="4" height="4"></rect>
-            <rect x="7" y="13" width="3" height="3"></rect>
-            <rect x="5" y="15" width="3" height="3"></rect>
-            <rect x="4" y="18" width="5" height="2"></rect>
-            <rect x="3" y="20" width="3" height="2"></rect>
-
-            <path d="M19 3h-3v3h-2v2h-2v3h2V9h2V7h2V5h1V3z"></path>
-            <rect x="14" y="13" width="3" height="3"></rect>
-            <rect x="16" y="15" width="3" height="3"></rect>
-            <rect x="15" y="18" width="5" height="2"></rect>
-            <rect x="18" y="20" width="3" height="2"></rect>
+        <svg class="pf-nav-outline-svg pf-nav-battle-svg" viewBox="0 0 24 24">
+            <path d="M5 4l14 14"></path>
+            <path d="M19 4L5 18"></path>
+            <path d="M4 3h4v4"></path>
+            <path d="M20 3h-4v4"></path>
+            <path d="M4 17h4v4"></path>
+            <path d="M20 17h-4v4"></path>
         </svg>
     </span>
     <span class="pf-mobile-nav-label">BATTLE</span>
@@ -221,14 +214,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
 <button type="button" class="pf-mobile-nav-item pf-mobile-nav-side" data-target="battle-log" aria-label="BATTLE LOG로 이동">
     <span class="pf-mobile-nav-icon" aria-hidden="true">
-        <svg class="pf-nav-icon-svg" viewBox="0 0 24 24">
+        <svg class="pf-nav-outline-svg" viewBox="0 0 24 24">
             <rect x="5" y="3" width="14" height="18"></rect>
-            <rect class="pf-icon-cut" x="8" y="6" width="8" height="2"></rect>
-            <rect class="pf-icon-cut" x="8" y="10" width="8" height="2"></rect>
-            <rect class="pf-icon-cut" x="8" y="14" width="6" height="2"></rect>
-            <rect class="pf-icon-cut" x="3" y="6" width="3" height="2"></rect>
-            <rect class="pf-icon-cut" x="3" y="11" width="3" height="2"></rect>
-            <rect class="pf-icon-cut" x="3" y="16" width="3" height="2"></rect>
+            <path d="M8 7h8M8 11h8M8 15h6"></path>
         </svg>
     </span>
     <span class="pf-mobile-nav-label">LOG</span>
@@ -5686,6 +5674,7 @@ ${escapeHTML(
                 "AI JUDGE...",
                 "판정 중입니다! 잠시만 기다려주세요."
             );
+
             try {
                 result =
                     await createAIRoundResult(
@@ -5693,7 +5682,6 @@ ${escapeHTML(
                         rule,
                         label
                     );
-
                 /*
                 응답을 받은 뒤에만 로딩창을 닫고
                 기존 공격 모션으로 넘어간다.
@@ -11091,9 +11079,12 @@ ${filtered.map((log, index) => `
 
 
     /* =========================================================
-       MOBILE PIXEL DOCK v37
-       v36 dock/button layout preserved.
-       Icons simplified for instant readability.
+       MOBILE PIXEL DOCK v38
+       Final nav polish:
+       - v37 dock/button layout preserved
+       - outlined icons with more breathing room
+       - BATTLE icon + label use one dark-purple system
+       - BATTLE label fully inside the pink button
        ========================================================= */
 
     @media (max-width: 760px) {
@@ -11174,10 +11165,10 @@ ${filtered.map((log, index) => `
             font-size: .54rem;
             font-weight: 900;
             line-height: 1.05;
-            text-shadow: 1px 1px 0 #fff8e8;
             white-space: nowrap;
         }
 
+        /* Side icons: outlined, hollow, slightly smaller */
         .pf-mobile-nav-side .pf-mobile-nav-icon {
             display: grid;
             place-items: center;
@@ -11185,21 +11176,21 @@ ${filtered.map((log, index) => `
             height: 32px;
         }
 
-        /* Bold readable icon language.
-           Square corners + block cuts keep the pixel/game feel. */
-        .pf-nav-icon-svg {
-            width: 30px;
-            height: 30px;
+        .pf-nav-outline-svg {
+            width: 27px;
+            height: 27px;
             display: block;
-            fill: #594c70;
+            fill: none;
+            stroke: #594c70;
+            stroke-width: 2.2;
+            stroke-linecap: square;
+            stroke-linejoin: miter;
+            vector-effect: non-scaling-stroke;
             shape-rendering: crispEdges;
         }
 
-        .pf-nav-icon-svg .pf-icon-cut {
-            fill: #f7efdc;
-        }
-
-        /* BATTLE keeps the mini START-button look */
+        /* BATTLE keeps the v37 mini START-button feel,
+           but icon/text now live cleanly inside one button. */
         .pf-mobile-nav-main {
             position: relative;
             min-height: 76px;
@@ -11210,11 +11201,13 @@ ${filtered.map((log, index) => `
 
         .pf-mobile-nav-main .pf-mobile-nav-icon {
             position: relative;
-            display: grid;
-            place-items: start center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
             width: 98px;
             height: 60px;
-            padding-top: 4px;
+            padding-top: 5px;
             box-sizing: border-box;
             background: #e7a9c2;
             border: 4px solid #30283d;
@@ -11224,21 +11217,22 @@ ${filtered.map((log, index) => `
                 4px 4px 0 #30283d;
         }
 
-        .pf-mobile-nav-main .pf-nav-icon-svg {
-            width: 31px;
-            height: 31px;
-            fill: #654d6a;
+        .pf-mobile-nav-main .pf-nav-outline-svg {
+            width: 25px;
+            height: 25px;
+            stroke: #5c435f;
+            stroke-width: 2.4;
         }
 
         .pf-mobile-nav-main .pf-mobile-nav-label {
             position: absolute;
             left: 0;
             right: 0;
-            bottom: 8px;
+            bottom: 11px;
             z-index: 4;
-            color: #fff8e8;
-            font-size: .51rem;
-            text-shadow: 2px 2px 0 #934663;
+            color: #5c435f;
+            font-size: .50rem;
+            text-shadow: none;
             pointer-events: none;
         }
 
