@@ -5617,7 +5617,9 @@ ${escapeHTML(
             const row =
                 document.createElement("div");
             row.className =
-                "pf-action-row";
+                configs.length === 1
+                    ? "pf-action-row pf-action-row-single"
+                    : "pf-action-row";
             configs.forEach(config => {
                 const button =
                     document.createElement("button");
@@ -5685,6 +5687,7 @@ ${escapeHTML(
                         rule,
                         label
                     );
+
                 /*
                 응답을 받은 뒤에만 로딩창을 닫고
                 기존 공격 모션으로 넘어간다.
@@ -5719,7 +5722,6 @@ ${escapeHTML(
                     ||
                     "AI 판정 중 오류가 발생했습니다."
                 );
-
                 showMessage(
                     error?.message
                     ||
@@ -8774,6 +8776,26 @@ disabled
             : `전체 ${battleLogs.length}개의 배틀 기록`;
     }
     function battleLogCardHTML(log) {
+        const storedSuddenRule =
+            String(log.suddenDeathRule || "").trim();
+
+        const roundSuddenRule =
+            String(
+                (log.rounds || []).find(
+                    round => round.roundLabel === "SUDDEN DEATH"
+                )?.rule || ""
+            ).trim();
+
+        const suddenRule =
+            storedSuddenRule || roundSuddenRule;
+
+        const ruleSummary = [
+            ...(Array.isArray(log.baseRules) ? log.baseRules : []),
+            ...(suddenRule
+                ? [`SUDDEN DEATH: ${suddenRule}`]
+                : [])
+        ].join(" / ");
+
         const rounds = (log.rounds || [])
             .map((round, index) => {
                 const roundCode = round.roundLabel === "SUDDEN DEATH"
@@ -8835,7 +8857,7 @@ disabled
 <div class="pf-log-card-body">
 <div class="pf-log-meta pf-log-stat-lines">
 <p class="pf-log-line"><strong>오늘의 PICK</strong><span>▶</span>${escapeHTML(log.winner)}</p>
-<p class="pf-log-line"><strong>RULE</strong><span>▶</span>${escapeHTML(log.baseRules.join(" / "))}</p>
+<p class="pf-log-line"><strong>RULE</strong><span>▶</span>${escapeHTML(ruleSummary)}</p>
 </div>
 <div class="pf-log-judgement">
 <p class="pf-log-judgement-title"><span></span>FINAL JUDGEMENT</p>
@@ -11243,6 +11265,59 @@ ${filtered.map((log, index) => `
         #how-to-play {
             scroll-margin-top: 10px;
             scroll-margin-bottom: 94px;
+        }
+    }
+
+
+    /* =========================================================
+       MOBILE BATTLE FOCUS + SINGLE ACTION FIX v41
+       - During an active battle, show only the ARENA section.
+       - Prevent BATTLE LOG / HOME / HOW TO from peeking below.
+       - One-button actions always use one full-width column.
+       ========================================================= */
+
+    @media (max-width: 760px) {
+        body.pf-mobile-battle-focus #home,
+        body.pf-mobile-battle-focus #battle-log,
+        body.pf-mobile-battle-focus #how-to-play {
+            display: none !important;
+        }
+
+        body.pf-mobile-battle-focus #arena {
+            display: block !important;
+            min-height: 100svh !important;
+            margin-bottom: 0 !important;
+            padding-bottom: 18px !important;
+            box-sizing: border-box !important;
+        }
+
+        body.pf-mobile-battle-focus #arena + section,
+        body.pf-mobile-battle-focus #arena ~ #battle-log {
+            display: none !important;
+        }
+
+        /* NEXT ROUND GO / LAST JUDGEMENT / other single actions */
+        .pf-action-row.pf-action-row-single {
+            display: grid !important;
+            grid-template-columns: minmax(0, 1fr) !important;
+            width: calc(100% - 18px) !important;
+            max-width: calc(100% - 18px) !important;
+            margin: 10px auto 0 !important;
+            padding: 0 !important;
+            gap: 0 !important;
+        }
+
+        .pf-action-row.pf-action-row-single .pf-action-btn {
+            grid-column: 1 !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            min-width: 0 !important;
+            min-height: 54px !important;
+            margin: 0 !important;
+            padding: 11px 10px !important;
+            box-sizing: border-box !important;
+            text-align: center !important;
+            white-space: normal !important;
         }
     }
 
