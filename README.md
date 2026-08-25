@@ -258,22 +258,22 @@ PLAYER B HP > PLAYER A HP
 
 ---
 
-## 14. Gemini API Rate Limit 처리
+## 14. Gemini API 일시 오류 처리 (429 / 503)
 
-Gemini API가 많은 요청으로 인해 `429 RESOURCE_EXHAUSTED`를 반환할 수 있습니다.
+Gemini API가 많은 요청으로 인해 `429 RESOURCE_EXHAUSTED`를 반환하거나, 일시적인 서버 혼잡으로 `503 UNAVAILABLE`을 반환할 수 있습니다.
 
-이를 대비하여 백엔드에서 자동 재시도를 수행합니다.
+이를 대비하여 백엔드에서는 **429 / 503을 일시적 오류로 판단해 자동 재시도**를 수행합니다.
 
 ```text
 1차 요청
 ↓
-429 발생
+429 또는 503 발생
 ↓
 1.5초 대기
 ↓
 재시도
 ↓
-429 발생
+429 또는 503 발생
 ↓
 3초 대기
 ↓
@@ -332,6 +332,8 @@ PLAYER 이름 뒤에 붙는 `이/가` 조사를 자동으로 처리합니다.
 
 완료된 배틀은 Battle Log에서 다시 확인할 수 있습니다.
 
+Battle Log는 `localStorage`에 저장되어 **브라우저를 새로고침해도 기록이 유지**됩니다. 최근 기록은 최대 50개까지 저장합니다.
+
 ### CARD VIEW
 
 상세 기록을 확인합니다.
@@ -343,6 +345,8 @@ PLAYER 이름 뒤에 붙는 `이/가` 조사를 자동으로 처리합니다.
 - FINAL JUDGEMENT
 - 라운드별 판정
 - 최종 결론
+
+SUDDEN DEATH가 진행된 경우 Battle Log 상단 RULE 요약에도 사용한 SUDDEN DEATH RULE이 함께 표시됩니다.
 
 동점 라운드는:
 
@@ -362,7 +366,20 @@ DRAW
 
 ---
 
-## 18. 기술 스택
+## 18. 모바일 반응형 UX
+
+모바일에서는 데스크톱 구조를 그대로 축소하지 않고 게임 흐름에 맞춰 전용 UX를 적용했습니다.
+
+- 상단 데스크톱 네비게이션 대신 하단 `HOW TO / BATTLE / LOG` 네비게이션 제공
+- HOME에서는 `GAME START`를 중심으로 단순화
+- 실제 배틀 진행 중에는 하단 네비게이션을 숨기고 **전투 화면만 전체 화면으로 집중 표시**
+- ENTRY / VS / 카운트다운 / AI JUDGE / 판정 결과 / SUDDEN DEATH를 모바일 폭에 맞게 최적화
+- `NEXT ROUND GO!`, `LAST JUDGEMENT` 등 단일 액션 버튼은 모바일에서 전체 폭으로 표시
+- AI JUDGE / AI JUDGE BUSY 오버레이가 모바일과 데스크톱에서 잘리지 않도록 별도 반응형 처리
+
+---
+
+## 19. 기술 스택
 
 ### Frontend
 
@@ -389,7 +406,7 @@ DRAW
 
 ---
 
-## 19. 프로젝트 구조
+## 20. 프로젝트 구조
 
 ```text
 pick-fight/
@@ -416,7 +433,7 @@ pick-fight/
 
 ---
 
-## 20. Python 패키지
+## 21. Python 패키지
 
 `requirements.txt`
 
@@ -432,7 +449,7 @@ python -m pip install -r requirements.txt
 
 ---
 
-## 21. 환경변수
+## 22. 환경변수
 
 Gemini API Key는 코드에 직접 저장하지 않습니다.
 
@@ -448,7 +465,7 @@ Vercel의 Environment Variables에 등록하여 사용합니다.
 
 ---
 
-## 22. 실행 및 배포
+## 23. 실행 및 배포
 
 ### GitHub
 
@@ -468,17 +485,17 @@ Preview Deployment에서 실제 AI 기능을 먼저 테스트한 뒤 `main`으�
 
 ---
 
-## 23. 배포 주소
+## 24. 배포 주소
 
 **Production URL**
 
 ```text
-https://pick-fight-klx255g2h-ll-0l.vercel.app/
+https://pick-fight.vercel.app
 ```
 
 ---
 
-## 24. 주요 사용자 흐름
+## 25. 주요 사용자 흐름
 
 ```text
 HOME
@@ -530,17 +547,91 @@ BATTLE LOG
 
 ![ENTRY](./images/04_entry.png)
 
+### VS
+
+![VS](./images/05_vs.png)
+
 ### AI JUDGE
 
 ![AI JUDGING](./images/06_ai_judging.png)
 
-### DEPLOYMENT
+### BATTLE ROUND
+
+![BATTLE ROUND](./images/07_battle_round_1.png)
+
+### FINAL ROUND CHOICE
+
+![FINAL ROUND CHOICE](./images/08_final_round_choice.png)
+
+### SUDDEN DEATH
+
+![SUDDEN DEATH RULE READY](./images/08_sudden_death_rule_ready.png)
+
+![SUDDEN DEATH RESULT](./images/08_sudden_death_result.png)
+
+### MATCH RESULT
+
+![MATCH RESULT](./images/09_match_result.png)
+
+### BATTLE LOG — CARD VIEW
+
+![BATTLE LOG CARD](./images/10_battle_log_card.png)
+
+### BATTLE LOG — LIST VIEW
+
+![BATTLE LOG LIST](./images/11_battle_log_list.png)
+
+### GITHUB / DEPLOYMENT
+
+![GITHUB PR MERGED](./images/12_github_pr_merged.png)
 
 ![VERCEL PRODUCTION READY](./images/13_vercel_production_ready.png)
 
+### AI BUSY / RETRY
+
+![AI BUSY RETRY](./images/15_ai_busy_retry.png)
+
+### MOBILE
+
+![MOBILE HOME](./images/16_mobile_home.png)
+
+![MOBILE AI BUSY](./images/17_mobile_ai_busy.png)
+
+![MOBILE RESULT](./images/20_mobile_result.png)
+
+### localStorage PERSISTENCE
+
+새로고침 전후에도 동일한 Battle Log가 유지되는 것을 확인했습니다.
+
+![LOCALSTORAGE BEFORE REFRESH](./images/18_localstorage_before_refresh.png)
+
+![LOCALSTORAGE AFTER REFRESH](./images/19_localstorage_after_refresh.png)
+
 ---
 
-## 25. 프로젝트 특징
+## 보너스 기능
+
+### 1. Battle Log 영속화
+
+완료된 배틀 기록을 `localStorage`에 저장하여 새로고침 후에도 Battle Log가 유지됩니다.
+
+- 최근 최대 50개 기록 저장
+- CARD VIEW / LIST VIEW 모두 저장된 데이터 사용
+- 새로고침 전후 동일 기록 유지 확인
+
+### 2. UX / 마이크로 인터랙션
+
+- 캐릭터 캐러셀
+- 입력 상태 변화
+- ENTRY / VS / 카운트다운 연출
+- 공격 / 피격 / HP 애니메이션
+- AI JUDGE 로딩 및 BUSY 재시도
+- 모바일 전투 집중형 전체 화면
+- 모바일 하단 네비게이션
+
+---
+
+## 26. 프로젝트 특징
 
 PICK FIGHT는 단순한 AI 추천 서비스가 아니라 AI 의사결정 과정을 게임 UI와 결합했다는 점을 핵심으로 합니다.
 
@@ -556,14 +647,12 @@ PICK FIGHT는 단순한 AI 추천 서비스가 아니라 AI 의사결정 과정�
 
 ---
 
-## 26. 향후 개선 가능 사항
+## 27. 향후 개선 가능 사항
 
-- Battle Log localStorage 영구 저장
 - 사용자별 기록 관리
 - AI 모델 선택 기능
 - 사용자 지정 캐릭터
 - 공유 가능한 결과 이미지
-- 모바일 UI 추가 최적화
 - Gemini API Rate Limit 모니터링 강화
 
 ---
