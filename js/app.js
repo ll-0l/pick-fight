@@ -189,15 +189,11 @@ document.addEventListener("DOMContentLoaded", () => {
         nav.innerHTML = `
 <button type="button" class="pf-mobile-nav-item pf-mobile-nav-side" data-target="how-to-play" aria-label="HOW TO PLAY로 이동">
     <span class="pf-mobile-nav-icon" aria-hidden="true">
-        <svg class="pf-mobile-pixel-svg" viewBox="0 0 16 16" shape-rendering="crispEdges">
-            <rect x="2" y="2" width="12" height="3"></rect>
-            <rect x="1" y="5" width="3" height="7"></rect>
-            <rect x="12" y="5" width="3" height="7"></rect>
-            <rect x="4" y="11" width="8" height="3"></rect>
-            <rect x="5" y="13" width="3" height="2"></rect>
-            <rect x="7" y="5" width="3" height="2"></rect>
-            <rect x="9" y="7" width="2" height="3"></rect>
-            <rect x="7" y="10" width="2" height="2"></rect>
+        <svg class="pf-nav-icon-svg" viewBox="0 0 24 24">
+            <path d="M3 4h7c1.3 0 2 .7 2 2v14c0-1.3-.7-2-2-2H3V4z"></path>
+            <path d="M21 4h-7c-1.3 0-2 .7-2 2v14c0-1.3.7-2 2-2h7V4z"></path>
+            <rect x="6" y="7" width="3" height="3"></rect>
+            <rect x="7" y="11" width="2" height="2"></rect>
         </svg>
     </span>
     <span class="pf-mobile-nav-label">HOW TO</span>
@@ -205,24 +201,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
 <button type="button" class="pf-mobile-nav-item pf-mobile-nav-main" data-target="home" aria-label="BATTLE 시작 화면으로 이동">
     <span class="pf-mobile-nav-icon" aria-hidden="true">
-        <svg class="pf-mobile-pixel-svg pf-mobile-battle-svg" viewBox="0 0 16 16" shape-rendering="crispEdges">
-            <!-- left sword -->
-            <rect x="3" y="1" width="2" height="2"></rect>
-            <rect x="4" y="3" width="2" height="2"></rect>
-            <rect x="5" y="5" width="2" height="2"></rect>
-            <rect x="6" y="7" width="2" height="2"></rect>
-            <rect x="5" y="9" width="4" height="2"></rect>
-            <rect x="8" y="11" width="2" height="3"></rect>
-            <rect x="9" y="13" width="2" height="2"></rect>
+        <svg class="pf-nav-icon-svg pf-nav-battle-svg" viewBox="0 0 24 24">
+            <path d="M5 3h3v3h2v2h2v3h-2V9H8V7H6V5H5V3z"></path>
+            <rect x="10" y="10" width="4" height="4"></rect>
+            <rect x="7" y="13" width="3" height="3"></rect>
+            <rect x="5" y="15" width="3" height="3"></rect>
+            <rect x="4" y="18" width="5" height="2"></rect>
+            <rect x="3" y="20" width="3" height="2"></rect>
 
-            <!-- right sword -->
-            <rect x="11" y="1" width="2" height="2"></rect>
-            <rect x="10" y="3" width="2" height="2"></rect>
-            <rect x="9" y="5" width="2" height="2"></rect>
-            <rect x="8" y="7" width="2" height="2"></rect>
-            <rect x="7" y="9" width="4" height="2"></rect>
-            <rect x="6" y="11" width="2" height="3"></rect>
-            <rect x="5" y="13" width="2" height="2"></rect>
+            <path d="M19 3h-3v3h-2v2h-2v3h2V9h2V7h2V5h1V3z"></path>
+            <rect x="14" y="13" width="3" height="3"></rect>
+            <rect x="16" y="15" width="3" height="3"></rect>
+            <rect x="15" y="18" width="5" height="2"></rect>
+            <rect x="18" y="20" width="3" height="2"></rect>
         </svg>
     </span>
     <span class="pf-mobile-nav-label">BATTLE</span>
@@ -230,17 +221,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
 <button type="button" class="pf-mobile-nav-item pf-mobile-nav-side" data-target="battle-log" aria-label="BATTLE LOG로 이동">
     <span class="pf-mobile-nav-icon" aria-hidden="true">
-        <svg class="pf-mobile-pixel-svg" viewBox="0 0 16 16" shape-rendering="crispEdges">
-            <rect x="3" y="1" width="10" height="2"></rect>
-            <rect x="2" y="3" width="2" height="11"></rect>
-            <rect x="12" y="3" width="2" height="11"></rect>
-            <rect x="4" y="13" width="8" height="2"></rect>
-            <rect x="5" y="5" width="2" height="2"></rect>
-            <rect x="8" y="5" width="3" height="2"></rect>
-            <rect x="5" y="8" width="2" height="2"></rect>
-            <rect x="8" y="8" width="3" height="2"></rect>
-            <rect x="5" y="11" width="2" height="1"></rect>
-            <rect x="8" y="11" width="3" height="1"></rect>
+        <svg class="pf-nav-icon-svg" viewBox="0 0 24 24">
+            <rect x="5" y="3" width="14" height="18"></rect>
+            <rect class="pf-icon-cut" x="8" y="6" width="8" height="2"></rect>
+            <rect class="pf-icon-cut" x="8" y="10" width="8" height="2"></rect>
+            <rect class="pf-icon-cut" x="8" y="14" width="6" height="2"></rect>
+            <rect class="pf-icon-cut" x="3" y="6" width="3" height="2"></rect>
+            <rect class="pf-icon-cut" x="3" y="11" width="3" height="2"></rect>
+            <rect class="pf-icon-cut" x="3" y="16" width="3" height="2"></rect>
         </svg>
     </span>
     <span class="pf-mobile-nav-label">LOG</span>
@@ -11103,9 +11091,9 @@ ${filtered.map((log, index) => `
 
 
     /* =========================================================
-       MOBILE PIXEL DOCK v36
-       v35 dock/button layout preserved.
-       Icons rebuilt as crisp 16x16 SVG pixel art.
+       MOBILE PIXEL DOCK v37
+       v36 dock/button layout preserved.
+       Icons simplified for instant readability.
        ========================================================= */
 
     @media (max-width: 760px) {
@@ -11132,7 +11120,6 @@ ${filtered.map((log, index) => `
             display: none !important;
         }
 
-        /* v35 dock shape preserved */
         .pf-mobile-bottom-nav {
             position: fixed;
             left: 0;
@@ -11191,7 +11178,6 @@ ${filtered.map((log, index) => `
             white-space: nowrap;
         }
 
-        /* Crisp pixel SVGs. No system emoji/font icons. */
         .pf-mobile-nav-side .pf-mobile-nav-icon {
             display: grid;
             place-items: center;
@@ -11199,17 +11185,21 @@ ${filtered.map((log, index) => `
             height: 32px;
         }
 
-        .pf-mobile-pixel-svg {
-            width: 32px;
-            height: 32px;
+        /* Bold readable icon language.
+           Square corners + block cuts keep the pixel/game feel. */
+        .pf-nav-icon-svg {
+            width: 30px;
+            height: 30px;
             display: block;
-            overflow: visible;
             fill: #594c70;
-            image-rendering: pixelated;
-            filter: drop-shadow(1px 1px 0 #fff8e8);
+            shape-rendering: crispEdges;
         }
 
-        /* BATTLE — exact v35 mini START-style button feel */
+        .pf-nav-icon-svg .pf-icon-cut {
+            fill: #f7efdc;
+        }
+
+        /* BATTLE keeps the mini START-button look */
         .pf-mobile-nav-main {
             position: relative;
             min-height: 76px;
@@ -11224,7 +11214,7 @@ ${filtered.map((log, index) => `
             place-items: start center;
             width: 98px;
             height: 60px;
-            padding-top: 5px;
+            padding-top: 4px;
             box-sizing: border-box;
             background: #e7a9c2;
             border: 4px solid #30283d;
@@ -11234,11 +11224,10 @@ ${filtered.map((log, index) => `
                 4px 4px 0 #30283d;
         }
 
-        .pf-mobile-nav-main .pf-mobile-pixel-svg {
-            width: 33px;
-            height: 33px;
+        .pf-mobile-nav-main .pf-nav-icon-svg {
+            width: 31px;
+            height: 31px;
             fill: #654d6a;
-            filter: none;
         }
 
         .pf-mobile-nav-main .pf-mobile-nav-label {
