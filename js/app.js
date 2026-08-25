@@ -166,6 +166,28 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     /* =========================================================
+    MOBILE BATTLE FOCUS
+    모바일 전투 중 상단 네비게이션을 숨기고,
+    라운드 전환 시 현재 전투 화면을 유지한다.
+    데스크톱에는 영향 없음.
+    ========================================================= */
+    function setMobileBattleFocus(active) {
+        document.body.classList.toggle(
+            "pf-mobile-battle-focus",
+            Boolean(active)
+        );
+    }
+
+    function scrollBattleResultIntoView(behavior = "smooth") {
+        if (!battleResult) return;
+
+        battleResult.scrollIntoView({
+            behavior,
+            block: "start"
+        });
+    }
+
+    /* =========================================================
     BONUS: BATTLE LOG PERSISTENCE
     새로고침 후에도 Battle Log가 유지되도록 localStorage 사용
     ========================================================= */
@@ -4405,6 +4427,7 @@ ${deathMatchRule ? "" : "disabled"}
     function renderSceneShell({
         showSkip = false
     } = {}) {
+        setMobileBattleFocus(true);
         battleResult.innerHTML = `
 <div class="pf-scene">
 ${showSkip
@@ -5146,6 +5169,7 @@ cursor:pointer;
                     document.getElementById(
                         "pfAIRetryButton"
                     );
+
                 if (!button) {
                     resolve();
                     return;
@@ -5536,7 +5560,6 @@ ${escapeHTML(
             rule
         );
         await sleep(250);
-
         let result;
 
         while (!result) {
@@ -6532,6 +6555,9 @@ READY... 두 선수를 기다리는 중!
                             "next"
                     }
                 ]);
+
+                scrollBattleResultIntoView("smooth");
+                await sleep(220);
                 continue;
             }
             /*
@@ -6589,12 +6615,7 @@ READY... 두 선수를 기다리는 중!
         renderSceneShell({
             showSkip: false
         });
-        battleResult.scrollIntoView({
-            behavior:
-                "smooth",
-            block:
-                "start"
-        });
+        scrollBattleResultIntoView("smooth");
         renderCountdown(
             "SUDDEN"
         );
@@ -8816,6 +8837,7 @@ ${filtered.map((log, index) => `
         renderBattleLog();
     }
     function resetBattleState({ scrollToArena = false } = {}) {
+        setMobileBattleFocus(false);
         activeBattle = null;
         selectedRules = [];
         deathMatchRule = "";
@@ -8859,6 +8881,7 @@ ${filtered.map((log, index) => `
         resetBattleState({ scrollToArena: true });
     }
     function exitToBattleLog() {
+        setMobileBattleFocus(false);
         const target = document.getElementById("battle-log")
             || battleLogList?.closest("section")
             || battleLogList;
@@ -10222,7 +10245,481 @@ ${filtered.map((log, index) => `
     }
 }
 
+
+    /* =========================================================
+       MOBILE JUDGE RESULT FIT FIX
+       모바일 판정 결과 화면 전용.
+       색상/폰트/캐릭터/데스크톱 디자인은 변경하지 않음.
+       ========================================================= */
+
+    /* 점수 영역을 화면 안쪽에 확실히 고정 */
+    .pf-score-row,
+    .pf-score-panel {
+        width: calc(100% - 20px) !important;
+        max-width: calc(100% - 20px) !important;
+        min-width: 0 !important;
+        margin: 8px auto 0 !important;
+        padding: 8px 4px 10px !important;
+        grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) !important;
+        gap: 8px !important;
+        box-sizing: border-box !important;
+        overflow: hidden !important;
+    }
+
+    .pf-score-side {
+        min-width: 0 !important;
+        max-width: 100% !important;
+        overflow: hidden !important;
+    }
+
+    .pf-score-side span {
+        max-width: 100% !important;
+        font-size: .78rem !important;
+        line-height: 1.2 !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+    }
+
+    .pf-score-side strong {
+        font-size: clamp(1.05rem, 5.4vw, 1.45rem) !important;
+        line-height: 1.25 !important;
+    }
+
+    .pf-score-mid {
+        min-width: 58px !important;
+        max-width: 58px !important;
+        padding: 6px 4px !important;
+        font-size: .34rem !important;
+        box-sizing: border-box !important;
+        white-space: nowrap !important;
+    }
+
+    /* JUDGE RESULT 전체를 arena 안으로 */
+    .pf-judge-panel {
+        width: calc(100% - 18px) !important;
+        max-width: calc(100% - 18px) !important;
+        min-width: 0 !important;
+        margin: 9px auto 0 !important;
+        padding: 10px 0 0 !important;
+        box-sizing: border-box !important;
+        overflow: hidden !important;
+    }
+
+    .pf-judge-title {
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        text-align: center !important;
+    }
+
+    .pf-judge-grid {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        grid-template-columns: minmax(0, 1fr) !important;
+        gap: 9px !important;
+        padding: 0 !important;
+        box-sizing: border-box !important;
+        overflow: hidden !important;
+    }
+
+    .pf-judge-card,
+    .pf-judge-card.winner,
+    .pf-judge-card.loser,
+    .pf-judge-card.draw {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        margin: 0 !important;
+        padding: 12px !important;
+        box-sizing: border-box !important;
+        overflow: hidden !important;
+    }
+
+    .pf-judge-head {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        display: grid !important;
+        grid-template-columns: minmax(0, 1fr) auto !important;
+        align-items: start !important;
+        gap: 8px !important;
+        box-sizing: border-box !important;
+    }
+
+    .pf-judge-head strong {
+        min-width: 0 !important;
+        max-width: 100% !important;
+        font-size: 1.02rem !important;
+        line-height: 1.25 !important;
+        overflow-wrap: anywhere !important;
+    }
+
+    .pf-judge-badge {
+        justify-self: end !important;
+        flex-shrink: 0 !important;
+        max-width: 72px !important;
+        padding: 5px 7px !important;
+        font-size: .86rem !important;
+        white-space: nowrap !important;
+        box-sizing: border-box !important;
+    }
+
+    .pf-judge-flavor {
+        font-size: 1rem !important;
+        line-height: 1.35 !important;
+        overflow-wrap: anywhere !important;
+    }
+
+    .pf-judge-card p {
+        max-width: 100% !important;
+        font-size: .93rem !important;
+        line-height: 1.58 !important;
+        overflow-wrap: anywhere !important;
+        word-break: keep-all !important;
+    }
+
+    /* 다음 라운드 / 최종 판정 버튼도 프레임 밖으로 안 나가게 */
+    .pf-action-row,
+    .pf-action-row-single {
+        width: calc(100% - 18px) !important;
+        max-width: calc(100% - 18px) !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        box-sizing: border-box !important;
+    }
+
+    .pf-action-btn,
+    .pf-action-row-single .pf-action-btn {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        padding: 16px 12px !important;
+        box-sizing: border-box !important;
+    }
+
+
+    /* =========================================================
+       MOBILE COMPACT BATTLE UX
+       디자인 아이덴티티는 유지하고 세로 길이/여백만 압축
+       ========================================================= */
+
+    body.pf-mobile-battle-focus .header {
+        display: none !important;
+    }
+
+    body.pf-mobile-battle-focus {
+        scroll-padding-top: 8px !important;
+    }
+
+    body.pf-mobile-battle-focus .section {
+        padding-top: 12px !important;
+        padding-bottom: 24px !important;
+    }
+
+    body.pf-mobile-battle-focus .battle-result {
+        margin-top: 8px !important;
+        padding: 10px !important;
+    }
+
+    /* ENTRY를 모바일에서 한 화면에 더 가깝게 */
+    .pf-entry-screen,
+    .pf-entry-screen.side-b {
+        min-height: 0 !important;
+        gap: 12px !important;
+        padding: 12px 4px 16px !important;
+    }
+
+    .pf-entry-frame {
+        width: 150px !important;
+        height: 150px !important;
+        box-shadow: 5px 5px 0 #171421 !important;
+    }
+
+    .pf-entry-frame .pf-character-sprite {
+        width: 96px !important;
+        height: 96px !important;
+    }
+
+    .pf-entry-card {
+        padding: 14px !important;
+        box-shadow: 5px 5px 0 #171421 !important;
+    }
+
+    .pf-entry-card h3 {
+        font-size: clamp(1.55rem, 8vw, 2rem) !important;
+    }
+
+    .pf-entry-title {
+        margin: 6px 0 10px !important;
+        font-size: 1rem !important;
+    }
+
+    .pf-entry-info {
+        padding: 8px !important;
+    }
+
+    /* VS / 등장 문구 화면 세로 압축 */
+    .pf-vs-screen {
+        min-height: 300px !important;
+        padding-block: 14px !important;
+        gap: 8px !important;
+    }
+
+    .pf-vs-character {
+        width: min(92px, 24vw) !important;
+        height: min(92px, 24vw) !important;
+        margin-bottom: 8px !important;
+        box-shadow: 4px 4px 0 #171421 !important;
+    }
+
+    .pf-vs-character .pf-character-sprite {
+        width: min(62px, 17vw) !important;
+        height: min(62px, 17vw) !important;
+    }
+
+    .pf-vs-name {
+        font-size: .9rem !important;
+    }
+
+    .pf-vs-mark {
+        font-size: 1.05rem !important;
+    }
+
+    /* 3-2-1 countdown */
+    .pf-countdown {
+        min-height: 290px !important;
+    }
+
+    .pf-countdown-text {
+        font-size: clamp(2.8rem, 15vw, 4rem) !important;
+    }
+
+    /* 실제 전투 화면의 불필요한 세로 공간 감소 */
+    .pf-stage {
+        min-height: 0 !important;
+        padding-bottom: 12px !important;
+    }
+
+    .pf-fighters {
+        min-height: 132px !important;
+        padding-top: 2px !important;
+        padding-bottom: 6px !important;
+        margin-bottom: 4px !important;
+    }
+
+    .pf-fighter {
+        min-height: 116px !important;
+    }
+
+    .pf-character-shell,
+    .pf-character-sprite {
+        width: 72px !important;
+        height: 72px !important;
+    }
+
+    .pf-round-header {
+        gap: 5px !important;
+        margin-bottom: 5px !important;
+        padding-block: 8px !important;
+    }
+
+    .pf-rule-focus {
+        padding-block: 7px !important;
+    }
+
+    .pf-rule-focus span {
+        font-size: .8rem !important;
+    }
+
+    .pf-rule-focus strong {
+        font-size: clamp(1.35rem, 7vw, 1.8rem) !important;
+    }
+
+    /* 판정 결과 카드: 내용은 유지하고 여백/글자만 모바일 최적화 */
+    .pf-round-summary {
+        margin-top: 4px !important;
+        padding: 7px 8px !important;
+        font-size: .86rem !important;
+        line-height: 1.35 !important;
+    }
+
+    .pf-score-row,
+    .pf-score-panel {
+        margin-top: 4px !important;
+        padding-top: 6px !important;
+        padding-bottom: 7px !important;
+    }
+
+    .pf-judge-panel {
+        margin-top: 5px !important;
+        padding-top: 7px !important;
+    }
+
+    .pf-judge-title {
+        margin-bottom: 7px !important;
+        padding-bottom: 6px !important;
+    }
+
+    .pf-judge-grid {
+        gap: 6px !important;
+    }
+
+    .pf-judge-card,
+    .pf-judge-card.winner,
+    .pf-judge-card.loser,
+    .pf-judge-card.draw {
+        padding: 10px !important;
+    }
+
+    .pf-judge-head {
+        margin-bottom: 6px !important;
+    }
+
+    .pf-judge-head strong {
+        font-size: .96rem !important;
+    }
+
+    .pf-judge-badge {
+        padding: 4px 6px !important;
+        font-size: .76rem !important;
+    }
+
+    .pf-judge-flavor {
+        margin-bottom: 5px !important;
+        font-size: .92rem !important;
+        line-height: 1.3 !important;
+    }
+
+    .pf-judge-card p {
+        font-size: .84rem !important;
+        line-height: 1.45 !important;
+    }
+
+    .pf-action-row,
+    .pf-action-row-single {
+        margin-top: 8px !important;
+    }
+
+    .pf-action-btn,
+    .pf-action-row-single .pf-action-btn {
+        min-height: 56px !important;
+        padding: 12px 10px !important;
+        font-size: 1rem !important;
+    }
+
+    /* SUDDEN DEATH 선택 화면도 모바일 압축 */
+    .pf-death-rule-guide {
+        margin: 10px 0 !important;
+        padding: 12px !important;
+        line-height: 1.45 !important;
+    }
+
+    .pf-death-rule-guide strong {
+        margin-bottom: 4px !important;
+    }
+
+    .pf-death-control-box {
+        margin-top: 10px !important;
+        padding: 12px !important;
+    }
+
+    .pf-death-control-copy {
+        margin-bottom: 8px !important;
+        font-size: .9rem !important;
+    }
+
+    .pf-death-go-button {
+        min-height: 56px !important;
+        padding: 12px 14px !important;
+    }
+
+    /* MATCH RESULT 모바일 세로 길이 압축 */
+    .pf-final-stage {
+        padding: 8px !important;
+    }
+
+    .pf-final-grid {
+        min-height: 175px !important;
+    }
+
+    .pf-final-fighter {
+        min-height: 155px !important;
+        padding-top: 46px !important;
+    }
+
+    .pf-final-character,
+    .pf-final-character .pf-character-sprite {
+        width: 84px !important;
+        height: 84px !important;
+    }
+
+    .pf-final-summary {
+        padding: 10px !important;
+    }
+
+    .pf-final-summary h2 {
+        margin-bottom: 8px !important;
+    }
+
+    .pf-final-judgement {
+        padding: 9px !important;
+    }
+
+    .pf-final-judgement h3 {
+        margin-bottom: 7px !important;
+        font-size: 1.1rem !important;
+    }
+
+    .pf-final-round-list {
+        gap: 6px !important;
+        margin-bottom: 8px !important;
+    }
+
+    .pf-final-round-item {
+        padding: 8px !important;
+    }
+
+    .pf-final-round-item strong {
+        font-size: .92rem !important;
+    }
+
+    .pf-final-round-item p {
+        font-size: .84rem !important;
+        line-height: 1.45 !important;
+    }
+
+    .pf-final-pick {
+        padding: 10px !important;
+    }
+
 @media (max-width: 420px) {
+
+    .pf-score-row,
+    .pf-score-panel {
+        width: calc(100% - 14px) !important;
+        max-width: calc(100% - 14px) !important;
+        gap: 6px !important;
+    }
+
+    .pf-score-mid {
+        min-width: 52px !important;
+        max-width: 52px !important;
+        font-size: .31rem !important;
+    }
+
+    .pf-judge-panel {
+        width: calc(100% - 14px) !important;
+        max-width: calc(100% - 14px) !important;
+    }
+
+    .pf-action-row,
+    .pf-action-row-single {
+        width: calc(100% - 14px) !important;
+        max-width: calc(100% - 14px) !important;
+    }
+
     .pf-stage {
         padding-inline: 5px !important;
     }
