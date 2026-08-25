@@ -187,18 +187,18 @@ document.addEventListener("DOMContentLoaded", () => {
         nav.setAttribute("aria-label", "모바일 빠른 이동");
 
         nav.innerHTML = `
-<button type="button" class="pf-mobile-nav-item" data-target="how-to-play" aria-label="HOW TO PLAY로 이동">
+<button type="button" class="pf-mobile-nav-item pf-mobile-nav-side" data-target="how-to-play" aria-label="HOW TO PLAY로 이동">
     <span class="pf-mobile-nav-icon pf-mobile-nav-help-icon" aria-hidden="true">?</span>
     <span class="pf-mobile-nav-label">HOW TO</span>
 </button>
 
 <button type="button" class="pf-mobile-nav-item pf-mobile-nav-main" data-target="home" aria-label="BATTLE 시작 화면으로 이동">
-    <span class="pf-mobile-nav-icon pf-mobile-nav-battle-icon" aria-hidden="true">⚔</span>
+    <span class="pf-mobile-nav-icon pf-mobile-nav-battle-icon" aria-hidden="true">PF</span>
     <span class="pf-mobile-nav-label">BATTLE</span>
 </button>
 
-<button type="button" class="pf-mobile-nav-item" data-target="battle-log" aria-label="BATTLE LOG로 이동">
-    <span class="pf-mobile-nav-icon" aria-hidden="true">▤</span>
+<button type="button" class="pf-mobile-nav-item pf-mobile-nav-side" data-target="battle-log" aria-label="BATTLE LOG로 이동">
+    <span class="pf-mobile-nav-icon pf-mobile-nav-log-icon" aria-hidden="true">≡</span>
     <span class="pf-mobile-nav-label">LOG</span>
 </button>
 `;
@@ -5654,7 +5654,8 @@ ${escapeHTML(
                 "AI JUDGE...",
                 "판정 중입니다! 잠시만 기다려주세요."
             );
-             try {
+
+            try {
                 result =
                     await createAIRoundResult(
                         state,
@@ -5667,7 +5668,6 @@ ${escapeHTML(
                 기존 공격 모션으로 넘어간다.
                 */
                 clearEffect();
-
             } catch (error) {
                 clearEffect();
 
@@ -11059,10 +11059,8 @@ ${filtered.map((log, index) => `
 
 
     /* =========================================================
-       MOBILE APP-LIKE BOTTOM NAV v30
-       HOW TO / BATTLE / LOG
-       Desktop header and desktop HOME buttons unchanged.
-       Mobile HOME keeps GAME START; its duplicate HOW TO button is hidden.
+       MOBILE APP-LIKE BOTTOM NAV v31
+       Cleaner visual design + full-height mobile HOME section.
        ========================================================= */
 
     @media (max-width: 760px) {
@@ -11072,10 +11070,18 @@ ${filtered.map((log, index) => `
         }
 
         body {
-            padding-bottom: 92px !important;
+            padding-bottom: 106px !important;
         }
 
         body.pf-mobile-battle-focus {
+            padding-bottom: 18px !important;
+        }
+
+        /* HOME section should fill one viewport so the next section does not peek in. */
+        #home {
+            min-height: calc(100svh - 106px) !important;
+            box-sizing: border-box !important;
+            padding-top: 18px !important;
             padding-bottom: 18px !important;
         }
 
@@ -11087,21 +11093,20 @@ ${filtered.map((log, index) => `
         .pf-mobile-bottom-nav {
             position: fixed;
             left: 50%;
-            bottom: max(10px, env(safe-area-inset-bottom));
+            bottom: max(8px, env(safe-area-inset-bottom));
             z-index: 9999;
-            width: min(calc(100% - 24px), 430px);
-            min-height: 68px;
+            width: min(calc(100% - 18px), 420px);
+            min-height: 84px;
             transform: translateX(-50%);
             display: grid;
-            grid-template-columns: 1fr 1.12fr 1fr;
+            grid-template-columns: 1fr 1.18fr 1fr;
             align-items: end;
-            gap: 6px;
-            padding: 7px 8px 8px;
-            border: 3px solid #30283d;
-            background: rgba(255, 248, 232, .97);
-            box-shadow: 5px 5px 0 #30283d;
+            gap: 8px;
+            padding: 8px 9px 10px;
+            border: 4px solid #30283d;
+            background: #f7f1df;
+            box-shadow: 6px 6px 0 #30283d;
             box-sizing: border-box;
-            backdrop-filter: blur(8px);
         }
 
         body.pf-mobile-battle-focus .pf-mobile-bottom-nav {
@@ -11110,80 +11115,94 @@ ${filtered.map((log, index) => `
 
         .pf-mobile-nav-item {
             appearance: none;
-            border: 0;
-            background: transparent;
-            color: #625481;
             min-width: 0;
-            min-height: 50px;
-            padding: 6px 4px 5px;
+            min-height: 62px;
+            padding: 8px 6px 7px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 3px;
+            gap: 5px;
+            border: 3px solid #30283d;
+            box-shadow: 3px 3px 0 #30283d;
             font-family: "Press Start 2P", cursive;
             cursor: pointer;
             -webkit-tap-highlight-color: transparent;
+            box-sizing: border-box;
+        }
+
+        .pf-mobile-nav-side {
+            background: #eee8f7;
+            color: #5d4f78;
+        }
+
+        .pf-mobile-nav-side:last-child {
+            background: #e9edf9;
+            color: #4f5d78;
         }
 
         .pf-mobile-nav-item:active {
             transform: translate(2px, 2px);
+            box-shadow: 1px 1px 0 #30283d;
         }
 
         .pf-mobile-nav-icon {
             display: grid;
             place-items: center;
-            min-height: 24px;
-            font-family: "Galmuri11", "Galmuri", sans-serif;
-            font-size: 1.36rem;
+            width: 30px;
+            height: 28px;
+            min-height: 28px;
+            border: 2px solid currentColor;
+            background: rgba(255, 255, 255, .65);
+            font-family: "Press Start 2P", cursive;
+            font-size: .92rem;
             line-height: 1;
             font-weight: 900;
+            box-sizing: border-box;
         }
 
         .pf-mobile-nav-label {
             display: block;
             max-width: 100%;
-            font-size: .42rem;
+            font-size: .46rem;
             line-height: 1.15;
             white-space: nowrap;
+            letter-spacing: 0;
         }
 
-        /* BATTLE is the center anchor and returns to the existing HOME/START screen. */
         .pf-mobile-nav-main {
             position: relative;
-            min-height: 60px;
-            margin-top: -16px;
-            padding: 5px 6px 7px;
-            border: 3px solid #30283d;
-            background: #f6d0dc;
-            color: #944967;
-            box-shadow: 3px 3px 0 #30283d;
+            min-height: 72px;
+            margin-top: -18px;
+            padding: 9px 8px 8px;
+            background: #f5c7d6;
+            color: #8a4765;
+            border-width: 4px;
+            box-shadow: 4px 4px 0 #30283d;
         }
 
-        .pf-mobile-nav-main:active {
-            transform: translate(2px, 2px);
-            box-shadow: 1px 1px 0 #30283d;
+        .pf-mobile-nav-main .pf-mobile-nav-label {
+            font-size: .48rem;
         }
 
         .pf-mobile-nav-battle-icon {
-            width: 31px;
-            height: 31px;
-            min-height: 31px;
-            border: 2px solid #944967;
+            width: 36px;
+            height: 30px;
+            min-height: 30px;
+            font-size: .72rem;
             background: #fff7e5;
-            font-size: 1.06rem;
         }
 
-        .pf-mobile-nav-help-icon {
-            font-family: "Press Start 2P", cursive;
-            font-size: .78rem;
+        .pf-mobile-nav-help-icon,
+        .pf-mobile-nav-log-icon {
+            font-size: .88rem;
         }
 
         #home,
         #battle-log,
         #how-to-play {
             scroll-margin-top: 10px;
-            scroll-margin-bottom: 92px;
+            scroll-margin-bottom: 106px;
         }
     }
 
@@ -11307,4 +11326,4 @@ ${filtered.map((log, index) => `
     updateSituationStatus();
     renderSelectedRules();
     updateFightButtonState();
-});           
+});
