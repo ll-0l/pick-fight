@@ -567,8 +567,6 @@ BATTLE LOG
 
 ![SUDDEN DEATH RULE READY](./images/08_sudden_death_rule_ready.png)
 
-![SUDDEN DEATH RESULT](./images/08_sudden_death_result.png)
-
 ### MATCH RESULT
 
 ![MATCH RESULT](./images/09_match_result.png)
