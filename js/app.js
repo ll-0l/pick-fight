@@ -193,7 +193,7 @@ document.addEventListener("DOMContentLoaded", () => {
 </button>
 
 <button type="button" class="pf-mobile-nav-item pf-mobile-nav-main" data-target="home" aria-label="BATTLE 시작 화면으로 이동">
-    <span class="pf-mobile-nav-icon pf-mobile-nav-battle-icon" aria-hidden="true">PF</span>
+    <span class="pf-mobile-nav-icon pf-mobile-nav-battle-icon" aria-hidden="true">⚔</span>
     <span class="pf-mobile-nav-label">BATTLE</span>
 </button>
 
@@ -11059,33 +11059,30 @@ ${filtered.map((log, index) => `
 
 
     /* =========================================================
-       MOBILE APP-LIKE BOTTOM NAV v31
-       Cleaner visual design + full-height mobile HOME section.
+       MOBILE APP-LIKE BOTTOM NAV v32
+       Clean beige mobile nav with pink accent.
        ========================================================= */
 
     @media (max-width: 760px) {
-        /* Mobile navigation replaces the desktop-style top header. */
         .header {
             display: none !important;
         }
 
         body {
-            padding-bottom: 106px !important;
+            padding-bottom: 92px !important;
         }
 
         body.pf-mobile-battle-focus {
             padding-bottom: 18px !important;
         }
 
-        /* HOME section should fill one viewport so the next section does not peek in. */
         #home {
-            min-height: calc(100svh - 106px) !important;
+            min-height: calc(100svh - 92px) !important;
             box-sizing: border-box !important;
             padding-top: 18px !important;
             padding-bottom: 18px !important;
         }
 
-        /* Hide only the duplicate HOW TO control inside HOME on mobile. */
         #home .pf-mobile-home-howto-hidden {
             display: none !important;
         }
@@ -11093,20 +11090,20 @@ ${filtered.map((log, index) => `
         .pf-mobile-bottom-nav {
             position: fixed;
             left: 50%;
-            bottom: max(8px, env(safe-area-inset-bottom));
+            bottom: 0;
             z-index: 9999;
-            width: min(calc(100% - 18px), 420px);
-            min-height: 84px;
+            width: min(calc(100% - 16px), 420px);
             transform: translateX(-50%);
             display: grid;
-            grid-template-columns: 1fr 1.18fr 1fr;
+            grid-template-columns: 1fr 1.12fr 1fr;
             align-items: end;
-            gap: 8px;
-            padding: 8px 9px 10px;
-            border: 4px solid #30283d;
-            background: #f7f1df;
-            box-shadow: 6px 6px 0 #30283d;
+            gap: 4px;
+            padding: 8px 14px calc(10px + env(safe-area-inset-bottom));
+            background: rgba(247, 241, 223, 0.97);
+            border-top: 4px solid #30283d;
+            box-shadow: 0 -4px 0 rgba(48, 40, 61, 0.14);
             box-sizing: border-box;
+            backdrop-filter: blur(2px);
         }
 
         body.pf-mobile-battle-focus .pf-mobile-bottom-nav {
@@ -11116,46 +11113,37 @@ ${filtered.map((log, index) => `
         .pf-mobile-nav-item {
             appearance: none;
             min-width: 0;
-            min-height: 62px;
-            padding: 8px 6px 7px;
+            min-height: 56px;
+            padding: 0 4px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 5px;
-            border: 3px solid #30283d;
-            box-shadow: 3px 3px 0 #30283d;
+            gap: 4px;
+            border: none;
+            background: transparent;
+            box-shadow: none;
             font-family: "Press Start 2P", cursive;
             cursor: pointer;
             -webkit-tap-highlight-color: transparent;
+            color: #6b6278;
             box-sizing: border-box;
         }
 
-        .pf-mobile-nav-side {
-            background: #eee8f7;
-            color: #5d4f78;
-        }
-
-        .pf-mobile-nav-side:last-child {
-            background: #e9edf9;
-            color: #4f5d78;
-        }
-
         .pf-mobile-nav-item:active {
-            transform: translate(2px, 2px);
-            box-shadow: 1px 1px 0 #30283d;
+            transform: translateY(1px);
         }
 
         .pf-mobile-nav-icon {
             display: grid;
             place-items: center;
-            width: 30px;
-            height: 28px;
-            min-height: 28px;
-            border: 2px solid currentColor;
-            background: rgba(255, 255, 255, .65);
+            width: 24px;
+            height: 24px;
+            min-height: 24px;
+            border: none;
+            background: transparent;
             font-family: "Press Start 2P", cursive;
-            font-size: .92rem;
+            font-size: 1rem;
             line-height: 1;
             font-weight: 900;
             box-sizing: border-box;
@@ -11165,44 +11153,58 @@ ${filtered.map((log, index) => `
             display: block;
             max-width: 100%;
             font-size: .46rem;
-            line-height: 1.15;
+            line-height: 1.1;
             white-space: nowrap;
             letter-spacing: 0;
         }
 
+        .pf-mobile-nav-side {
+            color: #736984;
+        }
+
+        .pf-mobile-nav-side .pf-mobile-nav-icon {
+            color: #7a6f8e;
+        }
+
         .pf-mobile-nav-main {
             position: relative;
-            min-height: 72px;
+            min-height: 70px;
             margin-top: -18px;
-            padding: 9px 8px 8px;
-            background: #f5c7d6;
-            color: #8a4765;
-            border-width: 4px;
-            box-shadow: 4px 4px 0 #30283d;
+            color: #a04f72;
+            gap: 5px;
+        }
+
+        .pf-mobile-nav-main .pf-mobile-nav-icon {
+            width: 54px;
+            height: 54px;
+            min-height: 54px;
+            border-radius: 999px;
+            background: #f3c6d6;
+            color: #8d4566;
+            border: 3px solid #30283d;
+            box-shadow: 0 4px 0 #30283d;
+            font-size: 1.12rem;
         }
 
         .pf-mobile-nav-main .pf-mobile-nav-label {
+            color: #8d4566;
             font-size: .48rem;
-        }
-
-        .pf-mobile-nav-battle-icon {
-            width: 36px;
-            height: 30px;
-            min-height: 30px;
-            font-size: .72rem;
-            background: #fff7e5;
         }
 
         .pf-mobile-nav-help-icon,
         .pf-mobile-nav-log-icon {
-            font-size: .88rem;
+            font-size: 1.02rem;
+        }
+
+        .pf-mobile-nav-battle-icon {
+            transform: translateY(1px);
         }
 
         #home,
         #battle-log,
         #how-to-play {
             scroll-margin-top: 10px;
-            scroll-margin-bottom: 106px;
+            scroll-margin-bottom: 92px;
         }
     }
 
