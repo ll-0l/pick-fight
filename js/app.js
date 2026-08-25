@@ -5199,11 +5199,7 @@ ${escapeHTML(description)}
 <div
 class="pf-effect pf-ai-retry-effect"
 style="
-top:50% !important;
-width:min(460px,calc(100% - 32px));
-min-width:0;
 box-sizing:border-box;
-padding:13px 20px 14px;
 white-space:normal;
 "
 >
@@ -5954,7 +5950,7 @@ id="pfDeathChoiceButton"
     function getKoreanSubjectParticle(word) {
         const text =
             String(word || "").trim();
-                    if (!text) {
+        if (!text) {
             return "가";
         }
 
@@ -11710,6 +11706,130 @@ ${filtered.map((log, index) => `
         document.head.appendChild(style);
     }
 
+
+    /* =========================================================
+       FINAL AI OVERLAY LAYOUT FIX v47
+       One source of truth for BOTH desktop and mobile.
+       The effect is positioned inside the fighter area and that
+       area is allowed to overflow only while an effect is present.
+       ========================================================= */
+    function installFinalAIOverlayLayoutFixStyles() {
+        document.getElementById("pickFightFinalAIOverlayLayoutFixStyles")?.remove();
+
+        const style = document.createElement("style");
+        style.id = "pickFightFinalAIOverlayLayoutFixStyles";
+        style.textContent = `
+        /* Allow judge overlays to extend naturally without being clipped. */
+        .pf-fighters:has(#pfEffectArea .pf-effect) {
+            overflow: visible !important;
+            isolation: isolate !important;
+            z-index: 50 !important;
+        }
+
+        #pfEffectArea {
+            position: absolute !important;
+            inset: 0 !important;
+            z-index: 80 !important;
+            overflow: visible !important;
+            pointer-events: none !important;
+        }
+
+        #pfEffectArea .pf-effect {
+            position: absolute !important;
+            left: 50% !important;
+            top: 50% !important;
+            right: auto !important;
+            bottom: auto !important;
+            transform: translate(-50%, -50%) !important;
+            width: min(460px, calc(100% - 48px)) !important;
+            max-width: 460px !important;
+            min-width: 0 !important;
+            margin: 0 !important;
+            padding: 14px 18px 15px !important;
+            box-sizing: border-box !important;
+            overflow: visible !important;
+            pointer-events: auto !important;
+            z-index: 90 !important;
+        }
+
+        #pfEffectArea .pf-ai-retry-effect > div {
+            width: 100% !important;
+            max-width: 100% !important;
+            margin: 0 !important;
+            font-size: clamp(.82rem, 1.35vw, 1rem) !important;
+            line-height: 1.3 !important;
+            letter-spacing: 0 !important;
+            white-space: normal !important;
+            word-break: keep-all !important;
+            text-align: center !important;
+            box-sizing: border-box !important;
+        }
+
+        #pfEffectArea .pf-effect span,
+        #pfEffectArea .pf-ai-retry-effect span {
+            display: block !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            margin: 8px 0 0 !important;
+            padding: 0 !important;
+            white-space: normal !important;
+            word-break: keep-all !important;
+            overflow-wrap: break-word !important;
+            text-align: center !important;
+            box-sizing: border-box !important;
+        }
+
+        #pfEffectArea #pfAIRetryButton {
+            display: block !important;
+            width: min(210px, 100%) !important;
+            max-width: 100% !important;
+            min-width: 0 !important;
+            margin: 10px auto 0 !important;
+            box-sizing: border-box !important;
+        }
+
+        @media (max-width: 760px) {
+            /* Cancel the older viewport-fixed experiment completely. */
+            body.pf-mobile-battle-focus #pfEffectArea .pf-effect,
+            body.pf-mobile-battle-focus #pfEffectArea .pf-ai-retry-effect {
+                position: absolute !important;
+                left: 50% !important;
+                top: 50% !important;
+                right: auto !important;
+                bottom: auto !important;
+                transform: translate(-50%, -50%) !important;
+                width: min(260px, calc(100% - 24px)) !important;
+                max-width: 260px !important;
+                min-width: 0 !important;
+                padding: 11px 10px 12px !important;
+                margin: 0 !important;
+            }
+
+            body.pf-mobile-battle-focus #pfEffectArea .pf-ai-retry-effect > div {
+                font-size: .69rem !important;
+                line-height: 1.28 !important;
+            }
+
+            body.pf-mobile-battle-focus #pfEffectArea .pf-effect span,
+            body.pf-mobile-battle-focus #pfEffectArea .pf-ai-retry-effect span {
+                margin-top: 7px !important;
+                font-size: .82rem !important;
+                line-height: 1.36 !important;
+            }
+
+            body.pf-mobile-battle-focus #pfEffectArea #pfAIRetryButton {
+                width: min(176px, 100%) !important;
+                min-height: 43px !important;
+                margin-top: 9px !important;
+                padding: 8px 7px !important;
+                font-size: .86rem !important;
+            }
+        }
+        `;
+
+        document.head.appendChild(style);
+    }
+
     /* =========================================================
     INIT
     ========================================================= */
@@ -11721,6 +11841,7 @@ ${filtered.map((log, index) => `
     installV8FinalDesignStyles();
     installV9FinalMicroPolishStyles();
     installFinalMobileResponsiveFixStyles();
+    installFinalAIOverlayLayoutFixStyles();
     initializeMobileBottomNav();
     removeMobileHomeHowToButton();
     renderCharacterSelectors();
